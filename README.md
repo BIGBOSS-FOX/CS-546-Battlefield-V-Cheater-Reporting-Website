@@ -29,15 +29,15 @@ Poll:
 - deletePoll(obj_id)
 
 Comment:
-    addComment (commenter, comment)
-    getAllComments()
-    getCommentByObjectId(obj_id)
-    updateComment(obj_id, CommentInfo)
-    deleteComment(obj_id)
+- addComment (commenter, comment)
+- getAllComments()
+- getCommentByObjectId(obj_id)
+- updateComment(obj_id, CommentInfo)
+- deleteComment(obj_id)
 
 Appeal:
-    addAppeal(appealed_by, body, image, proof_link)
-    getAllAppeals()
-    getAppealByObjectId(obj_id)
-    updateAppeal(obj_id, AppealInfo)
-    deleteAppeal(obj_id)   
+- addAppeal(appealed_by, body, image, proof_link)
+- getAllAppeals()
+- getAppealByObjectId(obj_id)
+- updateAppeal(obj_id, AppealInfo)
+- deleteAppeal(obj_id)   
