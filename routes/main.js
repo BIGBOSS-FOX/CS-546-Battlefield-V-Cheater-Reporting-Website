@@ -6,7 +6,7 @@ router.get("/list", async(req, res) => {
     try {
         const userList = "List of banned players";
         //Get users by status: confirmed cheater
-        res.render('layouts/example', { data: userList });
+        res.render('layouts/cheaters', { data: userList });
     } catch (e) {
         res.status(404).json({ error: "Page not render-able" + e });
     }
@@ -47,8 +47,8 @@ router.get("/", async(req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
-    try{
+router.post("/login", async(req, res) => {
+    try {
         //try to authenticate user
         const pageToShow = "Log in page";
         res.render('layouts/example', { data: pageToShow });
@@ -57,8 +57,8 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post("/register", async (req, res) => {
-    try{
+router.post("/register", async(req, res) => {
+    try {
         const pageToShow = "Register page";
         res.render('layouts/example', { data: pageToShow });
     } catch (e) {
