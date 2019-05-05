@@ -94,5 +94,17 @@ module.exports = {
         deletedUser.data = UserToDelete;
 
         return deletedUser;
+    },
+
+    async findUserByUserName(user_name) {
+        if (user_name === undefined) throw new Error("You must provide a user_name");
+        if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
+
+        const UsersCollection = await Users();
+        const foundUser = await UsersCollection.findOne({ user_name: user_name });
+        if (foundUser === null) throw new Error("No user with that id");
+
+        return foundUser;
+
     }
 };
