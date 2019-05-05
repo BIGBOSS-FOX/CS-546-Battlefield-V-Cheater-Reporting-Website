@@ -15,7 +15,7 @@ module.exports = {
 
         let newUser = {
             user_name: user_name,
-            hashedPassword: hashedPasswrod,
+            hashedPassword: hashedPassword,
             isAdmin: isAdmin,
             pending_votes: [],
             label_status: "Innocent",
