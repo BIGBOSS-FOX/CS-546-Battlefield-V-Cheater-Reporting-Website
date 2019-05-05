@@ -47,8 +47,9 @@ router.get("/", async(req, res) => {
     }
 });
 
-router.get("/login", async(req, res) => {
-    try {
+router.post("/login", async (req, res) => {
+    try{
+        //try to authenticate user
         const pageToShow = "Log in page";
         res.render('layouts/example', { data: pageToShow });
     } catch (e) {
@@ -56,8 +57,8 @@ router.get("/login", async(req, res) => {
     }
 });
 
-router.get("/register", async(req, res) => {
-    try {
+router.post("/register", async (req, res) => {
+    try{
         const pageToShow = "Register page";
         res.render('layouts/example', { data: pageToShow });
     } catch (e) {
