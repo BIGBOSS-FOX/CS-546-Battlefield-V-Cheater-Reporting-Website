@@ -8,25 +8,25 @@ Please do npm install every time you pull, and do not add the node modules to gi
 ### Database Collections and Methods:
 
 Users:
-    addUser(user_name, isAdmin)
-    getAllUsers()
-    getUserByObjectId(obj_id)
-    updateUser(obj_id, UserInfo)
-    deleteUser(obj_id)
+- addUser(user_name, isAdmin)
+- getAllUsers()
+- getUserByObjectId(obj_id)
+- updateUser(obj_id, UserInfo)
+- deleteUser(obj_id)
 
 Report:
-    addReport(reported_by, reported_player, body, image, proof_link, comments)
-    getAllReports()
-    getReportByObjectId(obj_id)
-    updateReport(obj_id, ReportInfo)
-    deleteReport(obj_id)
+- addReport(reported_by, reported_player, body, image, proof_link, comments)
+- getAllReports()
+- getReportByObjectId(obj_id)
+- updateReport(obj_id, ReportInfo)
+- deleteReport(obj_id)
 
 Poll:
-    addPoll (voting_about)    
-    getAllPolls()
-    getPollByObjectId(obj_id)
-    updatePoll(obj_id, PollInfo)
-    deletePoll(obj_id)
+- addPoll (voting_about)    
+- getAllPolls()
+- getPollByObjectId(obj_id)
+- updatePoll(obj_id, PollInfo)
+- deletePoll(obj_id)
 
 Comment:
     addComment (commenter, comment)
