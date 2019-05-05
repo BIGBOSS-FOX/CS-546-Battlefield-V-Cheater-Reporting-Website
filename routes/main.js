@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
             res.status(400).json({ error: "We cannot find you! Make sure you have an account with these credentials." });
             return;
         }
-        bcrypt.compare(myPlaintextPassword, hash, function(err, resp) {
+        bcrypt.compare(newUserInfo.password, compareUser.hashedPassword, function(err, resp) {
             if (resp) {
                 //GENERATE SESSION / do authentication stuff, because the user is valid and can now be logged in.
                 //at the end just re-render the main page
