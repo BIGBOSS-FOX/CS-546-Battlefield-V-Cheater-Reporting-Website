@@ -43,7 +43,7 @@ module.exports = {
 
         const UsersCollection = await Users();
         const foundUser = await UsersCollection.findOne({_id: obj_id});
-        if (foundUser === null) throw new Error("No animal with that id");
+        if (foundUser === null) throw new Error("No user with that id");
 
         return foundUser;
     },

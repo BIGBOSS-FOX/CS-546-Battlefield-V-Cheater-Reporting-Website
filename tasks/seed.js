@@ -1,6 +1,10 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
 const Users = data.Users;
+const Report = data.Report;
+const Poll = data.Poll;
+const Comment = data.Comment;
+const Appeal = data.Appeal;
 
 async function main() {
     const db = await dbConnection();
@@ -26,8 +30,23 @@ async function main() {
     await Users.addUser("leonid_47", false);
     await Users.addUser("AZGD-HungMammoth", false);
 
+    await Report.addReport("oX_-oBIGBOSS-FoX", "CanadianMason", "aimbot");
+    await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report");
+
+    await Poll.addPoll("CanadianMason");
+    await Poll.addPoll("AZGD-HungMammoth");
+
+    await Comment.addComment("SYM-Incarnate", "haha");
+    await Comment.addComment("elementofprgress", "I agree he's a cheater.");
+
+    await Appeal.addAppeal("AZGD-HungMammoth", "My friend is trolling");
+
     console.log('Done seeding database');
-	await db.close();     //TypeError: db.close is not a function
+    try {
+        await db.close();
+    } catch (e) {
+        console.log(e);
+    }        
 }
 
 main();

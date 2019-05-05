@@ -20,5 +20,6 @@ module.exports = {
   Users: getCollectionFn("Users"),
   Report: getCollectionFn("Report"),
   Comment: getCollectionFn("Comment"),
-  Poll: getCollectionFn("Poll")
+  Poll: getCollectionFn("Poll"),
+  Appeal: getCollectionFn("Appeal")
 };
