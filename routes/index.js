@@ -1,7 +1,7 @@
 const usersRoutes = require("./users");
 const reportsRoutes = require("./reports");
 const pollsRoutes = require("./polls");
-const miscRoutes = require("./all");
+const miscRoutes = require("./main");
 
 const constructorMethod = app => {
     app.use("/", miscRoutes);
