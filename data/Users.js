@@ -3,17 +3,19 @@ const Users = mongoCollections.Users;
 const { ObjectId } = require('mongodb');
 
 module.exports = {
-    async addUser(user_name, isAdmin) {
+    async addUser(user_name, hashedPassword, isAdmin) {
         if (user_name === undefined) throw new Error("You must provide a user_name");
         if (isAdmin === undefined) throw new Error("You must provide a True or False");
+        if (hashedPassword == undefined) throw new Error("You must provide a password")
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
         if (typeof isAdmin !== "boolean") throw new Error("IsAdmin needs to be a boolean");
+        if (typeof hashedPassword !== "string") throw new Error("Password needs to be a string");
 
         const UsersCollection = await Users();
 
         let newUser = {
             user_name: user_name,
-            hashedPassword: "",
+            hashedPassword: hashedPasswrod,
             isAdmin: isAdmin,
             pending_votes: [],
             label_status: "Innocent",

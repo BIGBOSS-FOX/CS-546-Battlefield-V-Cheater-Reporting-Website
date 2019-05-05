@@ -3,7 +3,7 @@ const Report = mongoCollections.Report;
 const { ObjectId } = require('mongodb');
 
 module.exports = {
-    async addReport(reported_by, reported_player, body, image, proof_link, comments) {
+    async addReport(reported_by, reported_player, body, image, proof_link) {
         if (reported_by === undefined) throw new Error("You must provide a user_name");
         if (reported_player === undefined) throw new Error("You must provide a user_name");
         if (body === undefined) throw new Error("You must provide an evidence");
@@ -20,7 +20,7 @@ module.exports = {
             image: image,
             proof_link: proof_link,
             creation_time: new Date(),
-            comments: comments
+            comments: []
         };
 
         const insertInfo = await ReportCollection.insertOne(newReport);

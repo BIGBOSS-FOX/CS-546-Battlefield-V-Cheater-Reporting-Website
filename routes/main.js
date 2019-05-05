@@ -10,7 +10,7 @@ router.get("/list", async(req, res) => { //get the cheater list
     try {
         const userList = "List of banned players";
         //Get users by status: confirmed cheater
-        res.render('layouts/example', { data: userList });
+        res.render('layouts/cheaters', { data: userList });
     } catch (e) {
         res.status(404).json({ error: "Page not render-able" + e });
     }
