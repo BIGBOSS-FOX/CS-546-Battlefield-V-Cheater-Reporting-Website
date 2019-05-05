@@ -99,12 +99,12 @@ router.post("/register", async (req, res) => {
             return;
         }
     
-        if (!newUserInfo.username) {
+        if (!newUserInfo.username_signup) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
 
-        if(!newUserInfo.password){
+        if(!newUserInfo.password_signup){
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
