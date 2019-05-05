@@ -60,19 +60,30 @@ router.post("/login", async (req, res) => {
             return;
         }
     
-        if (!newUserInfo.username_signup) {
+        if (!newUserInfo.username) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
-        if(!newUserInfo.password_signup){
+        if(!newUserInfo.password){
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
-        // bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
-        //     // Store hash in password DB.
-        //     usersData.addUser(newUserInfo.username_signup, hash, false);
+        const compareUser = usersData.findUserByUsername(newUserInfo.username);
+        if (!compareUser) {
+            res.status(400).json({ error: "We cannot find you! Make sure you have an account with these credentials." });
+            return;
+        }
+        bcrypt.compare(myPlaintextPassword, hash, function(err, resp) {
+            if (resp) {
+                //GENERATE SESSION / do authentication stuff, because the user is valid and can now be logged in.
+                //at the end just re-render the main page
+                res.render("layouts/main", []);
+            } else {
+                res.status(400).json({ error: "Make sure you typed in you credentials correctly." });
+                return;
+            }
+        });
 
-        //   });
         res.render("layouts/main", []);
     } catch (e) {
         res.status(404).json({ error: "User Log in did not work: " + e });
@@ -88,12 +99,18 @@ router.post("/register", async (req, res) => {
             return;
         }
     
-        if (!newUserInfo.username) {
+        if (!newUserInfo.username_signup) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
-        if(!newUserInfo.password){
+
+        if(!newUserInfo.password_signup){
             res.status(400).json({ error: "You must provide a password" });
+            return;
+        }
+        const compareUser = usersData.findUserByUsername(newUserInfo.username);
+        if (compareUser) {
+            res.status(400).json({ error: "This username already exists. Choose a different one." });
             return;
         }
         bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
