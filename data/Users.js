@@ -44,7 +44,7 @@ module.exports = {
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
 
         const UsersCollection = await Users();
-        const foundUser = await UsersCollection.findOne({_id: obj_id});
+        const foundUser = await UsersCollection.findOne({ _id: obj_id });
         if (foundUser === null) throw new Error("No user with that id");
 
         return foundUser;
@@ -86,7 +86,7 @@ module.exports = {
         const UsersCollection = await Users();
 
         const UserToDelete = await this.getUserByObjectId(obj_id);
-        const deletionInfo = await UsersCollection.deleteOne({_id: obj_id});
+        const deletionInfo = await UsersCollection.deleteOne({ _id: obj_id });
         if (deletionInfo.deletedCount === 0) throw new Error(`Could not delete user with id of ${obj_id}`);
 
         const deletedUser = {};
