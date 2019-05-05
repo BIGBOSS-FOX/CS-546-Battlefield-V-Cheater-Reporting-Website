@@ -26,12 +26,12 @@ router.get("/list/:status", async (req, res) => {
 });
 router.get("/", async (req, res) => {
     try{
-        const rightButtons = ["login", "register"];
+        let rightButtons = ["login", "register"];
         //get global site events List
         const eventsList = "Get list of site events";
 
-        if(req.sessions.cookie){ //If a user is authenticated
-            const user = "get user";
+        if(req.session.userlogged){ //If a user is authenticated
+            let user = "get user";
             //pollsToComplete = if normal user, none
             //else if admin, go through list of polls and if their user id is not in it then add polls to this list
             user.pollsToComplete = "List of polls they haven't voted in, implement function";

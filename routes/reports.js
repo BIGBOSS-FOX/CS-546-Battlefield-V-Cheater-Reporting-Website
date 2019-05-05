@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.post("/:userid", async (req, res) => {
     try{
-        if(req.sessions.cookie){ //If a user is authenticated
+        if(req.session.userlogged){ //If a user is authenticated
             //1. Create a report with appropriate details and 2. link it to the user's profile
 
             //get userId of the reported player and then show their profile (with the new report added)
@@ -23,7 +23,7 @@ router.post("/:userid", async (req, res) => {
 });
 router.put("/:reportid", async (req, res) => {
     try{
-        if(req.sessions.cookie){ //If a user is authenticated
+        if(req.session.userlogged){ //If a user is authenticated
             //make a comment on a report: need a report add comment function
 
             res.render('layouts/example', { data: user });

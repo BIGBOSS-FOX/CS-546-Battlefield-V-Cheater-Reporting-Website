@@ -3,9 +3,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
+const cookieParser = require("cookie-parser");
+const session = require('express-session');
 
 const static = express.static(__dirname + "/public");
-
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
@@ -21,13 +22,20 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 };
 
 app.use("/public", static);
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine("handlebars", exphbs());
 app.set("view engine", "handlebars");
+
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'Game Cheater!',
+  resave: false,
+  saveUninitialized: true
+}));
 
 configRoutes(app);
 
