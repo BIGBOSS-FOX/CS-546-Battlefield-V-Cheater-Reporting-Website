@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const data = require("../data");
+const usersData = data.Users;
+const bcrypt = require("bcrypt");
+const saltRounds = 16;
 
 // Ban List Routes
 router.get("/list", async(req, res) => { //get the cheater list
@@ -49,20 +53,57 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
 
 router.post("/login", async (req, res) => {
     try{
-        //try to authenticate user
-        const pageToShow = "Log in page";
-        res.render('layouts/example', { data: pageToShow });
+        const newUserInfo = req.body;
+
+        if (!newUserInfo) {
+            res.status(400).json({ error: "You must provide data to create a user" });
+            return;
+        }
+    
+        if (!newUserInfo.username_signup) {
+            res.status(400).json({ error: "You must provide a username" });
+            return;
+        }
+        if(!newUserInfo.password_signup){
+            res.status(400).json({ error: "You must provide a password" });
+            return;
+        }
+        // bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
+        //     // Store hash in password DB.
+        //     usersData.addUser(newUserInfo.username_signup, hash, false);
+
+        //   });
+        res.render("layouts/main", []);
     } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+        res.status(404).json({ error: "User Log in did not work: " + e });
     }
 });
 
 router.post("/register", async (req, res) => {
     try{
-        const pageToShow = "Register page";
-        res.render('layouts/example', { data: pageToShow });
+        const newUserInfo = req.body;
+
+        if (!newUserInfo) {
+            res.status(400).json({ error: "You must provide data to create a user" });
+            return;
+        }
+    
+        if (!newUserInfo.username_signup) {
+            res.status(400).json({ error: "You must provide a username" });
+            return;
+        }
+        if(!newUserInfo.password_signup){
+            res.status(400).json({ error: "You must provide a password" });
+            return;
+        }
+        bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
+            // Store hash in password DB.
+            usersData.addUser(newUserInfo.username_signup, hash, false);
+
+          });
+        res.render("layouts/main", []);
     } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+        res.status(404).json({ error: "User register did not work: " + e });
     }
 });
 
