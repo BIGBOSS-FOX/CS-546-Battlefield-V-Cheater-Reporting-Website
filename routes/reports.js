@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async(req, res) => {
+router.get("/", async(req, res) => { //create a report form
     try {
         res.render("layouts/createreport", []);
     } catch (e) {
@@ -9,7 +9,7 @@ router.get("/", async(req, res) => {
     }
 });
 
-router.post("/:userid", async(req, res) => {
+router.post("/:userid", async(req, res) => { //post a report against userid
     try {
         if (req.session.userlogged) { //If a user is authenticated
             //1. Create a report with appropriate details and 2. link it to the user's profile
@@ -28,7 +28,7 @@ router.post("/:userid", async(req, res) => {
     }
 });
 
-router.put("/:reportid", async(req, res) => {
+router.put("/:reportid", async(req, res) => { //add a comment to a report
     try {
         if (req.session.userlogged) { //If a user is authenticated
             //make a comment on a report: need a report add comment function

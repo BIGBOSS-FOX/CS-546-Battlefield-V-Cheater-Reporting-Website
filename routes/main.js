@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Ban List Routes
-router.get("/list", async(req, res) => {
+router.get("/list", async(req, res) => { //get the cheater list
     try {
         const userList = "List of banned players";
         //Get users by status: confirmed cheater
@@ -12,7 +12,7 @@ router.get("/list", async(req, res) => {
     }
 });
 
-router.get("/list/:status", async(req, res) => {
+router.get("/list/:status", async(req, res) => { //get the list of players with any status
     try {
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
@@ -22,7 +22,7 @@ router.get("/list/:status", async(req, res) => {
         res.status(404).json({ error: "Page not render-able" + e });
     }
 });
-router.get("/", async(req, res) => {
+router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try {
         res.render("layouts/main", []);
         // let rightButtons = ["login", "register"];

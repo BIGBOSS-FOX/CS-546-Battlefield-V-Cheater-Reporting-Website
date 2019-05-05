@@ -18,7 +18,7 @@ router.get("/:id", async(req, res) => {
     }
 });
 
-router.post("/", async(req, res) => {
+router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
 
     if (!userInfo) {
@@ -46,7 +46,7 @@ router.post("/", async(req, res) => {
     }
 });
 
-router.put("/", async(req, res) => {
+router.put("/", async(req, res) => { //this is the route for updating the database content of a user
     //call this by making a hidden input with id _method of put in a form.
     const userInfo = req.body;
 
