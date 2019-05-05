@@ -49,8 +49,9 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     try{
+        //try to authenticate user
         const pageToShow = "Log in page";
         res.render('layouts/example', { data: pageToShow });
     }
@@ -59,7 +60,7 @@ router.get("/login", async (req, res) => {
     }
 });
 
-router.get("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
     try{
         const pageToShow = "Register page";
         res.render('layouts/example', { data: pageToShow });
