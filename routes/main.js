@@ -47,14 +47,9 @@ router.get("/", async(req, res) => {
     }
 });
 
-<<<<<<< HEAD:routes/main.js
 router.post("/login", async (req, res) => {
     try{
         //try to authenticate user
-=======
-router.get("/login", async(req, res) => {
-    try {
->>>>>>> 984d60715e47bab197b42df04de223521b6ad093:routes/all.js
         const pageToShow = "Log in page";
         res.render('layouts/example', { data: pageToShow });
     } catch (e) {
@@ -62,13 +57,8 @@ router.get("/login", async(req, res) => {
     }
 });
 
-<<<<<<< HEAD:routes/main.js
 router.post("/register", async (req, res) => {
     try{
-=======
-router.get("/register", async(req, res) => {
-    try {
->>>>>>> 984d60715e47bab197b42df04de223521b6ad093:routes/all.js
         const pageToShow = "Register page";
         res.render('layouts/example', { data: pageToShow });
     } catch (e) {
