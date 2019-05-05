@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>People Finder</title>
+    <link rel="stylesheet" href="/public/site.css">
+</head>
+<body>
+    <h1>People Finder</h1>
+    <main>
+        <p id="desc">This is an example of using handlebars: {{data}}. We can use handlebars or any other view engine/layout you all want.</p>
+        <form method="POST" action="./search">
+            <label for="search">Search for a person: </label>
+            <input id="search" type="text" name="personName" />
+            <button type = "submit" value = "submit">Find a person.</button>
+        </form>
+    </main>
+</body>
+</html>
