@@ -49,11 +49,11 @@ router.post("/", async(req, res) => {
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
         console.log(updatedReportPlayer);
 
-        //res.redirect("/:id")
+        res.redirect("/users/" + reportedPlayerInfo.user_name);
 
 
 
-        res.render('layouts/example', { data: updatedUser });
+        //res.render('layouts/example', { data: updatedUser });
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
