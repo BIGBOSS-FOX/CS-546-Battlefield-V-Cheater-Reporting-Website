@@ -174,3 +174,9 @@ body {
 .table {
     background: #ffffffad;
 }
+
+.errorpanel
+{
+    margin: 20px;
+    margin-top: 60px;
+}

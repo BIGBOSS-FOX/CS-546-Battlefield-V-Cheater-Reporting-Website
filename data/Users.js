@@ -57,10 +57,41 @@ module.exports = {
         const UsersCollection = await Users();
         const UserInfoToUpdate = {};
 
-        if (UserInfo.new_user_name) {
-            UserInfoToUpdate.user_name = UserInfo.new_user_name;
+        if (UserInfo.user_name) {
+            UserInfoToUpdate.user_name = UserInfo.user_name;
         }
 
+        if (UserInfo.hashedPassword) {
+            UserInfoToUpdate.hashedPassword = UserInfo.hashedPassword;
+        }
+
+        if (UserInfo.isAdmin) {
+            UserInfoToUpdate.isAdmin = UserInfo.isAdmin;
+        }
+
+        if (UserInfo.pending_votes) {
+            UserInfoToUpdate.pending_votes = UserInfo.pending_votes;
+        }
+
+        if (UserInfo.label_status) {
+            UserInfoToUpdate.label_status = UserInfo.label_status;
+        }
+
+        if (UserInfo.label_updated) {
+            UserInfoToUpdate.label_updated = UserInfo.label_updated;
+        }
+
+        if (UserInfo.received_reports) {
+            UserInfoToUpdate.received_reports = UserInfo.received_reports;
+        }
+
+        if (UserInfo.created_reports) {
+            UserInfoToUpdate.created_reports = UserInfo.created_reports;
+        }
+
+        if (UserInfo.canAppeal) {
+            UserInfoToUpdate.canAppeal = UserInfo.canAppeal;
+        }
         /*
         Add What other UserInfo you want to update here
         */
