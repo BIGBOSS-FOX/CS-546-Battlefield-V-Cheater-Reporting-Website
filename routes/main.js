@@ -5,27 +5,6 @@ const usersData = data.Users;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
-// Ban List Routes
-router.get("/list", async(req, res) => { //get the cheater list
-    try {
-        const userList = "List of banned players";
-        //Get users by status: confirmed cheater
-        res.render('layouts/cheaters', { data: userList });
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
-    }
-});
-
-router.get("/list/:status", async(req, res) => { //get the list of players with any status
-    try {
-        //if status is admin, get all admins
-        //otherwise go through entire user list and only get users if they have that status
-        const userList = "List of players with status {status}";
-        res.render('layouts/example', { data: userList });
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
-    }
-});
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try {
         res.render("layouts/main", []);
@@ -50,6 +29,7 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         res.status(404).json({ error: "Page not render-able" + e });
     }
 });
+
 
 router.post("/login", async (req, res) => {
     try{
@@ -123,6 +103,71 @@ router.post("/register", async (req, res) => {
 });
 
 
+router.use(function(req, res, next)
+{
+    if(req.session.userlogged === undefined || req.session.userlogged === null)
+    {
+        res.render("layouts/main", {hasErrors: true, errors: "Please Login"});
+    }        
+    else
+        next(); 
+});
+
+
+
+// Ban List Routes
+router.get("/list", async(req, res) => { //get the cheater list
+    try {
+        const userList = "List of banned players";
+        //Get users by status: confirmed cheater
+        res.render('layouts/cheaters', { data: userList });
+    } 
+    catch (e) {
+        res.status(404).json({ error: "Page not render-able" + e });
+    }
+});
+
+router.get("/list/:status", async(req, res) => { //get the list of players with any status
+    try {
+        //if status is admin, get all admins
+        //otherwise go through entire user list and only get users if they have that status
+        const userList = "List of players with status {status}";
+        res.render('layouts/example', { data: userList });
+    } catch (e) {
+        res.status(404).json({ error: "Page not render-able" + e });
+    }
+});
+
+
+router.post("/search", async(req, res) => {
+    try 
+    {
+        const searchInfo =  req.body;
+        if (!searchInfo) {
+            res.status(400).json({ error: "You must provide data to search a user" });
+            return;
+        }
+    
+        if (!searchInfo.username_search) {
+            res.status(400).json({ error: "You must provide a username" });
+            return;
+        }
+        let searchData = await usersData.findUserByUserName(searchInfo.username_search);
+        if(searchData === undefined || searchData === null)
+        {
+            //show an error message
+            //username doen't exist
+            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username"});
+        }
+        else
+        {
+            res.redirect('/users/'+searchInfo.username_search);
+        }        
+    } 
+    catch (e) {
+        res.status(404).json({ error: "Page not render-able" + e });
+    }
+});
 
 
 module.exports = router;
