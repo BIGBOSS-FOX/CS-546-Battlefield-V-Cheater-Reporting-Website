@@ -69,23 +69,19 @@ router.post("/login", async (req, res) => {
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
-        if (!compareUser) {
+        const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
+        if (!compareUser && !hashed) 
+        {
             //show an error message
+            //credentials doesn't match
         }
-        bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword, function(err, resp) {
-            if (resp) {
-                //GENERATE SESSION / do authentication stuff, because the user is valid and can now be logged in.
-                //at the end just re-render the main page
-                req.session.userlogged = compareUser;
-                res.render("layouts/main", []);
-            } else 
-            {
-                // show an error message
-            }
-        });
-
-        res.render("layouts/main", []);
-    } catch (e) {
+        else
+        {
+            req.session.userlogged = compareUser;
+            res.render("layouts/main", {});
+        }
+    } 
+    catch (e) {
         res.status(404).json({ error: "User Log in did not work: " + e });
     }
 });
