@@ -58,6 +58,7 @@ router.post("/login", async (req, res) => {
         else
         {
             req.session.userlogged = compareUser;
+            console.log(req.session.userlogged);
             res.render("layouts/main", {});
         }
     } 
