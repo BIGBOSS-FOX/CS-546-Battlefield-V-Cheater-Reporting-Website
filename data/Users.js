@@ -102,7 +102,7 @@ module.exports = {
 
         const UsersCollection = await Users();
         const foundUser = await UsersCollection.findOne({ user_name: user_name });
-        if (foundUser === null) throw new Error("No user with that id");
+        //if (foundUser === null) throw new Error("No user with that id");
 
         return foundUser;
 
