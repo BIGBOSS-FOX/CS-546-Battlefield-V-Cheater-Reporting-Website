@@ -128,29 +128,34 @@
                     src="/public/css/bullet.png" class="bullet" style="margin-top: 990px; margin-left: 600px"></div>
 
         </div>
-            
-        <div class="parallax__layer parallax__layer--base">             
-                                          
+
+        <div class="parallax__layer parallax__layer--base">
+
             <!-- search bar -->
             <div class="shadow">
-                {{#if hasErrors}}  
-                            <div class="errorpanel alert alert-danger row h-25 col-md-4">   
-                               {{errors}}
-                            </div>             
-                        {{/if}} 
+                {{#if hasErrors}}
+
+                <div class="alert alert-danger alert-dismissible fade show row errorpanel" role="alert">
+                    {{errors}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
                 <div class="container search-bar">
-                     <form action="/search" method="POST" enctype="x-www-form-urlencoded">
-                    <div class="row h-25">
-                        <div class="col ">
-                            <div class="input-group">
-                                <input class="form-control has-success shadow p-3 bg-white rounded" type="search"
-                                    placeholder="Search" aria-label="Search" name="username_search" required="required">
+                    <form action="/search" method="POST" enctype="x-www-form-urlencoded">
+                        <div class="row h-25">
+                            <div class="col ">
+                                <div class="input-group">
+                                    <input class="form-control has-success shadow p-3 bg-white rounded" type="search"
+                                        placeholder="Search" aria-label="Search" name="username_search"
+                                        required="required">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-dark btn-block shadow rounded" type="submit">Search</button>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-dark btn-block shadow rounded" type="submit">Search</button>
-                        </div>
-                    </div>
                     </form>
                     <div class="row h-25 mt-4">
                         <div class="col">
@@ -239,13 +244,15 @@
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
-                            <input type="text" id="username_login"  name="username_login" class="form-control validate" required="required">
+                            <input type="text" id="username_login" name="username_login" class="form-control validate"
+                                required="required">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
-                            <input type="password" id="password_login" name="password_login" class="form-control validate" required="required">
+                            <input type="password" id="password_login" name="password_login"
+                                class="form-control validate" required="required">
                         </div>
 
                     </div>
@@ -273,13 +280,16 @@
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
-                            <input type="text" id="username_signup" name="username_signup" required="required" class="form-control validate">
+                            <input type="text" id="username_signup" name="username_signup" required="required"
+                                class="form-control validate">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-pass-signup">Password</label>
-                            <input type="password" id="password_signup" name="password_signup" class="form-control validate" required="required">
+                            <label data-error="wrong" data-success="right"
+                                for="defaultForm-pass-signup">Password</label>
+                            <input type="password" id="password_signup" name="password_signup"
+                                class="form-control validate" required="required">
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">

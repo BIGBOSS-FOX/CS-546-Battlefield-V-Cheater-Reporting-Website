@@ -175,8 +175,16 @@ body {
     background: #ffffffad;
 }
 
-.errorpanel
-{
-    margin: 20px;
-    margin-top: 60px;
+.errorpanel {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 7000;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #f8d7dab0
 }
