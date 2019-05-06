@@ -60,27 +60,27 @@ router.post("/login", async (req, res) => {
             return;
         }
     
-        if (!newUserInfo.username) {
+        if (!newUserInfo.username_login) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
-        if(!newUserInfo.password){
+        if(!newUserInfo.password_login){
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
-        const compareUser = usersData.findUserByUsername(newUserInfo.username);
+        const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         if (!compareUser) {
-            res.status(400).json({ error: "We cannot find you! Make sure you have an account with these credentials." });
-            return;
+            //show an error message
         }
-        bcrypt.compare(newUserInfo.password, compareUser.hashedPassword, function(err, resp) {
+        bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword, function(err, resp) {
             if (resp) {
                 //GENERATE SESSION / do authentication stuff, because the user is valid and can now be logged in.
                 //at the end just re-render the main page
+                req.session.userlogged = compareUser;
                 res.render("layouts/main", []);
-            } else {
-                res.status(400).json({ error: "Make sure you typed in you credentials correctly." });
-                return;
+            } else 
+            {
+                // show an error message
             }
         });
 
