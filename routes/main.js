@@ -108,17 +108,19 @@ router.post("/register", async (req, res) => {
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
-        const compareUser = usersData.findUserByUsername(newUserInfo.username);
-        if (compareUser) {
-            res.status(400).json({ error: "This username already exists. Choose a different one." });
-            return;
+        let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
+        
+        if (compareUser === undefined || compareUser === null) {
+            bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
+                // Store hash in password DB.
+                usersData.addUser(newUserInfo.username_signup, hash, false);
+                });
         }
-        bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
-            // Store hash in password DB.
-            usersData.addUser(newUserInfo.username_signup, hash, false);
-
-          });
-        res.render("layouts/main", []);
+        else
+        {
+          //show an error message as username exists  
+        }        
+        res.render("layouts/main", {});
     } catch (e) {
         res.status(404).json({ error: "User register did not work: " + e });
     }
