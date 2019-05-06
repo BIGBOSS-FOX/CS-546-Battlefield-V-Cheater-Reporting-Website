@@ -51,71 +51,67 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     }
 });
 
-router.post("/login", async (req, res) => {
-    try{
+router.post("/login", async(req, res) => {
+    try {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
             res.status(400).json({ error: "You must provide data to create a user" });
             return;
         }
-    
+
         if (!newUserInfo.username_login) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
-        if(!newUserInfo.password_login){
+        if (!newUserInfo.password_login) {
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
-        if (!compareUser && !hashed) 
-        {
+        if (!compareUser && !hashed) {
             //show an error message
             //credentials doesn't match
-        }
-        else
-        {
+        } else {
             req.session.userlogged = compareUser;
             res.render("layouts/main", {});
         }
-    } 
-    catch (e) {
+    } catch (e) {
         res.status(404).json({ error: "User Log in did not work: " + e });
     }
 });
 
-router.post("/register", async (req, res) => {
-    try{
+router.post("/register", async(req, res) => {
+    try {
         const newUserInfo = req.body;
+        console.log(newUserInfo.username_signup);
+        console.log(newUserInfo.password_signup);
 
         if (!newUserInfo) {
             res.status(400).json({ error: "You must provide data to create a user" });
             return;
         }
-    
+
         if (!newUserInfo.username_signup) {
             res.status(400).json({ error: "You must provide a username" });
             return;
         }
 
-        if(!newUserInfo.password_signup){
+        if (!newUserInfo.password_signup) {
             res.status(400).json({ error: "You must provide a password" });
             return;
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
-        
+
         if (compareUser === undefined || compareUser === null) {
             bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
-                });
+            });
+        } else {
+            //show an error message as username exists  
         }
-        else
-        {
-          //show an error message as username exists  
-        }        
         res.render("layouts/main", {});
     } catch (e) {
         res.status(404).json({ error: "User register did not work: " + e });
