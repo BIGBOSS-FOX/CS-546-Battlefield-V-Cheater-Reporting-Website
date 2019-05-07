@@ -5,7 +5,8 @@ const usersData = data.Users;
 const reportsData = data.Report;
 
 router.get("/", async(req, res) => { //create a report form
-    try {
+    try 
+    {
         res.render("layouts/createreport", {});
     } 
     catch (e) 
@@ -48,7 +49,6 @@ router.post("/", async(req, res) => {
         reportPlayerInfo.created_reports.push(newReport);
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
         console.log(updatedReportPlayer);
-
         res.redirect("/users/" + reportedPlayerInfo.user_name);
         //res.render('layouts/example', { data: updatedUser });
     } 

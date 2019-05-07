@@ -216,14 +216,6 @@
         crossorigin="anonymous"></script>
     <script src="/public/js/custom.js"></script>
 
-
-
-
-
-
-
-
-
     <!-- Sign In - Login -->
     <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -244,16 +236,15 @@
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
-                            <input type="text" id="username_login" name="username_login" class="form-control validate"
-                                required="required">
+                            <input type="text" id="username_login" name="username_login" class="form-control validate" required="required">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
-                            <input type="password" id="password_login" name="password_login"
-                                class="form-control validate" required="required">
+                            <input type="password" id="password_login" name="password_login" class="form-control validate" required="required">
                         </div>
+                        <span id="span_login"></span>
 
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
@@ -291,6 +282,7 @@
                             <input type="password" id="password_signup" name="password_signup"
                                 class="form-control validate" required="required">
                         </div>
+                        <span id="span-signup"></span>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button id="signup_submit" class="btn btn-outline-primary" type="submit">Sign Up</button>

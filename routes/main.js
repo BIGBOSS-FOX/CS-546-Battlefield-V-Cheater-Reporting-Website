@@ -51,16 +51,23 @@ router.post("/login", async(req, res) => {
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
-        const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
-        if (!compareUser && !hashed) {
-            //show an error message
-            //credentials doesn't match
-        } 
-        else 
+        if(!compareUser)
         {
-            req.session.userlogged = compareUser;
-            res.render("layouts/main", {});
+            res.json({error : "Provide valid Username/Password"});
         }
+        else
+        {
+            const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
+            if (!hashed) {
+                res.json({error : "Provide valid Username/Password"});
+            }
+            else 
+            {
+                req.session.userlogged = compareUser;
+                res.render("layouts/main", {});
+            }
+        }        
+       
     } 
     catch (e) 
     {
@@ -71,14 +78,11 @@ router.post("/login", async(req, res) => {
 router.post("/register", async(req, res) => {
     try {
         const newUserInfo = req.body;
-        console.log(newUserInfo.username_signup);
-        console.log(newUserInfo.password_signup);
-
+        
         if (!newUserInfo) {
             res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
             return;
         }
-
         if (!newUserInfo.username_signup) {
             res.status(400).render("layouts/error",{errors: "You must provide a username" });
             return;
@@ -90,15 +94,18 @@ router.post("/register", async(req, res) => {
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
-        if (compareUser === undefined || compareUser === null) {
+        if (compareUser === undefined || compareUser === null) 
+        {
             bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
             });
-        } else {
-            //show an error message as username exists  
-        }
-        res.render("layouts/main", {});
+            res.render("layouts/main", {});
+        } 
+        else 
+        {
+           res.json({error : "Username already exists"});
+        }        
     } 
     catch (e) 
     {
