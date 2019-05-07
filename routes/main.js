@@ -29,7 +29,7 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(400).render("layouts/error",{errors: e , layout: 'errorlayout' });
     }
 });
 
@@ -38,28 +38,28 @@ router.post("/login", async(req, res) => {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{errors: "You must provide data to create a user" });
+            res.status(400).render("layouts/error",{errors: "You must provide data to create a user", layout: 'errorlayout' });
             return;
         }
 
         if (!newUserInfo.username_login) {
-            res.status(400).render("layouts/error",{ errors: "You must provide a username" });
+            res.status(400).render("layouts/error",{ errors: "You must provide a username" , layout: 'errorlayout' });
             return;
         }
         if(!newUserInfo.password_login){
-            res.status(400).render("layouts/error",{ errors: "You must provide a password" });
+            res.status(400).render("layouts/error",{ errors: "You must provide a password" , layout: 'errorlayout' });
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         if(!compareUser)
         {
-            res.json({error : "Provide valid Username/Password"});
+            res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
         }
         else
         {
             const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
             if (!hashed) {
-                res.json({error : "Provide valid Username/Password"});
+                res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
             }
             else 
             {
@@ -71,25 +71,25 @@ router.post("/login", async(req, res) => {
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
 router.post("/register", async(req, res) => {
     try {
-        const newUserInfo = req.body;
+        let newUserInfo = req.body;
         
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
+            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
             return;
         }
         if (!newUserInfo.username_signup) {
-            res.status(400).render("layouts/error",{errors: "You must provide a username" });
+            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
             return;
         }
 
         if(!newUserInfo.password_signup){
-            res.status(400).render("layouts/error",{errors: "You must provide a password" });
+            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
             return;
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
@@ -109,7 +109,7 @@ router.post("/register", async(req, res) => {
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
@@ -118,12 +118,12 @@ router.post("/search", async(req, res) => {
     {
         const searchInfo =  req.body;
         if (!searchInfo) {
-            res.status(400).render("layouts/error",{ errors: "You must provide data to search a user" });
+            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
             return;
         }
     
         if (!searchInfo.username_search) {
-            res.status(400).render("layouts/error",{ errors: "You must provide a username" });
+            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
             return;
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
@@ -131,7 +131,7 @@ router.post("/search", async(req, res) => {
         {
             //show an error message
             //username doen't exist
-            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username"});
+            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username" , layout: 'errorlayout' });
         }
         else
         {
@@ -140,7 +140,7 @@ router.post("/search", async(req, res) => {
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
@@ -155,7 +155,7 @@ router.get("/users/:id", async(req, res) => {
         // // res.render('layouts/example', { data: user });
         res.render("layouts/user", []);
     } catch (e) {
-        res.status(404).render("layouts/error",{ errors: "User not found" });
+        res.status(404).render("layouts/error",{ errors: "User not found" , layout: 'errorlayout' });
     }
 });
 
@@ -175,7 +175,7 @@ router.get("/list", async(req, res) => { //get the cheater list
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
@@ -188,7 +188,7 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
     } 
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
