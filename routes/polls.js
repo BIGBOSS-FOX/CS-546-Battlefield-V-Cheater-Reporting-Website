@@ -11,6 +11,8 @@ router.post("/:id", async (req, res) => {
     }
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
