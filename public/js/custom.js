@@ -51,6 +51,7 @@ $(function() {
                 {
                     alert("Logged in successfully");
                     $('#modalLoginForm').modal('hide');
+                    location.reload();
                 }
                 else
                 {
@@ -106,7 +107,7 @@ $(function() {
                 if(!response.error)
                 {
                     $('#modalSignUpForm').modal('hide');
-                    alert("Signed up successfully");                   
+                    alert("Signed up successfully");                                       
                 }
                 else
                 {
