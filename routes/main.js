@@ -8,58 +8,38 @@ const saltRounds = 16;
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try 
     {
-        res.render("layouts/main", []);
-        // let rightButtons = ["login", "register"];
-        // //get global site events List
-        // const eventsList = "Get list of site events";
-
-        // if(req.session.userlogged){ //If a user is authenticated
-        //     let user = "get user";
-        //     //pollsToComplete = if normal user, none
-        //     //else if admin, go through list of polls and if their user id is not in it then add polls to this list
-        //     user.pollsToComplete = "List of polls they haven't voted in, implement function";
-        //     //make sure home page shows profile button
-        //     rightButtons = ["profile"];
-        // }
-        // else{ //no user authenticated, show default page
-        //     //this determines that the buttons show log in and register instead of profile
-        //     rightButtons = ["login", "register"];
-        // }
-        // res.render('layouts/example', { rightButtons, eventsList });
+        res.render("layouts/main", {});
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(400).render("layouts/error",{errors: e , layout: 'errorlayout' });
     }
 });
 
 router.post("/login", async(req, res) => {
     try {
-        const newUserInfo = req.body;
-
+        let newUserInfo = req.body;
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{errors: "You must provide data to create a user", layout: 'errorlayout' });
-            return;
+            res.json({error: "You must provide data to create a user"});
         }
-
         if (!newUserInfo.username_login) {
-            res.status(400).render("layouts/error",{ errors: "You must provide a username" , layout: 'errorlayout' });
-            return;
+            res.json({ error: "You must provide a username"});
         }
         if(!newUserInfo.password_login){
-            res.status(400).render("layouts/error",{ errors: "You must provide a password" , layout: 'errorlayout' });
-            return;
+            res.json({ error: "You must provide a password"});
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         if(!compareUser)
         {
-            res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
+            res.json({error : "Provide valid Username/Password"});
         }
         else
         {
             const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
             if (!hashed) {
-                res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
+                res.json({error : "Provide valid Username/Password"});
             }
             else 
             {
@@ -71,6 +51,8 @@ router.post("/login", async(req, res) => {
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -80,17 +62,14 @@ router.post("/register", async(req, res) => {
         let newUserInfo = req.body;
         
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
-            return;
+            res.json({error: "You must provide a valid data"});
         }
         if (!newUserInfo.username_signup) {
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
-            return;
+            res.json({error: "You must provide a username"});
         }
 
         if(!newUserInfo.password_signup){
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
-            return;
+            res.json({error: "You must provide a password"});
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
@@ -109,6 +88,8 @@ router.post("/register", async(req, res) => {
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -118,13 +99,11 @@ router.post("/search", async(req, res) => {
     {
         const searchInfo =  req.body;
         if (!searchInfo) {
-            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
-            return;
+            res.json({ error: "You must provide a valid data" });
         }
     
         if (!searchInfo.username_search) {
-            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
-            return;
+            res.json({ error: "Provide Username"});
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
         if(searchData === undefined || searchData === null)
@@ -140,6 +119,8 @@ router.post("/search", async(req, res) => {
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -154,7 +135,11 @@ router.get("/users/:id", async(req, res) => {
 
         // // res.render('layouts/example', { data: user });
         res.render("layouts/user", []);
-    } catch (e) {
+    } 
+    catch (e) 
+    {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error",{ errors: "User not found" , layout: 'errorlayout' });
     }
 });
@@ -175,6 +160,8 @@ router.get("/list", async(req, res) => { //get the cheater list
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -188,6 +175,8 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
     } 
     catch (e) 
     {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });

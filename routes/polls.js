@@ -11,7 +11,7 @@ router.post("/:id", async (req, res) => {
     }
     catch (e) 
     {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 

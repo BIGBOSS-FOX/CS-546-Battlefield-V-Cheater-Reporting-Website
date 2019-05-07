@@ -62,7 +62,9 @@ $(function() {
                 }              
             },
             error: function(e) {
-                alert("An error has occurred");              
+                alert("An error has occurred"); 
+                $inputs.prop("disabled", false);  
+                $('#modalLoginForm').modal('hide');           
             }
         });
     }
@@ -107,7 +109,8 @@ $(function() {
                 if(!response.error)
                 {
                     $('#modalSignUpForm').modal('hide');
-                    alert("Signed up successfully");                                       
+                    alert("Signed up successfully");  
+                    location.reload();                                     
                 }
                 else
                 {
@@ -118,7 +121,9 @@ $(function() {
                 }              
             },
             error: function(e) {
-                alert("An error has occurred");              
+                alert("An error has occurred"); 
+                $inputs.prop("disabled", false);
+                $('#modalSignUpForm').modal('hide');             
             }
         });
        
