@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
+const ObjectID = require("mongodb").ObjectID;
 
 router.get("/", async(req, res) => { //create a report form
     try 
@@ -17,8 +18,7 @@ router.get("/", async(req, res) => { //create a report form
 
 router.post("/", async(req, res) => {
     const reportInfo = req.body;
-    console.log(reportInfo)
-    console.log(req.params.id)
+    
 
     if (!reportInfo) {
         res.json({ error: "You must provide data to add a report" });
@@ -31,22 +31,35 @@ router.post("/", async(req, res) => {
         res.json({ error: "You must provide an evidence" });
     }
     try {
-        //add a new report to Report collection
-        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
         
         //get the reported_player info, add newReport to received_reports array, then update user info to database
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
-        reportedPlayerInfo.received_reports.push(newReport);
+        if(!reportedPlayerInfo)
+        {
+            res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
+        }
+        else
+        {
+            
+
+        //add a new report to Report collection
+        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
+        
+        reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
+
         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);
-        console.log(updatedReportedPlayer);
+
+        
 
         //get the reported_by info, add newReport to created_reports array, then update user info to database
         const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
-        reportPlayerInfo.created_reports.push(newReport);
+        reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
-        console.log(updatedReportPlayer);
+    
+
         res.redirect("/users/" + reportedPlayerInfo.user_name);
         //res.render('layouts/example', { data: updatedUser });
+    }
     } 
     catch (e) 
     {
