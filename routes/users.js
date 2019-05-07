@@ -3,20 +3,6 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 
-router.get("/:id", async(req, res) => {
-    try {
-        // //get a user with this id
-        // //show their profile
-        // const user = await usersData.getUserByObjectId(req.params.id);
-        // //build rest of profile: report, anything else
-        // user.reportsIn = "All the reports that have been filed for the user";
-
-        // // res.render('layouts/example', { data: user });
-        res.render("layouts/user", []);
-    } catch (e) {
-        res.status(404).render("layouts/error",{ errors: "User not found" });
-    }
-});
 
 router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;

@@ -55,7 +55,9 @@ router.post("/login", async(req, res) => {
         if (!compareUser && !hashed) {
             //show an error message
             //credentials doesn't match
-        } else {
+        } 
+        else 
+        {
             req.session.userlogged = compareUser;
             res.render("layouts/main", {});
         }
@@ -126,12 +128,27 @@ router.post("/search", async(req, res) => {
         }
         else
         {
-            res.redirect('/users/'+searchInfo.username_search);
+            res.redirect('/users/' + searchInfo.username_search);
         }        
     } 
     catch (e) 
     {
         res.status(404).render("layouts/error", {errors: e});
+    }
+});
+
+router.get("/users/:id", async(req, res) => {
+    try {
+        // //get a user with this id
+        // //show their profile
+        // const user = await usersData.getUserByObjectId(req.params.id);
+        // //build rest of profile: report, anything else
+        // user.reportsIn = "All the reports that have been filed for the user";
+
+        // // res.render('layouts/example', { data: user });
+        res.render("layouts/user", []);
+    } catch (e) {
+        res.status(404).render("layouts/error",{ errors: "User not found" });
     }
 });
 
@@ -141,8 +158,6 @@ router.use(function(req, res, next) {
     } else
         next();
 });
-
-
 
 // Ban List Routes
 router.get("/list", async(req, res) => { //get the cheater list
