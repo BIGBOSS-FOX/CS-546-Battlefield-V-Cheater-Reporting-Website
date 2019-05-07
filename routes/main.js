@@ -5,9 +5,19 @@ const usersData = data.Users;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
-router.get("/", async(req, res) => { //get the MAIN PAGE! :)
-    try 
-    {
+router.use(function (req, res, next) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) {
+        res.locals.loggedin = false;
+    } else {
+        console.log("run!");
+        res.locals.loggedin = true;
+    }
+
+    next();
+});
+
+router.get("/", async (req, res) => { //get the MAIN PAGE! :)
+    try {
         res.render("layouts/main", []);
         // let rightButtons = ["login", "register"];
         // //get global site events List
@@ -26,125 +36,122 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         //     rightButtons = ["login", "register"];
         // }
         // res.render('layouts/example', { rightButtons, eventsList });
-    } 
-    catch (e) 
-    {
-        res.status(400).render("layouts/error",{errors: e , layout: 'errorlayout' });
+    }
+    catch (e) {
+        res.status(400).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
-router.post("/login", async(req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{errors: "You must provide data to create a user", layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "You must provide data to create a user", layout: 'errorlayout' });
             return;
         }
 
         if (!newUserInfo.username_login) {
-            res.status(400).render("layouts/error",{ errors: "You must provide a username" , layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "You must provide a username", layout: 'errorlayout' });
             return;
         }
-        if(!newUserInfo.password_login){
-            res.status(400).render("layouts/error",{ errors: "You must provide a password" , layout: 'errorlayout' });
+        if (!newUserInfo.password_login) {
+            res.status(400).render("layouts/error", { errors: "You must provide a password", layout: 'errorlayout' });
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
-        if(!compareUser)
-        {
-            res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
+        if (!compareUser) {
+            res.json({ error: "Provide valid Username/Password", layout: 'errorlayout' });
         }
-        else
-        {
+        else {
             const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
             if (!hashed) {
-                res.json({error : "Provide valid Username/Password" , layout: 'errorlayout' });
+                res.json({ error: "Provide valid Username/Password", layout: 'errorlayout' });
             }
-            else 
-            {
+            else {
                 req.session.userlogged = compareUser;
                 res.render("layouts/main", {});
             }
-        }        
-       
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        }
+
+    }
+    catch (e) {
+        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
-router.post("/register", async(req, res) => {
+router.get("/logout", async (req, res) => {
+    console.log("asd");
+    req.session.userlogged = null;
+    res.clearCookie("AuthCookie");
+    res.locals.userlogged = false;
+    res.redirect("/");
+
+});
+
+router.post("/register", async (req, res) => {
     try {
         let newUserInfo = req.body;
-        
+
         if (!newUserInfo) {
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "You must provide a password", layout: 'errorlayout' });
             return;
         }
         if (!newUserInfo.username_signup) {
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "You must provide a password", layout: 'errorlayout' });
             return;
         }
 
-        if(!newUserInfo.password_signup){
-            res.status(400).render("layouts/error",{errors: "You must provide a password" , layout: 'errorlayout' });
+        if (!newUserInfo.password_signup) {
+            res.status(400).render("layouts/error", { errors: "You must provide a password", layout: 'errorlayout' });
             return;
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
-        if (compareUser === undefined || compareUser === null) 
-        {
-            bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
+        if (compareUser === undefined || compareUser === null) {
+            bcrypt.hash(newUserInfo.password_signup, saltRounds, function (err, hash) {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
             });
             res.render("layouts/main", {});
-        } 
-        else 
-        {
-           res.json({error : "Username already exists"});
-        }        
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        }
+        else {
+            res.json({ error: "Username already exists" });
+        }
+    }
+    catch (e) {
+        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
-router.post("/search", async(req, res) => {
-    try 
-    {
-        const searchInfo =  req.body;
+router.post("/search", async (req, res) => {
+    try {
+        const searchInfo = req.body;
         if (!searchInfo) {
-            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "No Search Criteria!", layout: 'errorlayout' });
             return;
         }
-    
+
         if (!searchInfo.username_search) {
-            res.status(400).render("layouts/error",{ errors: e , layout: 'errorlayout' });
+            res.status(400).render("layouts/error", { errors: "Provide valid username", layout: 'errorlayout' });
             return;
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
-        if(searchData === undefined || searchData === null)
-        {
+        if (searchData === undefined || searchData === null) {
             //show an error message
             //username doen't exist
-            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username" , layout: 'errorlayout' });
+            res.render("layouts/main", { hasErrors: true, errors: "Provide valid username" });
         }
-        else
-        {
+        else {
             res.redirect('/users/' + searchInfo.username_search);
-        }        
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        }
+    }
+    catch (e) {
+        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
-router.get("/users/:id", async(req, res) => {
+router.get("/users/:id", async (req, res) => {
     try {
         // //get a user with this id
         // //show their profile
@@ -155,11 +162,11 @@ router.get("/users/:id", async(req, res) => {
         // // res.render('layouts/example', { data: user });
         res.render("layouts/user", []);
     } catch (e) {
-        res.status(404).render("layouts/error",{ errors: "User not found" , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: "User not found", layout: 'errorlayout' });
     }
 });
 
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
         res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
     } else
@@ -167,28 +174,26 @@ router.use(function(req, res, next) {
 });
 
 // Ban List Routes
-router.get("/list", async(req, res) => { //get the cheater list
+router.get("/list", async (req, res) => { //get the cheater list
     try {
         const userList = "List of banned players";
         //Get users by status: confirmed cheater
         res.render('layouts/cheaters', { data: userList });
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+    }
+    catch (e) {
+        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
-router.get("/list/:status", async(req, res) => { //get the list of players with any status
+router.get("/list/:status", async (req, res) => { //get the list of players with any status
     try {
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
         const userList = "List of players with status {status}";
         res.render('layouts/example', { data: userList });
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+    }
+    catch (e) {
+        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
 
