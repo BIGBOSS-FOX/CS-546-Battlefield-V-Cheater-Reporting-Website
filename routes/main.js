@@ -33,16 +33,15 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     }
 });
 
-
-router.post("/login", async (req, res) => {
-    try{
+router.post("/login", async(req, res) => {
+    try {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
             res.status(400).render("layouts/error",{errors: "You must provide data to create a user" });
             return;
         }
-    
+
         if (!newUserInfo.username_login) {
             res.status(400).render("layouts/error",{ errors: "You must provide a username" });
             return;
@@ -53,13 +52,10 @@ router.post("/login", async (req, res) => {
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
-        if (!compareUser && !hashed) 
-        {
+        if (!compareUser && !hashed) {
             //show an error message
             //credentials doesn't match
-        }
-        else
-        {
+        } else {
             req.session.userlogged = compareUser;
             res.render("layouts/main", {});
         }
@@ -70,15 +66,17 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post("/register", async (req, res) => {
-    try{
+router.post("/register", async(req, res) => {
+    try {
         const newUserInfo = req.body;
+        console.log(newUserInfo.username_signup);
+        console.log(newUserInfo.password_signup);
 
         if (!newUserInfo) {
             res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
             return;
         }
-    
+
         if (!newUserInfo.username_signup) {
             res.status(400).render("layouts/error",{errors: "You must provide a username" });
             return;
@@ -89,17 +87,15 @@ router.post("/register", async (req, res) => {
             return;
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
-        
+
         if (compareUser === undefined || compareUser === null) {
             bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
-                });
+            });
+        } else {
+            //show an error message as username exists  
         }
-        else
-        {
-          //show an error message as username exists  
-        }        
         res.render("layouts/main", {});
     } 
     catch (e) 
@@ -139,14 +135,11 @@ router.post("/search", async(req, res) => {
     }
 });
 
-router.use(function(req, res, next)
-{
-    if(req.session.userlogged === undefined || req.session.userlogged === null)
-    {
-        res.render("layouts/main", {hasErrors: true, errors: "Please Login"});
-    }        
-    else
-        next(); 
+router.use(function(req, res, next) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) {
+        res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
+    } else
+        next();
 });
 
 
