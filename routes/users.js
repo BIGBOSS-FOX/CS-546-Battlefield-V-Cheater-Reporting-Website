@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
-const reportsData = data.Report;
 
 router.get("/:id", async(req, res) => {
     try {
@@ -15,7 +14,7 @@ router.get("/:id", async(req, res) => {
         // // res.render('layouts/example', { data: user });
         res.render("layouts/user", []);
     } catch (e) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).render("layouts/error",{ errors: "User not found" });
     }
 });
 
@@ -23,12 +22,12 @@ router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
 
     if (!userInfo) {
-        res.status(400).json({ error: "You must provide data to create a user" });
+        res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
         return;
     }
 
     if (!userInfo.username) {
-        res.status(400).json({ error: "You must provide a username" });
+        res.status(400).render("layouts/error",{ errors: "You must provide a username" });
         return;
     }
     //any other necessary values for user
@@ -53,12 +52,12 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 
 
     if (!userInfo) {
-        res.status(400).json({ error: "You must provide data to update a user" });
+        res.status(400).render("layouts/error",{ errors: "You must provide data to update a user" });
         return;
     }
 
     if (!userInfo.status) {
-        res.status(400).json({ error: "You must provide a status to update" });
+        res.status(400).render("layouts/error",{ errors: "You must provide a status to update" });
         return;
     }
 
@@ -72,54 +71,5 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
         res.sendStatus(500);
     }
 });
-
-//Reported you received will be posted (move to reports.js)
-// router.post("/:id", async(req, res) => {
-//     const reportInfo = req.body;
-//     console.log(reportInfo)
-//     console.log(req.params.id)
-
-//     if (!reportInfo) {
-//         res.status(400).json({ error: "You must provide data to add a report" });
-//         return;
-//     }
-
-//     if (!reportInfo.userID) {
-//         res.status(400).json({ error: "You must provide a user ID" });
-//         return;
-//     }
-
-//     if (!reportInfo.exampleFormControlTextarea1) {
-//         res.status(400).json({ error: "You must provide an evidence" });
-//         return;
-//     }
-
-
-//     try {
-//         //add a new report to Report collection
-//         const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
-        
-//         //get the reported_player info, add newReport to received_reports array, then update user info to database
-//         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
-//         reportedPlayerInfo.received_reports.push(newReport);
-//         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);
-//         console.log(updatedReportedPlayer);
-
-//         //get the reported_by info, add newReport to created_reports array, then update user info to database
-//         const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
-//         reportPlayerInfo.created_reports.push(newReport);
-//         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
-//         console.log(updatedReportPlayer);
-
-//         //res.redirect("/:id")
-
-
-
-//         res.render('layouts/example', { data: updatedUser });
-//     } catch (e) {
-//         console.log(e);
-//         res.sendStatus(500);
-//     }
-// });
 
 module.exports = router;

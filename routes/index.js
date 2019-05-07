@@ -9,12 +9,8 @@ const constructorMethod = app => {
     app.use("/reports", reportsRoutes);
     app.use("/polls", pollsRoutes);
 
-
-
-
     app.use("*", (req, res) => {
-        res.render("layouts/main", []);
-        // res.status(404).json({ error: "Not found" });
+        res.render("layouts/main", {});
     });
 };
 

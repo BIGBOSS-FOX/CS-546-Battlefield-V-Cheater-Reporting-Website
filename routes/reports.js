@@ -6,9 +6,11 @@ const reportsData = data.Report;
 
 router.get("/", async(req, res) => { //create a report form
     try {
-        res.render("layouts/createreport", []);
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+        res.render("layouts/createreport", {});
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
@@ -18,21 +20,19 @@ router.post("/", async(req, res) => {
     console.log(req.params.id)
 
     if (!reportInfo) {
-        res.status(400).json({ error: "You must provide data to add a report" });
+        res.status(400).render("layouts/error",{ errors: "You must provide data to add a report" });
         return;
     }
 
     if (!reportInfo.userID) {
-        res.status(400).json({ error: "You must provide a user ID" });
+        res.status(400).render("layouts/error",{ errors: "You must provide a user ID" });
         return;
     }
 
     if (!reportInfo.exampleFormControlTextarea1) {
-        res.status(400).json({ error: "You must provide an evidence" });
+        res.status(400).render("layouts/error", { errors: "You must provide an evidence" });
         return;
     }
-
-
     try {
         //add a new report to Report collection
         const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
@@ -50,20 +50,13 @@ router.post("/", async(req, res) => {
         console.log(updatedReportPlayer);
 
         res.redirect("/users/" + reportedPlayerInfo.user_name);
-
-
-
         //res.render('layouts/example', { data: updatedUser });
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
+    } 
+    catch (e) 
+    {
+        res.status(500).render("layouts/error", {errors: e});
     }
 });
-
-
-
-
-
 
 router.post("/:userid", async(req, res) => { //post a report against userid
     try {
@@ -79,8 +72,10 @@ router.post("/:userid", async(req, res) => { //post a report against userid
             const data = "go to Log In page once it is made";
             res.render('layouts/example', { data });
         }
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
@@ -96,8 +91,10 @@ router.put("/:reportid", async(req, res) => { //add a comment to a report
             const data = "go to Log In page once it is made";
             res.render('layouts/example', { data });
         }
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 

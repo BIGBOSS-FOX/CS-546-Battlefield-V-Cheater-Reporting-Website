@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
-    try {
+    try 
+    {
         res.render("layouts/main", []);
         // let rightButtons = ["login", "register"];
         // //get global site events List
@@ -25,8 +26,10 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         //     rightButtons = ["login", "register"];
         // }
         // res.render('layouts/example', { rightButtons, eventsList });
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
@@ -36,16 +39,16 @@ router.post("/login", async (req, res) => {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.status(400).json({ error: "You must provide data to create a user" });
+            res.status(400).render("layouts/error",{errors: "You must provide data to create a user" });
             return;
         }
     
         if (!newUserInfo.username_login) {
-            res.status(400).json({ error: "You must provide a username" });
+            res.status(400).render("layouts/error",{ errors: "You must provide a username" });
             return;
         }
         if(!newUserInfo.password_login){
-            res.status(400).json({ error: "You must provide a password" });
+            res.status(400).render("layouts/error",{ errors: "You must provide a password" });
             return;
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
@@ -58,12 +61,12 @@ router.post("/login", async (req, res) => {
         else
         {
             req.session.userlogged = compareUser;
-            console.log(req.session.userlogged);
             res.render("layouts/main", {});
         }
     } 
-    catch (e) {
-        res.status(404).json({ error: "User Log in did not work: " + e });
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
@@ -72,17 +75,17 @@ router.post("/register", async (req, res) => {
         const newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.status(400).json({ error: "You must provide data to create a user" });
+            res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
             return;
         }
     
         if (!newUserInfo.username_signup) {
-            res.status(400).json({ error: "You must provide a username" });
+            res.status(400).render("layouts/error",{errors: "You must provide a username" });
             return;
         }
 
         if(!newUserInfo.password_signup){
-            res.status(400).json({ error: "You must provide a password" });
+            res.status(400).render("layouts/error",{errors: "You must provide a password" });
             return;
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
@@ -98,11 +101,43 @@ router.post("/register", async (req, res) => {
           //show an error message as username exists  
         }        
         res.render("layouts/main", {});
-    } catch (e) {
-        res.status(404).json({ error: "User register did not work: " + e });
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
+router.post("/search", async(req, res) => {
+    try 
+    {
+        const searchInfo =  req.body;
+        if (!searchInfo) {
+            res.status(400).render("layouts/error",{ errors: "You must provide data to search a user" });
+            return;
+        }
+    
+        if (!searchInfo.username_search) {
+            res.status(400).render("layouts/error",{ errors: "You must provide a username" });
+            return;
+        }
+        let searchData = await usersData.findUserByUserName(searchInfo.username_search);
+        if(searchData === undefined || searchData === null)
+        {
+            //show an error message
+            //username doen't exist
+            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username"});
+        }
+        else
+        {
+            res.redirect('/users/'+searchInfo.username_search);
+        }        
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
+    }
+});
 
 router.use(function(req, res, next)
 {
@@ -123,8 +158,9 @@ router.get("/list", async(req, res) => { //get the cheater list
         //Get users by status: confirmed cheater
         res.render('layouts/cheaters', { data: userList });
     } 
-    catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
@@ -134,41 +170,11 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
         //otherwise go through entire user list and only get users if they have that status
         const userList = "List of players with status {status}";
         res.render('layouts/example', { data: userList });
-    } catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
-    }
-});
-
-
-router.post("/search", async(req, res) => {
-    try 
-    {
-        const searchInfo =  req.body;
-        if (!searchInfo) {
-            res.status(400).json({ error: "You must provide data to search a user" });
-            return;
-        }
-    
-        if (!searchInfo.username_search) {
-            res.status(400).json({ error: "You must provide a username" });
-            return;
-        }
-        let searchData = await usersData.findUserByUserName(searchInfo.username_search);
-        if(searchData === undefined || searchData === null)
-        {
-            //show an error message
-            //username doen't exist
-            res.render("layouts/main", {hasErrors : true, errors : "Provide valid username"});
-        }
-        else
-        {
-            res.redirect('/users/'+searchInfo.username_search);
-        }        
     } 
-    catch (e) {
-        res.status(404).json({ error: "Page not render-able" + e });
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
-
 
 module.exports = router;

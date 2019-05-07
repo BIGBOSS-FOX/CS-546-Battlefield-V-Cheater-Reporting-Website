@@ -9,8 +9,9 @@ router.post("/:id", async (req, res) => {
         const vote = "vote casted!";
         res.render('layouts/example', { data: vote });
     }
-    catch(e){
-        res.status(404).json({ error: "Page not render-able" + e });
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
     }
 });
 
