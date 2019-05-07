@@ -8,13 +8,11 @@ router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
 
     if (!userInfo) {
-        res.status(400).render("layouts/error",{ errors: "You must provide data to create a user" });
-        return;
+        res.json({ error : "You must provide data to create a user" });
     }
 
     if (!userInfo.username) {
-        res.status(400).render("layouts/error",{ errors: "You must provide a username" });
-        return;
+        res.json({ error: "You must provide a username" });
     }
     //any other necessary values for user
 
@@ -26,25 +24,24 @@ router.post("/", async(req, res) => { //this is the rout for adding a new user
         //authenticate the newUser
         //render the profile
         res.render('layouts/example', { data: newUser });
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
+    } 
+    catch (e) 
+    {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
 router.put("/", async(req, res) => { //this is the route for updating the database content of a user
     //call this by making a hidden input with id _method of put in a form.
     const userInfo = req.body;
-
-
     if (!userInfo) {
-        res.status(400).render("layouts/error",{ errors: "You must provide data to update a user" });
-        return;
+        res.json({ error: "You must provide data to update a user" });
     }
 
     if (!userInfo.status) {
-        res.status(400).render("layouts/error",{ errors: "You must provide a status to update" });
-        return;
+        res.json({ error: "You must provide a status to update" });
     }
 
     //pass in userInfo to updateUser: a JSON object with all the details of the user
@@ -52,9 +49,12 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
         //this updates a user's status (can be generalized to update anything else if need be)
         const updatedUser = usersData.updateUser(req.body.id, req.body) //for now req.body is just userId and status but can be more
         res.render('layouts/example', { data: updatedUser });
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
+    } 
+    catch (e) 
+    {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
 
