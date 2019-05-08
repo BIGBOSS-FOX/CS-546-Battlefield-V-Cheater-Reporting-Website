@@ -142,20 +142,19 @@ router.post("/search", async (req, res) => {
 
 router.get("/users/:id", async (req, res) => {
     try {
-        // //get a user with this id
-        // //show their profile
-        // const user = await usersData.getUserByObjectId(req.params.id);
-        // //build rest of profile: report, anything else
-        // user.reportsIn = "All the reports that have been filed for the user";
+        
+        const user = await usersData.findUserByUserName(req.params.id);
+        console.log(user);
 
-        // // res.render('layouts/example', { data: user });
-        res.render("layouts/user", []);
+        user.created_reports_count =  user.created_reports.length;
+
+        res.render("layouts/user", {users : user});
     } 
     catch (e) 
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error",{ errors: "User not found" , layout: 'errorlayout' });
+        res.status(404).render("layouts/error",{ errors: e , layout: 'errorlayout' });
     }
 });
 
