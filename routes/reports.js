@@ -18,20 +18,18 @@ router.get("/", async(req, res) => { //create a report form
 
 router.post("/", async(req, res) => {
     const reportInfo = req.body;
-    
-
     if (!reportInfo) {
         res.json({ error: "You must provide data to add a report" });
     }
     if (!reportInfo.userID) {
         res.json({ error: "You must provide a user ID" });
     }
-
-    if (!reportInfo.exampleFormControlTextarea1) {
-        res.json({ error: "You must provide an evidence" });
+    if (!reportInfo.exampleFormControlTextarea1) 
+    {
+        res.json({error: "You must provide an evidence"});
     }
-    try {
-        
+    try 
+    {
         //get the reported_player info, add newReport to received_reports array, then update user info to database
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
         if(!reportedPlayerInfo)
@@ -39,26 +37,17 @@ router.post("/", async(req, res) => {
             res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
         }
         else
-        {
-            
-
+        {        
         //add a new report to Report collection
         const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
-        
         reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
-
-        const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);
-
-        
+        const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
 
         //get the reported_by info, add newReport to created_reports array, then update user info to database
         const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
         reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
-    
-
         res.redirect("/users/" + reportedPlayerInfo.user_name);
-        //res.render('layouts/example', { data: updatedUser });
     }
     } 
     catch (e) 

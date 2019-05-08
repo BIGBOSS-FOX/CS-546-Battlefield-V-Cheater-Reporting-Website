@@ -2,20 +2,20 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
+const reportsData = data.Report;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
 router.use(function (req, res, next) {
-    if (req.session.userlogged === undefined || req.session.userlogged === null) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) 
+    {
         res.locals.loggedin = false;
-    } else {
-        console.log("run!");
+    } else 
+    {        
         res.locals.loggedin = true;
     }
-
     next();
 });
-
 
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try 
@@ -56,8 +56,7 @@ router.post("/login", async (req, res) => {
                 req.session.userlogged = compareUser;
                 res.render("layouts/main", {});
             }
-        }        
-       
+        }          
     } 
     catch (e) 
     {
@@ -67,13 +66,12 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/logout", async (req, res) => {
-    console.log("asd");
+router.get("/logout", async (req, res) => 
+{
     req.session.userlogged = null;
     res.clearCookie("AuthCookie");
     res.locals.userlogged = false;
     res.redirect("/");
-
 });
 
 router.post("/register", async (req, res) => {
@@ -115,10 +113,10 @@ router.post("/register", async (req, res) => {
 router.post("/search", async (req, res) => {
     try {
         const searchInfo = req.body;
-        if (!searchInfo) {
+        if (!searchInfo) 
+        {
             res.json({ error: "You must provide a valid data" });
         }
-
         if (!searchInfo.username_search) {
             res.json({ error: "Provide Username"});
         }
@@ -141,27 +139,55 @@ router.post("/search", async (req, res) => {
 });
 
 router.get("/users/:id", async (req, res) => {
-    try {
-        
-        const user = await usersData.findUserByUserName(req.params.id);
-        console.log(user);
-
-        user.created_reports_count =  user.created_reports.length;
-
-        res.render("layouts/user", {users : user});
-    } 
-    catch (e) 
+    try 
     {
+        const user = await usersData.findUserByUserName(req.params.id);
+        user.createdinfo = {};
+        user.reportedinfo = {};
+        let report_received = false;
+        let report_created = false;
+        let m=n=0;
+        for(var i = 0; i < user.created_reports.length; i++)
+        {          
+            let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]); 
+            if(createdinfo!= undefined && createdinfo !=null)
+            {
+                m++;
+                createdinfo.reportNumber = m;
+                report_created = true;
+            }        
+            user.createdinfo[i] = createdinfo;
+        };
+        for(var i = 0; i < user.received_reports.length; i++)
+        {   
+            let reportedinfo = await reportsData.getReportByObjectId(user.received_reports[i].toString());  
+            if(reportedinfo!= undefined && reportedinfo !=null)
+            {
+                n++;
+                reportedinfo.reportNumber = n;
+                report_received = true;
+            }
+            user.reportedinfo[i] = reportedinfo;
+        };
+        user.created_reports_count =  user.created_reports.length;
+        res.render("layouts/user", {users : user, isCreated : report_created, isreceived : report_received});
+    } 
+    catch(e) 
+    {
+        console.log(e);
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error",{ errors: e , layout: 'errorlayout' });
     }
 });
 
-router.use(function (req, res, next) {
-    if (req.session.userlogged === undefined || req.session.userlogged === null) {
+router.use(function (req, res, next) 
+{
+    if (req.session.userlogged === undefined || req.session.userlogged === null) 
+    {
         res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
-    } else
+    } 
+    else
         next();
 });
 

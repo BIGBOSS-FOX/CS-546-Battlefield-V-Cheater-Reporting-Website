@@ -3,24 +3,20 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 
-
 router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
-
-    if (!userInfo) {
+    if (!userInfo) 
+    {
         res.json({ error : "You must provide data to create a user" });
     }
-
     if (!userInfo.username) {
         res.json({ error: "You must provide a username" });
     }
     //any other necessary values for user
-
     //pass in userInfo to addUser: a JSON object with all the details of the user
-    try {
-        const newUser = await usersData.addUser(
-            userInfo
-        );
+    try 
+    {
+        const newUser = await usersData.addUser(userInfo);
         //authenticate the newUser
         //render the profile
         res.render('layouts/example', { data: newUser });
