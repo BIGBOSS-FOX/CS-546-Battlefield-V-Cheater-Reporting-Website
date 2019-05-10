@@ -92,6 +92,10 @@ body {
     color: #777;
 }
 
+.userpage-username {
+    font-size: 50px;
+}
+
 .bs-callout-primary {
     border-left-color: #428bca;
 }
@@ -164,7 +168,6 @@ body {
     color: #5acaef;
     background: #f8f9fae8;
     border-radius: 5px;
-    margin-top: 50px;
 }
 
 .appeal {
@@ -208,4 +211,9 @@ body {
 .separatingBar {
     background-color: #86929c;
     height: 2px;
+}
+
+.user-no-report {
+    border-radius: 5px !important;
+    background-color: #dc3545;
 }
