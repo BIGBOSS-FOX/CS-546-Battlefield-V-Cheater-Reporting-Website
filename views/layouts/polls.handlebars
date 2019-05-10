@@ -1,0 +1,41 @@
+<div class="row my-5">
+    <div class="col-md-12">
+        <h2 class="report-title text-center shadow">Reports to be Polled</h2>
+        <main class="alert">
+            {{#if hasdata}}
+            {{#each data}}
+            <div class="card">
+                <p>{{this.voting_about}}</p>
+                {{#each this.reportedinfo}}
+                 <div class="card">
+                    <div class="card-header" id="heading{{_id}}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#collapse{{_id}}" aria-expanded="true"
+                                aria-controls="collapseOne">
+                                Report #{{_id}}    
+                            </button>
+                        </h5>
+                    </div>
+                    </div>
+                   
+                    <div id="collapse{{_id}}" class="collapse"
+                        aria-labelledby="heading{{_id}}" data-parent="#accordionRecieved">
+                        <div class="card-body">
+                            {{proof_link}}
+                            {{body}}
+                        </div>
+                    </div>
+                     {{/each}}
+                </div>
+            {{/each}}
+            {{else}}
+                <p>No reports found</p>
+            {{/if}}
+                                  
+        </main>
+    </div>
+</div>
+
+
+

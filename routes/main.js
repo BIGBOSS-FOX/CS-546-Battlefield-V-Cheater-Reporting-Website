@@ -146,6 +146,10 @@ router.post("/search", async (req, res) => {
 
 router.get("/users/:id", async(req, res) => {
     try {
+        if(!req.params.id) 
+        {
+            res.render("layouts/main",{ error: "You must provide a valid data" });
+        }
         const user = await usersData.findUserByUserName(req.params.id);
         user.createdinfo = {};
         user.reportedinfo = {};
@@ -217,7 +221,6 @@ router.get("/list/:status", async (req, res) => { //get the list of players with
     }
 });
 
-
 router.use(function (req, res, next) 
 {
     if (req.session.userlogged === undefined || req.session.userlogged === null) 
@@ -227,7 +230,5 @@ router.use(function (req, res, next)
     else
         next();
 });
-
-
 
 module.exports = router;
