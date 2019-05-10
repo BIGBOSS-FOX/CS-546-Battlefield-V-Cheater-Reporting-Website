@@ -2,6 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const Users = mongoCollections.Users;
 const { ObjectId } = require('mongodb');
 
+const Poll = require('./Poll');
+
 module.exports = {
     async addUser(user_name, hashedPassword, isAdmin) {
         if (user_name === undefined) throw new Error("You must provide a user_name");
@@ -144,20 +146,24 @@ module.exports = {
 
     },
 
-    async statusChange(user_name, newStatus) { // This function is to count numbers of report a user received and decide what will change base on new status
+    async statusChange(user_name) { // This function is to count numbers of report a user received and decide what will change base on new status
         if (user_name === undefined) throw new Error("You must provide a user_name");
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
-        if (newStatus === undefined) throw new Error("You must provide a newStatus");
-        if (typeof newStatus !== "string") throw new Error("newStatus needs to be a string");
 
-        let userInfo = this.findUserByUserName(user_name);
+        let userInfo = await this.findUserByUserName(user_name);
+        //console.log("hhh");
         if (userInfo.label_status === 'Innocent') {
             userInfo.num_report++;
             if (userInfo.num_report === 1) {
                 //trigger a new poll
 
-                userInfo.label_status === 'Processing';
+                await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(userInfo.user_name);
+
+                userInfo.label_status = 'Processing';
                 userInfo.num_report = 0;
+
+                await this.updateUser(userInfo._id, userInfo);
             }
             
         }
@@ -177,6 +183,17 @@ module.exports = {
             // do nothing
         }
 
+    },
+    
+    async newAdminPendingVote(userBeVoted) {
+        const userList = await this.getAllUsers();
+        for (let i = 0; i < userList.length; i++) {
+            if (userList[i].isAdmin) {
+                let adminInfo = userList[i];
+                adminInfo.pending_votes.push(userBeVoted);
+                await this.updateUser(adminInfo._id, adminInfo);
+            }
+        }
     }
 
 };
