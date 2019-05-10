@@ -53,6 +53,10 @@ router.post("/", async(req, res) => {
         const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
         reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
+
+        //check status and decide whether it will change
+        await usersData.statusChange(reportedPlayerInfo.user_name);
+        
         res.redirect("/users/" + reportedPlayerInfo.user_name);
     }
     } 
