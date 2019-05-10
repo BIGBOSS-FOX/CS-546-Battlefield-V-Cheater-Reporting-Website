@@ -189,16 +189,23 @@ body {
     background-color: #f8d7dab0
 }
 
-.smallPad{
+.modal-content {
+    background-color: #ffffffe8;
+}
+
+.smallPad {
     padding: 10px;
 }
-.floatRight{
+
+.floatRight {
     float: right;
 }
-.greyBack{
+
+.greyBack {
     background-color: #a9a9a930;
 }
-.separatingBar{
-    background-color:#86929c; 
+
+.separatingBar {
+    background-color: #86929c;
     height: 2px;
 }
