@@ -223,3 +223,12 @@ body {
     border-radius: 5px !important;
     background-color: #dc3545;
 }
+
+.user-date {
+    /* position: absolute; */
+    right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 10px;
+    color: #5acaef;
+}

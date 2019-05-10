@@ -1,6 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const Poll = mongoCollections.Poll;
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb').ObjectID;
 
 module.exports = {
     async addPoll (voting_about) {
@@ -24,18 +24,14 @@ module.exports = {
     async getAllPolls() {
         const PollCollection = await Poll();
         const PollList = await PollCollection.find({}).toArray();
-
         return PollList;
     },
 
     async getPollByObjectId(obj_id) {
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
-
         const PollCollection = await Poll();
         const foundPoll = await PollCollection.findOne({_id: obj_id});
-        if (foundPoll === null) throw new Error("No poll with that id");
-
         return foundPoll;
     },
 
