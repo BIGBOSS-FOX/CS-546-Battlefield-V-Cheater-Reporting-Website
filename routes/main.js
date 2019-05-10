@@ -20,8 +20,9 @@ router.use(function (req, res, next) {
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try 
     {
-        if (req.session.userlogged) {
+        if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            
             res.render("layouts/main", {users: user});
         }
         else{
