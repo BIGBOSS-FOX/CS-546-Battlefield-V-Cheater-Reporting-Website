@@ -2,9 +2,9 @@
     {{#each users.pending_votes}}
         <div style="padding:10px">
             <div class="bs-callout bs-callout-default">
-                <h4>05/04/2020</h4>
-                User: {{this}} is waiting for your vote.
-                <a href="http://localhost:3000/polls">To vote for him/her!</a>
+                <h4>{{this.createdTime}}</h4>
+                User: {{this.pollUser}} is waiting for your vote.
+                <a href="http://localhost:3000/polls/{{this.pollUser}}">To vote for him/her!</a>
             </div>
         </div>
     {{/each}}
