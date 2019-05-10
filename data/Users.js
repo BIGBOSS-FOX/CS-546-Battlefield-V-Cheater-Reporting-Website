@@ -157,7 +157,8 @@ module.exports = {
             if (userInfo.num_report === 1) {
                 //trigger a new poll
 
-                Poll.addPoll(userInfo.user_name);
+                await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(userInfo.user_name);
 
                 userInfo.label_status = 'Processing';
                 userInfo.num_report = 0;
@@ -182,6 +183,17 @@ module.exports = {
             // do nothing
         }
 
+    },
+    
+    async newAdminPendingVote(userBeVoted) {
+        const userList = await this.getAllUsers();
+        for (let i = 0; i < userList.length; i++) {
+            if (userList[i].isAdmin) {
+                let adminInfo = userList[i];
+                adminInfo.pending_votes.push(userBeVoted);
+                await this.updateUser(adminInfo._id, adminInfo);
+            }
+        }
     }
 
 };
