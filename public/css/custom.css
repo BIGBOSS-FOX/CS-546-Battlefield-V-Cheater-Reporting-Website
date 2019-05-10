@@ -188,3 +188,10 @@ body {
     padding-right: 5%;
     background-color: #f8d7dab0
 }
+
+.smallPad{
+    padding: 10px;
+}
+.floatRight{
+    float: right;
+}

@@ -11,9 +11,9 @@
         </div>
     </div>
     <div class="col-md-10">
-        <div style="background-color:#a9a9a930">
+        <div class="greyBack">
             <div class="bs-callout bs-callout-default">
-                <h4> {{users.user_name}}<span style="float:right" class="badge badge-pill badge-info">{{users.created_reports_count}} reports
+                <h4> {{users.user_name}}<span class="badge badge-pill badge-info floatRight">{{users.created_reports_count}} reports
                         submitted</span></h4>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <div class="col-md-10">
         <h2 class="report-title text-center">Received Reports</h2>
 
-        <div style="padding:10px">
+        <div class="smallPad">
         <div class="accordion" id="accordionRecieved">
         {{#if isreceived}}            
             {{#each users.reportedinfo}}   
@@ -69,7 +69,7 @@
     <div class="col-md-10">
 
         <h2 class="report-title text-center shadow">Submitted Reports</h2>
-        <div style="padding:10px">
+        <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
                  {{#if isCreated}}            
                     {{#each users.createdinfo}}   
