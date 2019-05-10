@@ -3,7 +3,7 @@
         <div style="padding:10px">
             <div class="bs-callout bs-callout-default">
                 <h4>{{this.createdTime}}</h4>
-                User: {{this.pollUser}} is waiting for your vote.
+                User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}</a>  is waiting for your vote.
                 <a href="http://localhost:3000/polls/{{this.pollUser}}">To vote for him/her!</a>
             </div>
         </div>
