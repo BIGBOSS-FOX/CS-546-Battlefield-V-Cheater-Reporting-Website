@@ -36,6 +36,9 @@ router.post("/", async(req, res) => {
         {
             res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
         }
+        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
+            res.render("layouts/createreport", {errors : "You cannot report yourself" , hasErrors:true});
+        }
         else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
             res.render("layouts/createreport", {errors : "Admin cannot be reported" , hasErrors:true});
         }
