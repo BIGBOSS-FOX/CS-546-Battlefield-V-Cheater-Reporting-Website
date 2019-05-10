@@ -9,7 +9,7 @@ module.exports = {
         if (hashedPassword == undefined) throw new Error("You must provide a password")
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
         if (typeof isAdmin !== "boolean") throw new Error("IsAdmin needs to be a boolean");
-        if (typeof hashedPassword !== "string") throw new Error("Password needs to be a string");
+        //if (!ObjectId.isValid(hashedPassword)) throw new Error("Password needs to be an object");
 
         const UsersCollection = await Users();
 
@@ -22,7 +22,8 @@ module.exports = {
             label_updated: `${Date().toString()}`, //How to set an empty timestamp
             received_reports: [],
             created_reports: [],
-            canAppeal: true
+            canAppeal: true,
+            num_report: 0
         };
 
         const insertInfo = await UsersCollection.insertOne(newUser);
@@ -92,6 +93,10 @@ module.exports = {
         if (UserInfo.canAppeal) {
             UserInfoToUpdate.canAppeal = UserInfo.canAppeal;
         }
+
+        if (UserInfo.num_report) {
+            UserInfoToUpdate.num_report = UserInfo.num_report;
+        }
         /*
         Add What other UserInfo you want to update here
         */
@@ -137,5 +142,41 @@ module.exports = {
 
         return foundUser;
 
+    },
+
+    async statusChange(user_name, newStatus) { // This function is to count numbers of report a user received and decide what will change base on new status
+        if (user_name === undefined) throw new Error("You must provide a user_name");
+        if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
+        if (newStatus === undefined) throw new Error("You must provide a newStatus");
+        if (typeof newStatus !== "string") throw new Error("newStatus needs to be a string");
+
+        let userInfo = this.findUserByUserName(user_name);
+        if (userInfo.label_status === 'Innocent') {
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
+
+                userInfo.label_status === 'Processing';
+                userInfo.num_report = 0;
+            }
+            
+        }
+        else if (userInfo.label_status === 'Processing') {
+
+        }
+        else if (userInfo.label_status === 'Suspicious') {
+            
+        }
+        else if (userInfo.label_status === 'Cheater') {
+
+        }
+        else if (userInfo.label_status === 'Legit') {
+
+        }
+        else {
+            // do nothing
+        }
+
     }
+
 };
