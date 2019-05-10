@@ -76,7 +76,7 @@ async function main() {
         await Appeal.addAppeal("AZGD-HungMammoth", "My friend is trolling");
 
         console.log('Done seeding database');
-        console.log('All users have a default PW: 123')
+        console.log('All these seeded users have a default password of \"123\"')
 
         await db.close();
     } catch (e) {

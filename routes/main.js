@@ -20,8 +20,9 @@ router.use(function (req, res, next) {
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try 
     {
-        if (req.session.userlogged) {
+        if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            
             res.render("layouts/main", {users: user});
         }
         else{
@@ -34,50 +35,6 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         res.clearCookie("AuthCookie");
         res.status(400).render("layouts/error",{errors: e , layout: 'errorlayout' });
     }
-});
-
-router.post("/login", async (req, res) => {
-    try {
-        let newUserInfo = req.body;
-        if (!newUserInfo) {
-            res.json({error: "You must provide data to create a user"});
-        }
-        if (!newUserInfo.username_login) {
-            res.json({ error: "You must provide a username"});
-        }
-        if(!newUserInfo.password_login){
-            res.json({ error: "You must provide a password"});
-        }
-        const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
-        if(!compareUser)
-        {
-            res.json({error : "Provide valid Username/Password"});
-        }
-        else {
-            const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
-            if (!hashed) {
-                res.json({error : "Provide valid Username/Password"});
-            }
-            else {
-                req.session.userlogged = compareUser;
-                res.render("layouts/main", {});
-            }
-        }          
-    } 
-    catch (e) 
-    {
-        req.session.userlogged = null;
-        res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
-    }
-});
-
-router.get("/logout", async (req, res) => 
-{
-    req.session.userlogged = null;
-    res.clearCookie("AuthCookie");
-    res.locals.userlogged = false;
-    res.redirect("/");
 });
 
 router.post("/register", async (req, res) => {
@@ -101,7 +58,10 @@ router.post("/register", async (req, res) => {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
             });
-            res.render("layouts/main", {});
+            req.body.username_login = newUserInfo.username_signup;
+            req.body.password_login = newUserInfo.password_signup;
+            console.log("Redirecting to login");
+            res.redirect('/login');
         } 
         else 
         {
@@ -114,6 +74,50 @@ router.post("/register", async (req, res) => {
         res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
+});
+
+router.post("/login", async (req, res) => {
+    try {
+        let newUserInfo = req.body;
+        if (!newUserInfo) {
+            res.json({error: "You must provide data to log in"});
+        }
+        if (!newUserInfo.username_login) {
+            res.json({ error: "You must provide a username"});
+        }
+        if(!newUserInfo.password_login){
+            res.json({ error: "You must provide a password"});
+        }
+        const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
+        if(!compareUser)
+        {
+            res.json({error : "Provide valid Username/Password"});
+        }
+        else {
+            const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
+            if (!hashed) {
+                res.json({error : "Provide valid Username/Password"});
+            }
+            else {
+                req.session.userlogged = compareUser;
+                res.redirect('/')
+            }
+        }          
+    } 
+    catch (e) 
+    {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+    }
+});
+
+router.get("/logout", async (req, res) => 
+{
+    req.session.userlogged = null;
+    res.clearCookie("AuthCookie");
+    res.locals.userlogged = false;
+    res.redirect("/");
 });
 
 router.post("/search", async (req, res) => {
@@ -196,8 +200,15 @@ router.get("/users/:id", async(req, res) => {
 router.get("/list", async (req, res) => { //get the cheater list
     try {
         const userList = "List of banned players";
+        if (req.session.userlogged) {
+            const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            res.render('layouts/cheaters', { data: userList, users: user });
+        }
+        else{
+            res.render('layouts/cheaters', { data: userList });
+        }
         //Get users by status: confirmed cheater
-        res.render('layouts/cheaters', { data: userList });
+        
     } 
     catch (e) 
     {
@@ -211,8 +222,8 @@ router.get("/list/:status", async (req, res) => { //get the list of players with
     try {
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
-        const userList = "List of players with status {status}";
-        res.render('layouts/example', { data: userList });
+        const userList = "List of players with status" + req.params.status;
+        res.render('layouts/cheaters', { data: userList });
     } 
     catch (e) 
     {

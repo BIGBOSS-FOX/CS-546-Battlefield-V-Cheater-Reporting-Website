@@ -79,9 +79,18 @@ module.exports = {
         deletedPoll.data = PollToDelete;
 
         return deletedPoll;
-    }
+    },
 
+    async getPollByVoting_about(voting_about) {
+        if (voting_about === undefined) throw new Error("You must provide a user_name");
+        if (typeof voting_about !== "string") throw new Error("User_name needs to be a string");
 
+        const PollCollection = await Poll();
+        const foundPoll = await PollCollection.findOne({voting_about: voting_about});
+        if (foundPoll === null) throw new Error("No poll with that id");
+
+        return foundPoll;
+    } 
 
 
 };

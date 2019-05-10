@@ -9,7 +9,7 @@
         </div>
         {{/if}}
         <div class="row">
-            <h3><span class="badge badge-success ml-2">{{users.label_status}}</span></h3>
+            <h3><span class="badge badge-success ml-2 text-uppercase">{{users.label_status}}</span></h3>
         </div>
         {{#if users.showAppealbtn}}
         <div class="row">
@@ -18,12 +18,12 @@
         {{/if}}
     </div>
     <div class="col-md-10">
-            <div class="bs-callout bs-callout-default">
-                <h4> <span class="userpage-username">{{users.user_name}}</span>
-                    <span
-                        class="badge badge-pill badge-info floatRight">{{users.created_reports_count}} report(s)
-                        submitted</span></h4>
-            </div>
+        <div class="bs-callout bs-callout-default shadow">
+            <h4> <span class="userpage-username">{{users.user_name}}</span>
+                <span class="badge badge-pill badge-info floatRight shadow">{{users.created_reports_count}} report(s)
+                    submitted</span>
+            </h4>
+        </div>
 
     </div>
 </div>
@@ -43,25 +43,41 @@
                 <div class="card">
                     <div class="card-header" id="heading{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapse{{this.reportNumber}}" aria-expanded="true"
-                                aria-controls="collapseOne">
-                                Report #{{this.reportNumber}}
-                            </button>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapse{{this.reportNumber}}" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Report {{this.reportNumber}}
+
+
+                                    </button>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="badge badge-pill user-date">
+                                        {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                                </div>
+                            </div>
                         </h5>
                     </div>
 
                     <div id="collapse{{this.reportNumber}}" class="collapse"
                         aria-labelledby="heading{{this.reportNumber}}" data-parent="#accordionRecieved">
                         <div class="card-body">
-                            {{this.body}}
+                            Reported By: <a href="/user/{{this.reported_by}}">{{this.reported_by}}</a>
+                            <br>
+                            <div class="bs-callout bs-callout-default shadow">
+                                {{this.body}}
+                                <br>
+                                {{this.image}}
+                            </div>
                         </div>
                     </div>
                 </div>
                 {{/each}}
                 {{else}}
                 <div class="card user-no-report">
-                    <div class="card-header" >No reports found</div>
+                    <div class="card-header">No reports found</div>
                 </div>
                 {{/if}}
             </div>
@@ -82,27 +98,41 @@
                 {{#if isCreated}}
                 {{#each users.createdinfo}}
                 <div class="card">
-                    <div class="card-header" id="headingSubmit""{{this.reportNumber}}">
+                    <div class="card-header" id="headingSubmit{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapseSubmit""{{this.reportNumber}}" aria-expanded="true"
-                                aria-controls="collapseOne">
-                                Report #{{this.reportNumber}}
-                            </button>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseSubmit{{this.reportNumber}}" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Report {{this.reportNumber}}
+                                    </button>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="badge badge-pill user-date">
+                                        {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                                </div>
+                            </div>
                         </h5>
                     </div>
 
-                    <div id="collapseSubmit""{{this.reportNumber}}" class="collapse"
-                        aria-labelledby="headingSubmit""{{this.reportNumber}}" data-parent="#accordionSubmitted">
+                    <div id="collapseSubmit{{this.reportNumber}}" class="collapse"
+                        aria-labelledby="headingSubmit{{this.reportNumber}}" data-parent="#accordionSubmitted">
                         <div class="card-body">
-                            {{this.body}}
+                            Reported By: <a href="/user/{{this.reported_by}}">{{this.reported_by}}</a>
+                            <br>
+                            <div class="bs-callout bs-callout-default shadow">
+                                {{this.body}}
+                                <br>
+                                {{this.image}}
+                            </div>
                         </div>
                     </div>
                 </div>
                 {{/each}}
                 {{else}}
                 <div class="card user-no-report">
-                    <div class="card-header" >No reports found</div>
+                    <div class="card-header">No reports found</div>
                 </div>
                 {{/if}}
             </div>
