@@ -33,7 +33,7 @@
                     <a class="nav-link" href="http://localhost:3000/list">Banlist</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">My Profile</a>
+                    
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -41,6 +41,7 @@
 
 
                 {{#if loggedin}}
+                    <a href="/users/{{users.user_name}}" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">{{users.user_name}}</a>
                     <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0" >Log Out</a>
                 {{else}}
                     <a href="" class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" data-toggle="modal"

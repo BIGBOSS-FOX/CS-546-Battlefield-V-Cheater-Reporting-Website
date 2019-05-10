@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
-
+const appealData = data.Appeal;
+const ObjectID = require("mongodb").ObjectID;
 
 router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
@@ -48,5 +49,44 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
         res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
     }
 });
+
+//This route will render an appeal page
+router.get("/:id/appeal", async(req, res) => {
+    try 
+    {
+        res.render("layouts/appeal", {});
+    } 
+    catch (e) 
+    {
+        res.status(404).render("layouts/error", {errors: e});
+    }
+});
+
+
+router.post("/:id/appeal", async(req, res) => {
+    const appealInfo = req.body;
+    const appealed_by = req.params.id;
+    console.log(appealed_by);
+
+    if (!appealInfo) {
+        res.json({ error: "You must provide data to add an appeal" });
+    }
+    if (!appealInfo.exampleFormControlTextarea1) 
+    {
+        res.json({error: "You must provide an evidence"});
+    }
+
+    try {
+        //add new appeal into appeal collection
+        const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, appealInfo.exampleFormControlFile1, appealInfo.link);
+        res.redirect("/users/" + req.session.userlogged.user_name);
+
+
+
+    } catch (e) {
+        res.status(404).render("layouts/error", {errors: e});
+    }
+});
+
 
 module.exports = router;
