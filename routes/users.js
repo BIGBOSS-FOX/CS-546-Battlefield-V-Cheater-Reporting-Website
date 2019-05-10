@@ -11,7 +11,7 @@ router.get("/:id", async(req, res) => {
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if (user.canAppeal && users.label_status == "Confirmed Cheater") {
+        if (user.canAppeal && user.label_status == "Confirmed Cheater") {
             showAppealbtn = true;
         }
         user.showAppealbtn = showAppealbtn;
