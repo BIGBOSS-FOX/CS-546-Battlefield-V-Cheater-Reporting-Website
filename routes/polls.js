@@ -3,9 +3,10 @@ const router = express.Router();
 
 //we may not need any routes for this
 
-router.post("/:id", async (req, res) => {
+router.post("/", async (req, res) => {
     try{
-        //we need a function to update a poll for voting about a userID 
+        //we need a function to update a poll for voting about a userID
+        
         const vote = "vote casted!";
         res.render('layouts/example', { data: vote });
     }
