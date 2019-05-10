@@ -17,8 +17,12 @@ $(function() {
     $('#login_submit').on('click', function(e) {
 
         // Prevent default posting of form - put here to work in case of errors
-        event.preventDefault();
-
+        var username = $("#username_login").val();
+        var password = $('#password_login').val();
+        $("#span_login").text("");
+        $("#span_login").removeClass("alert alert-danger");
+        if(username && password)
+        { 
         // Abort any pending request
         if (request) {
             request.abort();
@@ -41,43 +45,43 @@ $(function() {
         request = $.ajax({
             url: "/login",
             type: "POST",
-            data: serializedData
+            data: serializedData,
+            success: function(response) {
+                if(!response.error)
+                {
+                    alert("Logged in successfully");
+                    $('#modalLoginForm').modal('hide');
+                    location.reload();
+                }
+                else
+                {
+                    $("#span_login").addClass("alert alert-danger");
+                    $("#span_login").text(response.error);
+                    $('#modalLoginForm').modal('show');
+                    $inputs.prop("disabled", false);
+                }              
+            },
+            error: function(e) {
+                alert("An error has occurred"); 
+                $inputs.prop("disabled", false);  
+                $('#modalLoginForm').modal('hide');           
+            }
         });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            console.log("Hooray, it worked!");
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-
-        // Callback handler that will be called regardless
-        // if the request failed or succeeded
-        request.always(function() {
-            // Reenable the inputs
-            $inputs.prop("disabled", false);
-            $('#modalLoginForm').modal('hide');
-        });
-
+    }
     });
+
 });
 
 
 $(function() {
-
-    $('#signup_submit').on('click', function(e) {
-
-        // Prevent default posting of form - put here to work in case of errors
-        event.preventDefault();
-
+    $('#signup_submit').on('click', function(e) 
+    {
+        var username = $("#username_signup").val();
+        var password = $('#password_signup').val();
+        $("#span-signup").text("");
+        $("#span-signup").removeClass("alert alert-danger");
+        if(username && password)
+        { 
         // Abort any pending request
         if (request) {
             request.abort();
@@ -100,31 +104,29 @@ $(function() {
         request = $.ajax({
             url: "/register",
             type: "POST",
-            data: serializedData
+            data: serializedData,
+            success: function(response) {
+                if(!response.error)
+                {
+                    $('#modalSignUpForm').modal('hide');
+                    alert("Signed up successfully");  
+                    location.reload();                                     
+                }
+                else
+                {
+                    $("#span-signup").addClass("alert alert-danger");
+                    $("#span-signup").text(response.error);
+                    $('#modalSignUpForm').modal('show');
+                    $inputs.prop("disabled", false);
+                }              
+            },
+            error: function(e) {
+                alert("An error has occurred"); 
+                $inputs.prop("disabled", false);
+                $('#modalSignUpForm').modal('hide');             
+            }
         });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            console.log("Hooray, it worked!");
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-
-        // Callback handler that will be called regardless
-        // if the request failed or succeeded
-        request.always(function() {
-            // Reenable the inputs
-            $inputs.prop("disabled", false);
-            $('#modalSignUpForm').modal('hide');
-        });
-
+       
+    }
     });
 });

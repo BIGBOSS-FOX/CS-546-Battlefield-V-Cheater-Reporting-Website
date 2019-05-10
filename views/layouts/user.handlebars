@@ -3,20 +3,23 @@
         <div class="row">
             <img src="/public/css/img_avatar.png" alt="Avatar" class="avatar shadow">
         </div>
+        {{#if users.isAdmin}}
         <div class="row">
-            <h3><span class="badge badge-success ml-2">Legit Player</span></h3>
+            <h3><span class="badge badge-dark ml-2">Admin</span></h3>
+        </div>
+        {{/if}}
+        <div class="row">
+            <h3><span class="badge badge-success ml-2">{{users.label_status}}</span></h3>
         </div>
         <div class="row">
             <button type="button" class="btn btn-danger btn-lg btn-block ml-2">Appeal!</button>
         </div>
     </div>
     <div class="col-md-10">
-
-        <div style="background-color:#a9a9a930">
+        <div class="greyBack">
             <div class="bs-callout bs-callout-default">
-                <h4> Hawkie1432 <span style="float:right" class="badge badge-pill badge-info">1245 reports
+                <h4> {{users.user_name}}<span class="badge badge-pill badge-info floatRight">{{users.created_reports_count}} reports
                         submitted</span></h4>
-                Player Information
             </div>
         </div>
 
@@ -31,82 +34,35 @@
     <div class="col-md-10">
         <h2 class="report-title text-center">Received Reports</h2>
 
-        <div style="padding:10px">
-            <div class="accordion" id="accordionRecieved">
+        <div class="smallPad">
+        <div class="accordion" id="accordionRecieved">
+        {{#if isreceived}}            
+            {{#each users.reportedinfo}}   
                 <div class="card">
-                    <div class="card-header" id="headingOne">
+                    <div class="card-header" id="heading""{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse""{{this.reportNumber}}"
                                 aria-expanded="true" aria-controls="collapseOne">
-                                Collapsible Group Item #1
+                                Report #{{this.reportNumber}}
                             </button>
                         </h5>
                     </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                    <div id="collapse""{{this.reportNumber}}" class="collapse show" aria-labelledby="heading""{{this.reportNumber}}"
                         data-parent="#accordionRecieved">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
+                            {{this.body}}
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Collapsible Group Item #2
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRecieved">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
+                 {{/each}}
+                {{else}}
+                <p>No reports found</p>                    
+                {{/if}}
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Collapsible Group Item #3
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                        data-parent="#accordionRecieved">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
-                </div>
+               
             </div>
-
-
         </div>
-
     </div>
 </div>
 
@@ -118,80 +74,32 @@
     <div class="col-md-10">
 
         <h2 class="report-title text-center shadow">Submitted Reports</h2>
-        <div style="padding:10px">
+        <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
+                 {{#if isCreated}}            
+                    {{#each users.createdinfo}}   
                 <div class="card">
-                    <div class="card-header" id="headingOneSubmit">
+                    <div class="card-header" id="headingSubmit""{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOneSubmit"
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseSubmit""{{this.reportNumber}}"
                                 aria-expanded="true" aria-controls="collapseOne">
-                                Collapsible Group Item #1
+                                Report #{{this.reportNumber}}
                             </button>
                         </h5>
                     </div>
 
-                    <div id="collapseOneSubmit" class="collapse show" aria-labelledby="headingOneSubmit"
+                    <div id="collapseSubmit""{{this.reportNumber}}" class="collapse show" aria-labelledby="headingSubmit""{{this.reportNumber}}"
                         data-parent="#accordionSubmitted">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
+                            {{this.body}}
                         </div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwoSubmit">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                data-target="#collapseTwoSubmit" aria-expanded="false" aria-controls="collapseTwoSubmit">
-                                Collapsible Group Item #2
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseTwoSubmit" class="collapse" aria-labelledby="headingTwoSubmit" data-parent="#accordionSubmitted">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThreeSubmit">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                data-target="#collapseThreeSubmit" aria-expanded="false" aria-controls="collapseThreeSubmit">
-                                Collapsible Group Item #3
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseThreeSubmit" class="collapse" aria-labelledby="headingThreeSubmit"
-                        data-parent="#accordionSubmitted">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                            excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
-                </div>
+                </div>   
+                 {{/each}}
+                {{else}}
+                <p>No reports found</p>                    
+                {{/if}}             
             </div>
-
-
         </div>
 
     </div>
