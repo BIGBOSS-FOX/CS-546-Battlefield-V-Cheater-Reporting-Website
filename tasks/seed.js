@@ -8,13 +8,15 @@ const Appeal = data.Appeal;
 const default_pw = "123";
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
-const default_hashed_pw = bcrypt.hash(default_pw, saltRounds);
+//const default_hashed_pw = await bcrypt.hash(default_pw, saltRounds);
 //console.log(typeof(default_hashed_pw));
 
 async function main() {
     try {
         const db = await dbConnection();
         await db.dropDatabase();
+        const default_hashed_pw = await bcrypt.hash(default_pw, saltRounds);
+
 
         //add users
         await Users.addUser("oX_-oBIGBOSS-FoX", default_hashed_pw, true);
