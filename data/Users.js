@@ -137,5 +137,41 @@ module.exports = {
 
         return foundUser;
 
+    },
+
+    async statusChange(user_name, newStatus) { // This function is to count numbers of report a user received and decide what will change base on new status
+        if (user_name === undefined) throw new Error("You must provide a user_name");
+        if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
+        if (newStatus === undefined) throw new Error("You must provide a newStatus");
+        if (typeof newStatus !== "string") throw new Error("newStatus needs to be a string");
+
+        let userInfo = this.findUserByUserName(user_name);
+        if (userInfo.label_status === 'Innocent') {
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
+
+                userInfo.label_status === 'Processing';
+                userInfo.num_report = 0;
+            }
+            
+        }
+        else if (userInfo.label_status === 'Processing') {
+
+        }
+        else if (userInfo.label_status === 'Suspicious') {
+            
+        }
+        else if (userInfo.label_status === 'Cheater') {
+
+        }
+        else if (userInfo.label_status === 'Legit') {
+
+        }
+        else {
+            // do nothing
+        }
+
     }
+
 };
