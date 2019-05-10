@@ -20,7 +20,13 @@ router.use(function (req, res, next) {
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try 
     {
-        res.render("layouts/main", {});
+        if (req.session.userlogged) {
+            const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            res.render("layouts/main", {users: user});
+        }
+        else{
+            res.render("layouts/main", {});
+        }
     } 
     catch (e) 
     {
