@@ -18,12 +18,12 @@
         {{/if}}
     </div>
     <div class="col-md-10">
-        <div class="greyBack">
             <div class="bs-callout bs-callout-default">
-                <h4> {{users.user_name}}<span class="badge badge-pill badge-info floatRight">{{users.created_reports_count}} reports
+                <h4> <span class="userpage-username">{{users.user_name}}</span>
+                    <span
+                        class="badge badge-pill badge-info floatRight">{{users.created_reports_count}} report(s)
                         submitted</span></h4>
             </div>
-        </div>
 
     </div>
 </div>
@@ -34,40 +34,41 @@
 
     </div>
     <div class="col-md-10">
-        <h2 class="report-title text-center">Received Reports</h2>
+        <h2 class="report-title text-center shadow">Received Reports</h2>
 
         <div class="smallPad">
-        <div class="accordion" id="accordionRecieved">
-        {{#if isreceived}}            
-            {{#each users.reportedinfo}}   
+            <div class="accordion" id="accordionRecieved">
+                {{#if isreceived}}
+                {{#each users.reportedinfo}}
                 <div class="card">
-                    <div class="card-header" id="heading""{{this.reportNumber}}">
+                    <div class="card-header" id="heading{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse""{{this.reportNumber}}"
-                                aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#collapse{{this.reportNumber}}" aria-expanded="true"
+                                aria-controls="collapseOne">
                                 Report #{{this.reportNumber}}
                             </button>
                         </h5>
                     </div>
 
-                    <div id="collapse""{{this.reportNumber}}" class="collapse show" aria-labelledby="heading""{{this.reportNumber}}"
-                        data-parent="#accordionRecieved">
+                    <div id="collapse{{this.reportNumber}}" class="collapse"
+                        aria-labelledby="heading{{this.reportNumber}}" data-parent="#accordionRecieved">
                         <div class="card-body">
                             {{this.body}}
                         </div>
                     </div>
                 </div>
-                 {{/each}}
+                {{/each}}
                 {{else}}
-                <p>No reports found</p>                    
-                {{/if}}
+                <div class="card user-no-report">
+                    <div class="card-header" >No reports found</div>
                 </div>
-               
+                {{/if}}
             </div>
+
         </div>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-md-2">
@@ -75,32 +76,35 @@
     </div>
     <div class="col-md-10">
 
-        <h2 class="report-title text-center shadow">Submitted Reports</h2>
+        <h2 class="report-title text-center shadow mt-4">Submitted Reports</h2>
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
-                 {{#if isCreated}}            
-                    {{#each users.createdinfo}}   
+                {{#if isCreated}}
+                {{#each users.createdinfo}}
                 <div class="card">
                     <div class="card-header" id="headingSubmit""{{this.reportNumber}}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseSubmit""{{this.reportNumber}}"
-                                aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#collapseSubmit""{{this.reportNumber}}" aria-expanded="true"
+                                aria-controls="collapseOne">
                                 Report #{{this.reportNumber}}
                             </button>
                         </h5>
                     </div>
 
-                    <div id="collapseSubmit""{{this.reportNumber}}" class="collapse show" aria-labelledby="headingSubmit""{{this.reportNumber}}"
-                        data-parent="#accordionSubmitted">
+                    <div id="collapseSubmit""{{this.reportNumber}}" class="collapse"
+                        aria-labelledby="headingSubmit""{{this.reportNumber}}" data-parent="#accordionSubmitted">
                         <div class="card-body">
                             {{this.body}}
                         </div>
                     </div>
-                </div>   
-                 {{/each}}
+                </div>
+                {{/each}}
                 {{else}}
-                <p>No reports found</p>                    
-                {{/if}}             
+                <div class="card user-no-report">
+                    <div class="card-header" >No reports found</div>
+                </div>
+                {{/if}}
             </div>
         </div>
 

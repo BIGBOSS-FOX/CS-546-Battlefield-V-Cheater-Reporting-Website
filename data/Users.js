@@ -19,7 +19,7 @@ module.exports = {
             isAdmin: isAdmin,
             pending_votes: [],
             label_status: "Innocent",
-            label_updated: "", //How to set an empty timestamp
+            label_updated: `${Date().toString()}`, //How to set an empty timestamp
             received_reports: [],
             created_reports: [],
             canAppeal: true,

@@ -36,6 +36,9 @@ router.post("/", async(req, res) => {
         {
             res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
         }
+        else if (reportedPlayerInfo.isAdmin) {
+            res.render("layouts/createreport", {errors : "Admin cannot be reported" , hasErrors:true});
+        }
         else
         {        
         //add a new report to Report collection
