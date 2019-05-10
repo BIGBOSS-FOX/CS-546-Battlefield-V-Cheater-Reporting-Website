@@ -11,9 +11,11 @@
         <div class="row">
             <h3><span class="badge badge-success ml-2">{{users.label_status}}</span></h3>
         </div>
+        {{#if users.showAppealbtn}}
         <div class="row">
             <button type="button" class="btn btn-danger btn-lg btn-block ml-2">Appeal!</button>
         </div>
+        {{/if}}
     </div>
     <div class="col-md-10">
         <div class="greyBack">
