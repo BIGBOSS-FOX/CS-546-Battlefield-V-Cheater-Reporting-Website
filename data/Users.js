@@ -9,7 +9,7 @@ module.exports = {
         if (hashedPassword == undefined) throw new Error("You must provide a password")
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
         if (typeof isAdmin !== "boolean") throw new Error("IsAdmin needs to be a boolean");
-        if (typeof hashedPassword !== "string") throw new Error("Password needs to be a string");
+        //if (!ObjectId.isValid(hashedPassword)) throw new Error("Password needs to be an object");
 
         const UsersCollection = await Users();
 
@@ -22,7 +22,8 @@ module.exports = {
             label_updated: `${Date().toString()}`, //How to set an empty timestamp
             received_reports: [],
             created_reports: [],
-            canAppeal: true
+            canAppeal: true,
+            num_report: 0
         };
 
         const insertInfo = await UsersCollection.insertOne(newUser);
@@ -91,6 +92,10 @@ module.exports = {
 
         if (UserInfo.canAppeal) {
             UserInfoToUpdate.canAppeal = UserInfo.canAppeal;
+        }
+
+        if (UserInfo.num_report) {
+            UserInfoToUpdate.num_report = UserInfo.num_report;
         }
         /*
         Add What other UserInfo you want to update here

@@ -53,9 +53,34 @@ module.exports =
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
         const ReportCollection = await Report();
         const ReportInfoToUpdate = {};
-        if (ReportInfo.new_reported_player) 
+        if (ReportInfo.reported_player) 
         {
-            ReportInfoToUpdate.reported_player = ReportInfo.new_reported_player;
+            ReportInfoToUpdate.reported_player = ReportInfo.reported_player;
+        }
+
+        if (ReportInfo.reported_by) 
+        {
+            ReportInfoToUpdate.reported_by = ReportInfo.reported_by;
+        }
+
+        if (ReportInfo.body) 
+        {
+            ReportInfoToUpdate.body = ReportInfo.body;
+        }
+
+        if (ReportInfo.image) 
+        {
+            ReportInfoToUpdate.image = ReportInfo.image;
+        }
+
+        if (ReportInfo.proof_link) 
+        {
+            ReportInfoToUpdate.proof_link = ReportInfo.proof_link;
+        }
+
+        if (ReportInfo.comments) 
+        {
+            ReportInfoToUpdate.comments = ReportInfo.comments;
         }
         /*
         Add What other ReportInfo you want to update here
@@ -89,8 +114,15 @@ module.exports =
         deletedReport.deleted = true;
         deletedReport.data = ReportToDelete;
         return deletedReport;
+    },
+
+    async getReportByReportedPlayer(reported_player) 
+    {
+        if (reported_player === undefined) throw new Error("You must provide an id to search for");
+        if (typeof reported_player !== "string") throw new Error("Reported_player must be a string");
+        const ReportCollection = await Report();
+        const foundReport = await ReportCollection.findOne({reported_player: reported_player});
+        return foundReport;
     }
-
-
 
 };
