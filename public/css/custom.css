@@ -209,3 +209,9 @@ body {
     background-color: #86929c;
     height: 2px;
 }
+.mainReportBtn{
+    margin: 0px auto;
+    margin-top: 20px;
+    width: 50%;
+    
+}
