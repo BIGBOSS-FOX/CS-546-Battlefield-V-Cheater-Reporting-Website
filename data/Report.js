@@ -123,6 +123,17 @@ module.exports =
         const ReportCollection = await Report();
         const foundReport = await ReportCollection.findOne({reported_player: reported_player});
         return foundReport;
+    },
+
+    async getAllReceivedReportsByReportedPlayer(reported_player)
+    {
+        if (reported_player === undefined) throw new Error("You must provide an id to search for");
+        if (typeof reported_player !== "string") throw new Error("Reported_player must be a string");
+
+        const ReportCollection = await Report();
+        const ReportList = await ReportCollection.find({reported_player: reported_player}).toArray();
+
+        return ReportList;
     }
 
 };
