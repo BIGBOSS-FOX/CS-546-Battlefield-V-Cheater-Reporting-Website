@@ -127,7 +127,7 @@ router.post("/search", async (req, res) => {
             res.render("layouts/main", { hasErrors: true, errors: "Provide valid username" });
         }
         else {
-            res.redirect('/users/' + searchInfo.username_search);
+            res.redirect('../users/' + searchInfo.username_search);
         }        
     } 
     catch (e) 
@@ -135,49 +135,6 @@ router.post("/search", async (req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
-    }
-});
-
-router.get("/users/:id", async (req, res) => {
-    try 
-    {
-        const user = await usersData.findUserByUserName(req.params.id);
-        user.createdinfo = {};
-        user.reportedinfo = {};
-        let report_received = false;
-        let report_created = false;
-        let m=n=0;
-        for(var i = 0; i < user.created_reports.length; i++)
-        {          
-            let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]); 
-            if(createdinfo!= undefined && createdinfo !=null)
-            {
-                m++;
-                createdinfo.reportNumber = m;
-                report_created = true;
-            }        
-            user.createdinfo[i] = createdinfo;
-        };
-        for(var i = 0; i < user.received_reports.length; i++)
-        {   
-            let reportedinfo = await reportsData.getReportByObjectId(user.received_reports[i].toString());  
-            if(reportedinfo!= undefined && reportedinfo !=null)
-            {
-                n++;
-                reportedinfo.reportNumber = n;
-                report_received = true;
-            }
-            user.reportedinfo[i] = reportedinfo;
-        };
-        user.created_reports_count =  user.created_reports.length;
-        res.render("layouts/user", {users : user, isCreated : report_created, isreceived : report_received});
-    } 
-    catch(e) 
-    {
-        console.log(e);
-        req.session.userlogged = null;
-        res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error",{ errors: e , layout: 'errorlayout' });
     }
 });
 
