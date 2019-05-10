@@ -145,7 +145,8 @@ router.post("/search", async (req, res) => {
 });
 
 router.get("/users/:id", async(req, res) => {
-    try {
+    try 
+    {
         if(!req.params.id) 
         {
             res.render("layouts/main",{ error: "You must provide a valid data" });
