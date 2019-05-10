@@ -2,6 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const Users = mongoCollections.Users;
 const { ObjectId } = require('mongodb');
 
+const Poll = require('./Poll');
+
 module.exports = {
     async addUser(user_name, hashedPassword, isAdmin) {
         if (user_name === undefined) throw new Error("You must provide a user_name");
@@ -9,7 +11,7 @@ module.exports = {
         if (hashedPassword == undefined) throw new Error("You must provide a password")
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
         if (typeof isAdmin !== "boolean") throw new Error("IsAdmin needs to be a boolean");
-        if (typeof hashedPassword !== "string") throw new Error("Password needs to be a string");
+        //if (!ObjectId.isValid(hashedPassword)) throw new Error("Password needs to be an object");
 
         const UsersCollection = await Users();
 
@@ -22,7 +24,8 @@ module.exports = {
             label_updated: `${Date().toString()}`, //How to set an empty timestamp
             received_reports: [],
             created_reports: [],
-            canAppeal: true
+            canAppeal: true,
+            num_report: 0
         };
 
         const insertInfo = await UsersCollection.insertOne(newUser);
@@ -92,6 +95,10 @@ module.exports = {
         if (UserInfo.canAppeal) {
             UserInfoToUpdate.canAppeal = UserInfo.canAppeal;
         }
+
+        if (UserInfo.num_report) {
+            UserInfoToUpdate.num_report = UserInfo.num_report;
+        }
         /*
         Add What other UserInfo you want to update here
         */
@@ -137,5 +144,56 @@ module.exports = {
 
         return foundUser;
 
+    },
+
+    async statusChange(user_name) { // This function is to count numbers of report a user received and decide what will change base on new status
+        if (user_name === undefined) throw new Error("You must provide a user_name");
+        if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
+
+        let userInfo = await this.findUserByUserName(user_name);
+        //console.log("hhh");
+        if (userInfo.label_status === 'Innocent') {
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
+
+                await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(userInfo.user_name);
+
+                userInfo.label_status = 'Processing';
+                userInfo.num_report = 0;
+
+                await this.updateUser(userInfo._id, userInfo);
+            }
+            
+        }
+        else if (userInfo.label_status === 'Processing') {
+
+        }
+        else if (userInfo.label_status === 'Suspicious') {
+            
+        }
+        else if (userInfo.label_status === 'Cheater') {
+
+        }
+        else if (userInfo.label_status === 'Legit') {
+
+        }
+        else {
+            // do nothing
+        }
+
+    },
+    
+    async newAdminPendingVote(userBeVoted) {
+        const userList = await this.getAllUsers();
+        for (let i = 0; i < userList.length; i++) {
+            if (userList[i].isAdmin) {
+                let adminInfo = userList[i];
+                adminInfo.pending_votes.push(userBeVoted);
+                await this.updateUser(adminInfo._id, adminInfo);
+            }
+        }
     }
+
 };

@@ -36,7 +36,10 @@ router.post("/", async(req, res) => {
         {
             res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
         }
-        else if (reportedPlayerInfo.isAdmin) {
+        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
+            res.render("layouts/createreport", {errors : "You cannot report yourself" , hasErrors:true});
+        }
+        else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
             res.render("layouts/createreport", {errors : "Admin cannot be reported" , hasErrors:true});
         }
         else
@@ -50,6 +53,10 @@ router.post("/", async(req, res) => {
         const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
         reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
         const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
+
+        //check status and decide whether it will change
+        await usersData.statusChange(reportedPlayerInfo.user_name);
+        
         res.redirect("/users/" + reportedPlayerInfo.user_name);
     }
     } 
