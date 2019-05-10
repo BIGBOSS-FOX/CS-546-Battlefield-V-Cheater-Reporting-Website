@@ -3,6 +3,11 @@
         <div class="row">
             <img src="/public/css/img_avatar.png" alt="Avatar" class="avatar shadow">
         </div>
+        {{#if users.isAdmin}}
+        <div class="row">
+            <h3><span class="badge badge-dark ml-2">Admin</span></h3>
+        </div>
+        {{/if}}
         <div class="row">
             <h3><span class="badge badge-success ml-2">{{users.label_status}}</span></h3>
         </div>

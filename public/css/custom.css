@@ -195,3 +195,10 @@ body {
 .floatRight{
     float: right;
 }
+.greyBack{
+    background-color: #a9a9a930;
+}
+.separatingBar{
+    background-color:#86929c; 
+    height: 2px;
+}
