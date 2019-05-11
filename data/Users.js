@@ -68,11 +68,11 @@ module.exports = {
             UserInfoToUpdate.hashedPassword = UserInfo.hashedPassword;
         }
 
-        if (UserInfo.isAdmin) {
+        if (UserInfo.isAdmin !== null || UserInfo.isAdmin !== undefined) {
             UserInfoToUpdate.isAdmin = UserInfo.isAdmin;
         }
 
-        if (UserInfo.pending_votes) {
+        if (UserInfo.pending_votes !== null || UserInfo.pending_votes !== undefined) {
             UserInfoToUpdate.pending_votes = UserInfo.pending_votes;
         }
 
@@ -84,19 +84,19 @@ module.exports = {
             UserInfoToUpdate.label_updated = UserInfo.label_updated;
         }
 
-        if (UserInfo.received_reports) {
+        if (UserInfo.received_reports !== null || UserInfo.received_reports !== undefined) {
             UserInfoToUpdate.received_reports = UserInfo.received_reports;
         }
 
-        if (UserInfo.created_reports) {
+        if (UserInfo.created_reports !== null || UserInfo.created_reports !== undefined) {
             UserInfoToUpdate.created_reports = UserInfo.created_reports;
         }
 
-        if (UserInfo.canAppeal) {
+        if (UserInfo.canAppeal !== null || UserInfo.canAppeal !== undefined) {
             UserInfoToUpdate.canAppeal = UserInfo.canAppeal;
         }
 
-        if (UserInfo.num_report) {
+        if (UserInfo.num_report !== null || UserInfo.num_report !== undefined) {
             UserInfoToUpdate.num_report = UserInfo.num_report;
         }
         /*
@@ -223,10 +223,38 @@ module.exports = {
             
         }
         else if (userInfo.label_status === 'Suspicious') {
-            
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
+
+                let newPoll = await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(newPoll);
+
+                userInfo.label_status = 'Processing';
+                userInfo.num_report = 0;
+
+                await this.updateUser(userInfo._id, userInfo);
+            }
+            else {
+                await this.updateUser(userInfo._id, userInfo);
+            }
         }
         else if (userInfo.label_status === 'Cheater') {
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
 
+                let newPoll = await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(newPoll);
+
+                userInfo.label_status = 'Processing';
+                userInfo.num_report = 0;
+
+                await this.updateUser(userInfo._id, userInfo);
+            }
+            else {
+                await this.updateUser(userInfo._id, userInfo);
+            }
         }
         else if (userInfo.label_status === 'Legit') {
             userInfo.num_report++;
@@ -342,5 +370,12 @@ module.exports = {
         const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
 
         return CheaterList;
+    },
+
+    async addPolltoPending_votes(user_name, poll_id) {
+        const UsersCollection = await Users();
+        let admin_user = await UsersCollection.findUserByUserName(user_name);
+        admin_user.pending_votes.push(poll_id);
+        await UsersCollection.updateUser(admin_user._id, admin_user);
     }
 };
