@@ -19,7 +19,7 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try {
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
-
+            if(user === undefined || user === null) throw "Invalid User"
             res.render("layouts/main", { users: user });
         } else {
             res.render("layouts/main", {});
@@ -135,6 +135,7 @@ router.get("/users/:id", async(req, res) => {
             res.render("layouts/main", { error: "You must provide a valid data" });
         }
         const user = await usersData.findUserByUserName(req.params.id);
+        if(user === undefined || user === null) throw "Invalid User";
         user.createdinfo = {};
         user.reportedinfo = {};
         let report_received = false;
@@ -182,6 +183,7 @@ router.get("/list", async(req, res) => { //get the cheater list
         const userList = await usersData.getAllCheaters();
         if (req.session.userlogged) {
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            if(user === undefined || user === null) throw "Invalid User";
             res.render('layouts/cheaters', { data: userList, users: user });
         } else {
             res.render('layouts/cheaters', { data: userList });
@@ -215,7 +217,7 @@ router.use(function(req, res, next) {
         res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
     } else
         next();
-        
+
 });
 
 module.exports = router;
