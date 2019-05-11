@@ -79,10 +79,7 @@ router.post("/", async (req, res) => {
     try{
         //we need a function to update a poll for voting about a userID
         const voteinfo = req.body;
-        console.log("ID info:    " + voteinfo.id);
         const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
-        console.log(FullPoll);
-        console.log(voteinfo);
         if (FullPoll == undefined || FullPoll == null) {
             throw "cannot get poll with that id";
         }
