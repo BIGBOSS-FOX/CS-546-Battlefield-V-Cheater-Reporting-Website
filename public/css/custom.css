@@ -5,6 +5,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
+    padding-top: 80px;
 }
 
 .container.page-size {
@@ -250,4 +251,31 @@ body {
     background-color: #ffffffad;
     padding: 2px;
     border-radius: 5px;
+}
+
+.nav-icon {
+    width: 25px;
+}
+
+.main-logo div {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 24px;
+    letter-spacing: 6px;
+    word-spacing: -5px;
+    color: #e8fbfd;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: italic;
+    font-variant: normal;
+    text-transform: none;
+    text-align: center;
+    text-shadow: -1px -1px 0 #9ea4ce, 1px -1px 0 #9ea4ce, -1px 1px 0 #9ea4ce, 1px 1px 0 #9ea4ce;
+}
+
+.paddingbottomone {
+    padding-bottom: 1px;
+}
+
+.paddingtopone {
+    padding-top: 0px;
 }
