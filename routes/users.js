@@ -57,7 +57,10 @@ router.get("/:id/appeal", async(req, res) => {
     try {
         res.render("layouts/appeal", { users: req.session.userlogged, user: req.params.id });
     } catch (e) {
-        res.status(404).render("layouts/error", { errors: e });
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -75,14 +78,23 @@ router.post("/:id/appeal", async(req, res) => {
     }
 
     try {
+        let userInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
+        if(userInfo === undefined || userInfo === null) throw "Invalid User"
+        userInfo.canAppeal = false;
+        console.log(userInfo);
+        await usersData.updateUser(userInfo._id, userInfo);
+
         //add new appeal into appeal collection
         const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, appealInfo.exampleFormControlFile1, appealInfo.link);
+
+        await usersData.statusChange(userInfo.user_name);
         res.redirect("/users/" + req.session.userlogged.user_name);
-
-
-
-    } catch (e) {
-        res.status(404).render("layouts/error", { errors: e });
+    } 
+    catch (e) {
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
