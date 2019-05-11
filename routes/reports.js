@@ -70,6 +70,7 @@ router.post("/", async(req, res) => {
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -92,6 +93,7 @@ router.post("/:userid", async(req, res) => { //post a report against userid
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -111,6 +113,7 @@ router.put("/:reportid", async(req, res) => { //add a comment to a report
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
