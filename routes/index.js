@@ -10,7 +10,8 @@ const constructorMethod = app => {
     app.use("/polls", pollsRoutes);
 
     app.use("*", (req, res) => {
-        res.render("layouts/main", {});
+        const e = "404: Page Not Found!"
+        res.status(404).render("layouts/error",{errors: e , layout: 'errorlayout' });
     });
 };
 

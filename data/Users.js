@@ -157,8 +157,8 @@ module.exports = {
             if (userInfo.num_report === 1) {
                 //trigger a new poll
 
-                await Poll.addPoll(userInfo.user_name);
-                await this.newAdminPendingVote(userInfo.user_name);
+                let newPoll = await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(newPoll);
 
                 userInfo.label_status = 'Processing';
                 userInfo.num_report = 0;
@@ -185,15 +185,25 @@ module.exports = {
 
     },
     
-    async newAdminPendingVote(userBeVoted) {
+    async newAdminPendingVote(pollObj) {
         const userList = await this.getAllUsers();
         for (let i = 0; i < userList.length; i++) {
             if (userList[i].isAdmin) {
                 let adminInfo = userList[i];
-                adminInfo.pending_votes.push(userBeVoted);
+                adminInfo.pending_votes.push({
+                    "pollID": pollObj._id,
+                    "pollUser": pollObj.voting_about,
+                    "createdTime": Date().toString() 
+                });
                 await this.updateUser(adminInfo._id, adminInfo);
             }
         }
-    }
+    },
 
+    async getAllCheaters() {
+        const UsersCollection = await Users();
+        const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
+
+        return CheaterList;
+    }
 };
