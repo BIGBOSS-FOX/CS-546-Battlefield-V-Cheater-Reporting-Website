@@ -11,7 +11,8 @@ const constructorMethod = app => {
 
     app.use("*", (req, res) => {
         const e = "404: Page Not Found!"
-        res.status(404).render("layouts/error",{errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     });
 };
 
