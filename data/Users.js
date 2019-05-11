@@ -198,6 +198,12 @@ module.exports = {
                 await this.updateUser(adminInfo._id, adminInfo);
             }
         }
-    }
+    },
 
+    async getAllCheaters() {
+        const UsersCollection = await Users();
+        const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
+
+        return CheaterList;
+    }
 };
