@@ -198,7 +198,7 @@ router.get("/users/:id", async(req, res) => {
 // Ban List Routes
 router.get("/list", async (req, res) => { //get the cheater list
     try {
-        const userList = "List of banned players";
+        const userList = await usersData.getAllCheaters();
         if (req.session.userlogged) {
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
             res.render('layouts/cheaters', { data: userList, users: user });
