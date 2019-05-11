@@ -19,7 +19,7 @@ router.post("/", async(req, res) => { //this is the rout for adding a new user
         const newUser = await usersData.addUser(userInfo);
         //authenticate the newUser
         //render the profile
-        res.render('layouts/example', { data: newUser });
+        res.render('layouts/example', { users: req.session.userlogged, data: newUser });
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
@@ -42,7 +42,7 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
     try {
         //this updates a user's status (can be generalized to update anything else if need be)
         const updatedUser = usersData.updateUser(req.body.id, req.body) //for now req.body is just userId and status but can be more
-        res.render('layouts/example', { data: updatedUser });
+        res.render('layouts/example', { users: req.session.userlogged, data: updatedUser });
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
@@ -54,7 +54,7 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 router.get("/:id/appeal", async(req, res) => {
     try 
     {
-        res.render("layouts/appeal", {user: req.params.id});
+        res.render("layouts/appeal", {users: req.session.userlogged, user: req.params.id});
     } 
     catch (e) 
     {
