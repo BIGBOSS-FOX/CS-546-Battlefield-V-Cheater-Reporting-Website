@@ -81,6 +81,7 @@ router.post("/", async (req, res) => {
         console.log("ID info:    " + voteinfo.id);
         const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
         console.log(FullPoll);
+        console.log(voteinfo);
         if (FullPoll == undefined || FullPoll == null) {
             throw "cannot get poll with that id";
         }
@@ -96,7 +97,7 @@ router.post("/", async (req, res) => {
         }
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
-        pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.vote);
+        await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
         if(FullPoll.votes.length === 3){
             usersData.statusChange(FullPoll.voting_about);
             pollsData.deletePoll(req.body.id);
