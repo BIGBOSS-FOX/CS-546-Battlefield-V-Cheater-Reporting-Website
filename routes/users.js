@@ -75,8 +75,15 @@ router.post("/:id/appeal", async(req, res) => {
     }
 
     try {
+        let userInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
+        userInfo.canAppeal = false;
+        console.log(userInfo);
+        await usersData.updateUser(userInfo._id, userInfo);
+
         //add new appeal into appeal collection
         const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, appealInfo.exampleFormControlFile1, appealInfo.link);
+
+        await usersData.statusChange(userInfo.user_name);
         res.redirect("/users/" + req.session.userlogged.user_name);
 
 

@@ -134,7 +134,6 @@ router.get("/users/:id", async(req, res) => {
         if (!req.params.id) {
             res.render("layouts/main", { error: "You must provide a valid data" });
         }
-        console.log(req.params.id)
         const user = await usersData.findUserByUserName(req.params.id);
         user.createdinfo = {};
         user.reportedinfo = {};
