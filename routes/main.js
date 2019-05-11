@@ -184,7 +184,7 @@ router.get("/users/:id", async(req, res) => {
             user.reportedinfo[i] = reportedinfo;
         };
         user.created_reports_count = user.created_reports.length;
-        res.render("layouts/user", { users: user, isCreated: report_created, isreceived: report_received });
+        res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
@@ -222,7 +222,7 @@ router.get("/list/:status", async (req, res) => { //get the list of players with
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
         const userList = "List of players with status" + req.params.status;
-        res.render('layouts/cheaters', { data: userList });
+        res.render('layouts/cheaters', { users: req.session.userlogged, data: userList });
     } 
     catch (e) 
     {

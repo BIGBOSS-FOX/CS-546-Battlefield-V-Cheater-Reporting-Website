@@ -8,7 +8,7 @@ const ObjectID = require("mongodb").ObjectID;
 router.get("/", async(req, res) => { //create a report form
     try 
     {
-        res.render("layouts/createreport", {});
+        res.render("layouts/createreport", {users: req.session.userlogged});
     } 
     catch (e) 
     {
@@ -34,13 +34,13 @@ router.post("/", async(req, res) => {
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
         if(!reportedPlayerInfo)
         {
-            res.render("layouts/createreport", {errors : "Invalid Userid" , hasErrors:true});
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Invalid Userid" , hasErrors:true});
         }
         else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
-            res.render("layouts/createreport", {errors : "You cannot report yourself" , hasErrors:true});
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "You cannot report yourself" , hasErrors:true});
         }
         else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
-            res.render("layouts/createreport", {errors : "Admin cannot be reported" , hasErrors:true});
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Admin cannot be reported" , hasErrors:true});
         }
         else
         {        
@@ -94,7 +94,7 @@ router.put("/:reportid", async(req, res) => { //add a comment to a report
     try {
         if (req.session.userlogged) { //If a user is authenticated
             //make a comment on a report: need a report add comment function
-            res.render('layouts/example', { data: user });
+            res.render('layouts/example', { users: req.session.userlogged, data: user });
         } else {
             //go to login screen and do not make a report, with an error that you must be logged in to do this action
             const data = "go to Log In page once it is made";

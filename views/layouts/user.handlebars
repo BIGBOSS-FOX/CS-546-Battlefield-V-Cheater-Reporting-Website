@@ -3,24 +3,24 @@
         <div class="row">
             <img src="/public/css/img_avatar.png" alt="Avatar" class="avatar shadow">
         </div>
-        {{#if users.isAdmin}}
+        {{#if userprofile.isAdmin}}
         <div class="row">
             <h3><span class="badge badge-dark ml-2">Admin</span></h3>
         </div>
         {{/if}}
         <div class="row">
-            <h3><span class="badge badge-success ml-2 text-uppercase">{{users.label_status}}</span></h3>
+            <h3><span class="badge badge-success ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
         </div>
-        {{#if users.showAppealbtn}}
+        {{#if userprofile.showAppealbtn}}
         <div class="row">
-            <a type="button" class="btn btn-danger btn-lg btn-block ml-2" href="/users/{{user}}/appeal">Appeal!</a>
+            <a type="button" class="btn btn-danger btn-lg btn-block ml-2" href="/users/{{userprofile.user_name}}/appeal">Appeal!</a>
         </div>
         {{/if}}
     </div>
     <div class="col-md-10">
         <div class="bs-callout bs-callout-default shadow">
-            <h4> <span class="userpage-username">{{users.user_name}}</span>
-                <span class="badge badge-pill badge-info floatRight shadow">{{users.created_reports_count}} report(s)
+            <h4> <span class="userpage-username">{{userprofile.user_name}}</span>
+                <span class="badge badge-pill badge-info floatRight shadow">{{userprofile.created_reports_count}} report(s)
                     submitted</span>
             </h4>
         </div>
@@ -39,7 +39,7 @@
         <div class="smallPad">
             <div class="accordion" id="accordionRecieved">
                 {{#if isreceived}}
-                {{#each users.reportedinfo}}
+                {{#each userprofile.reportedinfo}}
                 <div class="card">
                     <div class="card-header" id="heading{{this.reportNumber}}">
                         <h5 class="mb-0">
@@ -98,7 +98,7 @@
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
                 {{#if isCreated}}
-                {{#each users.createdinfo}}
+                {{#each userprofile.createdinfo}}
                 <div class="card">
                     <div class="card-header" id="headingSubmit{{this.reportNumber}}">
                         <h5 class="mb-0">
