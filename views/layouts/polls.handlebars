@@ -1,41 +1,87 @@
 <div class="row my-5">
     <div class="col-md-12">
         <h2 class="report-title text-center shadow">Reports to be Polled</h2>
-        <main class="alert">
-            {{#if hasdata}}
-            {{#each data}}
-            <div class="card">
-                <p>{{this.voting_about}}</p>
-                {{#each this.reportedinfo}}
-                 <div class="card">
-                    <div class="card-header" id="heading{{_id}}">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapse{{_id}}" aria-expanded="true"
-                                aria-controls="collapseOne">
-                                Report #{{_id}}    
-                            </button>
-                        </h5>
+        <div class="smallPad">
+            <div class="accordion" id="accordionRecieved">
+                {{#if hasdata}}
+                {{#each data}}
+                <div class="card outer-card">
+
+                    <div class="row">
+
+                        <div class="col-sm">
+                            <a href="/users/{{this.voting_about}}"
+                                class="badge badge-pill badge-primary polls-username shadow">{{this.voting_about}}</a>
+                        </div>
+
+                        <form class="form-inline" method="POST" action="/polls" id="report-form{{this.voting_about}}">
+                            <input type="hidden" name="id" value="{{this._id}}">
+                            <div class="col-sm">
+
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
+                                    <label class="btn btn-success active">
+                                        <input type="radio" name="options" id="option1{{this.voting_about}}"
+                                            value="Innocent" autocomplete="off" required>
+                                        Innocent
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input type="radio" name="options" id="option2{{this.voting_about}}"
+                                            value="Suspicious" autocomplete="off" required> Suspicious
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input type="radio" name="options" id="option3{{this.voting_about}}"
+                                            value="Cheater" autocomplete="off" required> Cheater
+                                    </label>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary shadow ml-2">Vote</button>
+
+                            </div>
+                        </form>
                     </div>
-                    </div>
-                   
-                    <div id="collapse{{_id}}" class="collapse"
-                        aria-labelledby="heading{{_id}}" data-parent="#accordionRecieved">
-                        <div class="card-body">
-                            {{proof_link}}
-                            {{body}}
+
+
+
+                    {{#each this.reportedinfo}}
+                    <div class="card">
+                        <div class="card-header" id="heading{{_id}}">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapse{{_id}}" aria-expanded="true" aria-controls="collapseOne">
+                                    Report #{{_id}}
+                                </button>
+                            </h5>
                         </div>
                     </div>
-                     {{/each}}
+
+                    <div id="collapse{{_id}}" class="collapse" aria-labelledby="heading{{_id}}"
+                        data-parent="#accordionRecieved">
+                        <div class="card-body">
+
+                            Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
+                            <br>
+                            <div class="bs-callout bs-callout-default shadow">
+                                {{body}}
+                                <br>
+                                {{image}}
+                                <br>
+                                {{proof_link}}
+                            </div>
+                        </div>
+
+                    </div>
+                    {{/each}}
                 </div>
-            {{/each}}
-            {{else}}
+                {{/each}}
+                {{else}}
                 <p>No reports found</p>
-            {{/if}}
-                                  
-        </main>
+                {{/if}}
+
+
+
+            </div>
+
+        </div>
     </div>
 </div>
-
-
-

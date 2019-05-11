@@ -46,8 +46,7 @@ router.post("/register", async (req, res) => {
         }
         if (!newUserInfo.username_signup) {
             res.json({error: "You must provide a username"});
-        }
-
+        }       
         if(!newUserInfo.password_signup){
             res.json({error: "You must provide a password"});
         }
@@ -60,7 +59,6 @@ router.post("/register", async (req, res) => {
             });
             req.body.username_login = newUserInfo.username_signup;
             req.body.password_login = newUserInfo.password_signup;
-            console.log("Redirecting to login");
             res.redirect('/login');
         } 
         else 
