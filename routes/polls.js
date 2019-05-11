@@ -89,6 +89,9 @@ router.post("/", async (req, res) => {
         //if already voted: error
         let adminExists = false;
         const votesArray = FullPoll.votes;
+        if(votesArray.length == 3){
+            throw "More than 3 admins cannot vote!";
+        }
         //check if admin exists in vote list
         for (let i = 0; i < votesArray.length; i++){
             if (votesArray[i].admin == req.session.userlogged.user_name) {
@@ -98,9 +101,10 @@ router.post("/", async (req, res) => {
         }
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
-        await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
+        let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
+        await usersData.statusChangeAfterVoting(updatedpoll);
+        
 
-        usersData.statusChange(FullPoll.voting_about); //call each time, remove notification
         res.render("layouts/main", {users: req.session.userlogged});
     }
     catch (e) 

@@ -216,6 +216,7 @@ router.use(function(req, res, next) {
         res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
     } else
         next();
+        
 });
 
 module.exports = router;
