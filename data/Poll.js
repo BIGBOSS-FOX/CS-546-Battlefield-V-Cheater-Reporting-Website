@@ -31,7 +31,7 @@ module.exports = {
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
         const PollCollection = await Poll();
-        const foundPoll = await PollCollection.findOne({_id: obj_id});
+        const foundPoll = await PollCollection.findOne({_id: ObjectId(obj_id)});
         return foundPoll;
     },
 

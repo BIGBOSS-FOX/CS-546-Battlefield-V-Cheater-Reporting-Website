@@ -78,12 +78,17 @@ router.post("/", async (req, res) => {
     try{
         //we need a function to update a poll for voting about a userID
         const voteinfo = req.body;
-        const FullPoll = pollsData.getPollByObjectId(voteinfo.id);
+        console.log(voteinfo.id);
+        const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
+        console.log(FullPoll);
+        if (FullPoll == undefined || FullPoll == null) {
+            throw "cannot get poll with that id";
+        }
         //if already voted: error
         let adminExists = false;
         const votesArray = FullPoll.votes;
         //check if admin exists in vote list
-        for (let i = 0; i <votesArray.length; i++){
+        for (let i = 0; i < votesArray.length; i++){
             if (votesArray[i].admin == req.session.userlogged.user_name) {
                 adminExists = true;
                 break;
@@ -96,11 +101,12 @@ router.post("/", async (req, res) => {
             usersData.statusChange(FullPoll.voting_about);
             pollsData.deletePoll(req.body.id);
         }
-        res.render("layouts/main", {users: user});
+        res.render("layouts/main", {users: req.session.userlogged});
     }
     catch (e) 
     {
         req.session.userlogged = null;
+        console.log(e);
         res.clearCookie("AuthCookie");
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
