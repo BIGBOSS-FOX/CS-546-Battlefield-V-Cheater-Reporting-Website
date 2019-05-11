@@ -6,152 +6,133 @@ const reportsData = data.Report;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
-router.use(function (req, res, next) {
-    if (req.session.userlogged === undefined || req.session.userlogged === null) 
-    {
+router.use(function(req, res, next) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) {
         res.locals.loggedin = false;
-    } else 
-    {        
+    } else {
         res.locals.loggedin = true;
     }
     next();
 });
 
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
-    try 
-    {
+    try {
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
-            
-            res.render("layouts/main", {users: user});
-        }
-        else{
+
+            res.render("layouts/main", { users: user });
+        } else {
             res.render("layouts/main", {});
         }
-    } 
-    catch (e) 
-    {
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(400).render("layouts/error",{errors: e , layout: 'errorlayout' });
+        res.status(400).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
     }
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", async(req, res) => {
     try {
         let newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.json({error: "You must provide a valid data"});
+            res.json({ error: "You must provide a valid data" });
         }
         if (!newUserInfo.username_signup) {
-            res.json({error: "You must provide a username"});
-        }       
-        if(!newUserInfo.password_signup){
-            res.json({error: "You must provide a password"});
+            res.json({ error: "You must provide a username" });
+        }
+        if (!newUserInfo.password_signup) {
+            res.json({ error: "You must provide a password" });
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
         if (compareUser === undefined || compareUser === null) {
-            bcrypt.hash(newUserInfo.password_signup, saltRounds, function (err, hash) {
+            bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
                 // Store hash in password DB.
                 usersData.addUser(newUserInfo.username_signup, hash, false);
             });
             req.body.username_login = newUserInfo.username_signup;
             req.body.password_login = newUserInfo.password_signup;
             res.redirect('/login');
-        } 
-        else 
-        {
-           res.json({error : "Username already exists"});
-        }        
-    } 
-    catch (e) 
-    {
+        } else {
+            res.json({ error: "Username already exists" });
+        }
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async(req, res) => {
     try {
         let newUserInfo = req.body;
         if (!newUserInfo) {
-            res.json({error: "You must provide data to log in"});
+            res.json({ error: "You must provide data to log in" });
         }
         if (!newUserInfo.username_login) {
-            res.json({ error: "You must provide a username"});
+            res.json({ error: "You must provide a username" });
         }
-        if(!newUserInfo.password_login){
-            res.json({ error: "You must provide a password"});
+        if (!newUserInfo.password_login) {
+            res.json({ error: "You must provide a password" });
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
-        if(!compareUser)
-        {
-            res.json({error : "Provide valid Username/Password"});
-        }
-        else {
+        if (!compareUser) {
+            res.json({ error: "Provide valid Username/Password" });
+        } else {
             const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
             if (!hashed) {
-                res.json({error : "Provide valid Username/Password"});
-            }
-            else {
+                res.json({ error: "Provide valid Username/Password" });
+            } else {
                 req.session.userlogged = compareUser;
                 res.redirect('/')
             }
-        }          
-    } 
-    catch (e) 
-    {
+        }
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
-router.get("/logout", async (req, res) => 
-{
+router.get("/logout", async(req, res) => {
     req.session.userlogged = null;
     res.clearCookie("AuthCookie");
     res.locals.userlogged = false;
     res.redirect("/");
 });
 
-router.post("/search", async (req, res) => {
+router.post("/search", async(req, res) => {
     try {
         const searchInfo = req.body;
-        if (!searchInfo) 
-        {
+        if (!searchInfo) {
             res.json({ error: "You must provide a valid data" });
         }
         if (!searchInfo.username_search) {
-            res.json({ error: "Provide Username"});
+            res.json({ error: "Provide Username" });
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
         if (searchData === undefined || searchData === null) {
             //show an error message
             //username doen't exist
             res.render("layouts/main", { hasErrors: true, errors: "Provide valid username" });
-        }
-        else {
+        } else {
             res.redirect('../users/' + searchInfo.username_search);
-        }        
-    } 
-    catch (e) 
-    {
+        }
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 router.get("/users/:id", async(req, res) => {
-    try 
-    {
-        if(!req.params.id) 
-        {
-            res.render("layouts/main",{ error: "You must provide a valid data" });
+    try {
+        if (!req.params.id) {
+            res.render("layouts/main", { error: "You must provide a valid data" });
         }
         console.log(req.params.id)
         const user = await usersData.findUserByUserName(req.params.id);
@@ -189,56 +170,51 @@ router.get("/users/:id", async(req, res) => {
         console.log(e);
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 
 
 // Ban List Routes
-router.get("/list", async (req, res) => { //get the cheater list
+router.get("/list", async(req, res) => { //get the cheater list
     try {
         const userList = await usersData.getAllCheaters();
         if (req.session.userlogged) {
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
             res.render('layouts/cheaters', { data: userList, users: user });
-        }
-        else{
+        } else {
             res.render('layouts/cheaters', { data: userList });
         }
         //Get users by status: confirmed cheater
-        
-    } 
-    catch (e) 
-    {
+
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
-router.get("/list/:status", async (req, res) => { //get the list of players with any status
+router.get("/list/:status", async(req, res) => { //get the list of players with any status
     try {
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
         const userList = "List of players with status" + req.params.status;
         res.render('layouts/cheaters', { users: req.session.userlogged, data: userList });
-    } 
-    catch (e) 
-    {
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
-router.use(function (req, res, next) 
-{
-    if (req.session.userlogged === undefined || req.session.userlogged === null) 
-    {
+router.use(function(req, res, next) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) {
         res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
-    } 
-    else
+    } else
         next();
 });
 

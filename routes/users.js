@@ -23,7 +23,8 @@ router.post("/", async(req, res) => { //this is the rout for adding a new user
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -46,19 +47,17 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(404).render("layouts/error", { errors: e, layout: 'errorlayout' });
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 //This route will render an appeal page
 router.get("/:id/appeal", async(req, res) => {
-    try 
-    {
-        res.render("layouts/appeal", {users: req.session.userlogged, user: req.params.id});
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e});
+    try {
+        res.render("layouts/appeal", { users: req.session.userlogged, user: req.params.id });
+    } catch (e) {
+        res.status(404).render("layouts/error", { errors: e });
     }
 });
 
@@ -71,9 +70,8 @@ router.post("/:id/appeal", async(req, res) => {
     if (!appealInfo) {
         res.json({ error: "You must provide data to add an appeal" });
     }
-    if (!appealInfo.exampleFormControlTextarea1) 
-    {
-        res.json({error: "You must provide an evidence"});
+    if (!appealInfo.exampleFormControlTextarea1) {
+        res.json({ error: "You must provide an evidence" });
     }
 
     try {
@@ -84,7 +82,7 @@ router.post("/:id/appeal", async(req, res) => {
 
 
     } catch (e) {
-        res.status(404).render("layouts/error", {errors: e});
+        res.status(404).render("layouts/error", { errors: e });
     }
 });
 

@@ -171,7 +171,13 @@ module.exports = {
             
         }
         else if (userInfo.label_status === 'Processing') {
+            const pollInfo = await Poll.getPollByVoting_about(userInfo.user_name);
+            const latestVote = pollInfo.votes[pollInfo.votes.length - 1];
+            const latestAdmin = latestVote.admin;
 
+            await this.removePendingVote(latestAdmin, pollInfo._id);
+
+            
         }
         else if (userInfo.label_status === 'Suspicious') {
             
@@ -217,6 +223,21 @@ module.exports = {
             }
         }
     },
+
+
+    async removePendingVote(admin, pollID) {
+        let adminInfo = await this.findUserByUserName(admin);
+
+        for (let i = 0; i < adminInfo.pending_votes.length; i++) {
+            if (adminInfo.pending_votes[i].pollID.toString() === pollID.toString()) {
+                adminInfo.pending_votes.splice(i, 1);
+                break;
+            }
+        }
+
+        await this.updateUser(adminInfo._id, adminInfo);
+    },
+
 
     async getAllCheaters() {
         const UsersCollection = await Users();
