@@ -155,13 +155,14 @@ router.get("/users/:id", async(req, res) => {
         {
             res.render("layouts/main",{ error: "You must provide a valid data" });
         }
+        console.log(req.params.id)
         const user = await usersData.findUserByUserName(req.params.id);
         user.createdinfo = {};
         user.reportedinfo = {};
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if (user.canAppeal && user.label_status == "Confirmed Cheater") {
+        if (user.canAppeal && user.label_status == "Cheater") {
             showAppealbtn = true;
         }
         user.showAppealbtn = showAppealbtn;

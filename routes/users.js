@@ -54,7 +54,7 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 router.get("/:id/appeal", async(req, res) => {
     try 
     {
-        res.render("layouts/appeal", {});
+        res.render("layouts/appeal", {user: req.params.id});
     } 
     catch (e) 
     {
