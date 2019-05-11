@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const pollsData = data.Poll;
 const reportsData = data.Report;
+const usersData = data.Users;
 //we may not need any routes for this
 
 const adminRequest = async(req, res, next)=>
@@ -98,10 +99,8 @@ router.post("/", async (req, res) => {
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
         await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
-        if(FullPoll.votes.length === 3){
-            usersData.statusChange(FullPoll.voting_about);
-            pollsData.deletePoll(req.body.id);
-        }
+
+        usersData.statusChange(FullPoll.voting_about); //call each time, remove notification
         res.render("layouts/main", {users: req.session.userlogged});
     }
     catch (e) 
