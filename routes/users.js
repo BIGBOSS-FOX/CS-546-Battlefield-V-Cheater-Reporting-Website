@@ -3,7 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 const appealData = data.Appeal;
-const ObjectID = require("mongodb").ObjectID;
+//const ObjectID = require("mongodb").ObjectID;
 
 router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
@@ -54,7 +54,7 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 router.get("/:id/appeal", async(req, res) => {
     try 
     {
-        res.render("layouts/appeal", {});
+        res.render("layouts/appeal", {user: req.params.id});
     } 
     catch (e) 
     {

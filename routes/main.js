@@ -46,8 +46,7 @@ router.post("/register", async (req, res) => {
         }
         if (!newUserInfo.username_signup) {
             res.json({error: "You must provide a username"});
-        }
-
+        }       
         if(!newUserInfo.password_signup){
             res.json({error: "You must provide a password"});
         }
@@ -60,7 +59,6 @@ router.post("/register", async (req, res) => {
             });
             req.body.username_login = newUserInfo.username_signup;
             req.body.password_login = newUserInfo.password_signup;
-            console.log("Redirecting to login");
             res.redirect('/login');
         } 
         else 
@@ -155,13 +153,14 @@ router.get("/users/:id", async(req, res) => {
         {
             res.render("layouts/main",{ error: "You must provide a valid data" });
         }
+        console.log(req.params.id)
         const user = await usersData.findUserByUserName(req.params.id);
         user.createdinfo = {};
         user.reportedinfo = {};
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if (user.canAppeal && user.label_status == "Confirmed Cheater") {
+        if (user.canAppeal && user.label_status == "Cheater") {
             showAppealbtn = true;
         }
         user.showAppealbtn = showAppealbtn;
