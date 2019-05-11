@@ -208,7 +208,17 @@ module.exports = {
             const latestVote = pollInfo.votes[pollInfo.votes.length - 1];
             const latestAdmin = latestVote.admin;
 
-            await this.removePendingVote(latestAdmin, pollInfo._id);
+            await this.removePendingVote(latestAdmin, pollInfo._id); // remove pending vote
+
+            //Judge whether all admins voted
+            if (await this.checkAllAdminVoted(pollInfo._id)) {
+                let result = await this.countingVotes(pollInfo._id); //start counting
+                await Poll.deletePoll(pollInfo._id); // delete vote
+
+                userInfo.label_status = result; // change status
+
+                await this.updateUser(userInfo._id, userInfo);
+            }
 
             
         }
@@ -269,6 +279,61 @@ module.exports = {
         }
 
         await this.updateUser(adminInfo._id, adminInfo);
+    },
+
+
+    async checkAllAdminVoted(pollID) {
+        let allVoted = true;
+        const userList = await this.getAllUsers();
+        for (let i = 0; i < userList.length; i++) {
+            if (userList[i].isAdmin) {
+                let adminInfo = userList[i];
+                for (let j = 0; j < adminInfo.pending_votes.length; j++) {
+                    if (adminInfo.pending_votes[j].pollID.toString() === pollID.toString()) {
+                        allVoted = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return allVoted;
+    },
+
+
+    async countingVotes(pollID) {
+        const pollInfo = await Poll.getPollByObjectId(pollID);
+        let legit = 0;
+        let suspicious = 0;
+        let cheater = 0;
+
+        for (let i = 0; i < pollInfo.votes.length; i++) {
+            if (pollInfo.votes[i].vote === "Legit") {
+                legit++;
+            }
+            else if (pollInfo.votes[i].vote === "Suspicious") {
+                suspicious++;
+            }
+            else if (pollInfo.votes[i].vote === "Cheater") {
+                cheater++;
+            }
+            else {
+                //do nothing
+            }
+
+            if (suspicious != 0 || (legit != 0 && cheater != 0)) {
+                return "Suspicious";
+            }
+        }
+
+        if (legit != 0 && cheater == 0) {
+            return "Legit";
+        }
+        else if (cheater != 0 && cheater == 0) {
+            return "Cheater";
+        }
+        else {
+            return "Suspicious";
+        }
     },
 
 
