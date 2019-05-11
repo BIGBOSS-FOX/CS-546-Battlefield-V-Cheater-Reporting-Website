@@ -102,7 +102,7 @@ router.post("/", async (req, res) => {
         await usersData.statusChangeAfterVoting(updatedpoll);
         
 
-        res.render("layouts/main", {users: req.session.userlogged});
+        res.redirect('http://localhost:3000/');
     }
     catch (e) 
     {

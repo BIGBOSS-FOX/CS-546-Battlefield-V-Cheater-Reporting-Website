@@ -223,10 +223,24 @@ module.exports = {
             
         }
         else if (userInfo.label_status === 'Suspicious') {
-            
+            userInfo.num_report++;
+            if (userInfo.num_report === 1) {
+                //trigger a new poll
+
+                let newPoll = await Poll.addPoll(userInfo.user_name);
+                await this.newAdminPendingVote(newPoll);
+
+                userInfo.label_status = 'Processing';
+                userInfo.num_report = 0;
+
+                await this.updateUser(userInfo._id, userInfo);
+            }
+            else {
+                await this.updateUser(userInfo._id, userInfo);
+            }
         }
         else if (userInfo.label_status === 'Cheater') {
-
+            
         }
         else if (userInfo.label_status === 'Legit') {
             userInfo.num_report++;
