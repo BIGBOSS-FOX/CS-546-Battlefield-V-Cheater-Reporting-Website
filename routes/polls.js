@@ -78,7 +78,7 @@ router.post("/", async (req, res) => {
     try{
         //we need a function to update a poll for voting about a userID
         const voteinfo = req.body;
-        console.log(voteinfo.id);
+        console.log("ID info:    " + voteinfo.id);
         const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
         console.log(FullPoll);
         if (FullPoll == undefined || FullPoll == null) {

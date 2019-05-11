@@ -14,12 +14,11 @@
                                 class="badge badge-pill badge-primary polls-username shadow">{{this.voting_about}}</a>
                         </div>
 
-                        <form class="form-inline" method="POST" action="/polls" id="report-form{{this.voting_about}}">
-                            <input type="hidden" name="id" value="{{this._id}}">
+                        <form class="form-inline" method="POST" action="/polls">
+                            <input type="hidden" name="id" id="id" value="{{this._id}}">
                             <div class="col-sm">
 
                                 <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                    <input type="hidden" name="id" id="id" value="{{this._id}}">
                                     <label class="btn btn-success active">
                                         <input type="radio" name="options" id="vote" value="Innocent" autocomplete="off" checked>
                                         Innocent
