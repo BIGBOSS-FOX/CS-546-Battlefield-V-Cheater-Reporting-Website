@@ -14,24 +14,28 @@
                                 class="badge badge-pill badge-primary polls-username shadow">{{this.voting_about}}</a>
                         </div>
 
-                        <form class="form-inline" onsubmit="alert(123)" method="POST" action="/polls" id="report-form{{this.voting_about}}">
+                        <form class="form-inline" method="POST" action="/polls" id="report-form{{this.voting_about}}">
+                            <input type="hidden" name="id" value="{{this._id}}">
                             <div class="col-sm">
 
-                                <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                    <input type="hidden" name="id" value="{{this._id}}">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" id="option1{{this.voting_about}}" value="Innocent" autocomplete="off" checked>
+                                        <input type="radio" name="options" id="option1{{this.voting_about}}"
+                                            value="Innocent" autocomplete="off" required>
                                         Innocent
                                     </label>
                                     <label class="btn btn-warning">
-                                        <input type="radio" name="options" id="option2{{this.voting_about}}" value="Suspicious" autocomplete="off"> Suspicious
+                                        <input type="radio" name="options" id="option2{{this.voting_about}}"
+                                            value="Suspicious" autocomplete="off" required> Suspicious
                                     </label>
                                     <label class="btn btn-danger">
-                                        <input type="radio" name="options" id="option3{{this.voting_about}}" value="Cheater" autocomplete="off"> Cheater
+                                        <input type="radio" name="options" id="option3{{this.voting_about}}"
+                                            value="Cheater" autocomplete="off" required> Cheater
                                     </label>
 
                                 </div>
-                                    <button type="submit" class="btn btn-primary shadow ml-2">Vote</button>
+                                <button type="submit" class="btn btn-primary shadow ml-2">Vote</button>
 
                             </div>
                         </form>
@@ -80,3 +84,4 @@
 
         </div>
     </div>
+</div>
