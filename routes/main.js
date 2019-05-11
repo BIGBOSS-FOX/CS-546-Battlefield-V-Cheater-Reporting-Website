@@ -106,7 +106,6 @@ router.get("/logout", async(req, res) => {
 
 router.post("/search", async(req, res) => {
     try {
-        throw "hey";
         const searchInfo = req.body;
         if (!searchInfo) {
             res.json({ error: "You must provide a valid data" });
