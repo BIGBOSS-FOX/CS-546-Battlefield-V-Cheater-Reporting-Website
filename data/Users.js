@@ -198,8 +198,6 @@ module.exports = {
                 await this.updateUser(adminInfo._id, adminInfo);
             }
         }
-<<<<<<< HEAD
-=======
     },
 
     async getAllCheaters() {
@@ -207,6 +205,5 @@ module.exports = {
         const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
 
         return CheaterList;
->>>>>>> a0e2c9f6b3e3dca73f89495585b28a0a3eb9f45d
     }
 };
