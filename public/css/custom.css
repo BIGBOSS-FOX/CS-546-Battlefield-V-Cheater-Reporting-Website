@@ -213,7 +213,8 @@ body {
     background-color: #86929c;
     height: 2px;
 }
-.mainReportBtn{
+
+.mainReportBtn {
     margin: 0px auto;
     margin-top: 20px;
     width: 50%;
@@ -231,4 +232,16 @@ body {
     margin-bottom: auto;
     padding: 10px;
     color: #5acaef;
+}
+
+.polls-username {
+    width: fit-content;
+    font-size: medium;
+    margin: 5px;
+}
+
+.outer-card {
+    overflow: hidden;
+    margin: 10px;
+    padding: 5px;
 }
