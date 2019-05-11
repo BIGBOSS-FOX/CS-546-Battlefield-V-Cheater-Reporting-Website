@@ -42,8 +42,12 @@ module.exports = {
         const PollCollection = await Poll();
         const PollInfoToUpdate = {};
 
-        if (PollInfo.new_voting_about) {
-            PollInfoToUpdate.voting_about = PollInfo.new_voting_about;
+        if (PollInfo.voting_about) {
+            PollInfoToUpdate.voting_about = PollInfo.voting_about;
+        }
+
+        if (PollInfo.votes) {
+            PollInfoToUpdate.votes = PollInfo.votes;
         }
 
         /*
@@ -79,9 +83,38 @@ module.exports = {
         deletedPoll.data = PollToDelete;
 
         return deletedPoll;
+    },
+
+    async getPollByVoting_about(voting_about) {
+        if (voting_about === undefined) throw new Error("You must provide a user_name");
+        if (typeof voting_about !== "string") throw new Error("User_name needs to be a string");
+
+        const PollCollection = await Poll();
+        const foundPoll = await PollCollection.findOne({voting_about: voting_about});
+        if (foundPoll === null) throw new Error("No poll with that id");
+
+        return foundPoll;
+    }, 
+
+    async addVoteToPoll(user_name, admin_name, vote) {
+        if (user_name === undefined) throw new Error("You must provide a user_name");
+        if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
+        if (admin_name === undefined) throw new Error("You must provide a admin_name");
+        if (typeof admin_name !== "string") throw new Error("Admin_name needs to be a string");
+        if (vote === undefined) throw new Error("You must provide a vote");
+        if (typeof vote !== "string") throw new Error("Vote needs to be a string");
+
+        const PollCollection = await Poll();
+        let foundPoll = await this.getPollByVoting_about(user_name);
+        let newVote = {
+            admin: admin_name,
+            vote: vote
+        }
+        foundPoll.votes.push(newVote);
+        await this.updatePoll(foundPoll._id, foundPoll);
+
+        return foundPoll;
     }
-
-
-
-
+    
+    
 };

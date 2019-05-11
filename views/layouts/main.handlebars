@@ -1,10 +1,13 @@
 {{#if users.isAdmin}}
-    <div style="padding:10px">
-        <div class="bs-callout bs-callout-default">
-            <h4>05/04/2020</h4>
-            Notice.
+    {{#each users.pending_votes}}
+        <div style="padding:10px">
+            <div class="bs-callout bs-callout-default">
+                <h4>{{this.createdTime}}</h4>
+                User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}</a>  is waiting for your vote.
+                <a href="http://localhost:3000/polls/{{this.pollUser}}">To vote for him/her!</a>
+            </div>
         </div>
-    </div>
+    {{/each}}
 {{/if}}
 
 
