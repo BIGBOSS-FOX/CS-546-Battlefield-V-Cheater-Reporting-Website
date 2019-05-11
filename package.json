@@ -19,6 +19,7 @@
     "express-session": "^1.16.1",
     "handlebars-dateformat": "^1.1.1",
     "mongodb": "^3.2.3",
+    "multer": "^1.4.1",
     "nodemon": "^1.19.0"
   }
 }

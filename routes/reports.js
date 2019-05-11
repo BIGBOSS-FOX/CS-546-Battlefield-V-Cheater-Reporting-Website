@@ -4,6 +4,8 @@ const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
 const ObjectID = require("mongodb").ObjectID;
+var multer  = require('multer');
+var upload = multer({ dest: 'public/uploads/' })
 
 router.get("/", async(req, res) => { //create a report form
     try 
@@ -15,6 +17,10 @@ router.get("/", async(req, res) => { //create a report form
         res.status(404).render("layouts/error", {errors: e});
     }
 });
+
+// router.post("/", upload.single('exampleFormControlFile1'), function(req, res, next) {
+//     next();
+// });
 
 router.post("/", async(req, res) => {
     const reportInfo = req.body;
