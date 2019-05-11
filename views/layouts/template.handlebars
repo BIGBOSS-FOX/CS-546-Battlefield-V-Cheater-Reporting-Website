@@ -38,7 +38,7 @@
             <form class="form-inline my-2 my-lg-0">
 
 
-
+                {{#unless ErrorPage}}
                 {{#if loggedin}}
                 <a href="/users/{{users.user_name}}"
                     class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">{{users.user_name}}</a>
@@ -49,6 +49,7 @@
                 <a href="" class="btn btn-outline-primary my-2 my-sm-0" data-toggle="modal"
                     data-target="#modalSignUpForm">Sign Up</a>
                 {{/if}}
+                {{/unless}}
 
                 <!-- <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username">
         <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password">
@@ -130,6 +131,7 @@
         <div class="parallax__layer parallax__layer--base">
 
             <!-- search bar -->
+            {{#unless ErrorPage}}
             <div class="shadow">
                 {{#if hasErrors}}
 
@@ -166,6 +168,7 @@
                 </div>
 
             </div>
+            {{/unless}}
 
             <div class="separatingBar"></div>
 

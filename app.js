@@ -42,6 +42,18 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.use(function (req, res, next) {
+    let checkAuth = "";
+    const currentTime = new Date().toUTCString();
+    if (req.session.userlogged && req.cookies.AuthCookie)
+      checkAuth = "Authenticated User";
+    else
+      checkAuth = "Non-Authenticated User";
+    console.log("[" + currentTime + "]: " + req.method + " " + req.originalUrl + " (" + checkAuth + ")");
+  
+    next();
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
