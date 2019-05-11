@@ -39,27 +39,45 @@ async function main() {
         await Users.addUser("FLOT-Crotan", default_hashed_pw, false);
         await Users.addUser("leonid_47", default_hashed_pw, false);
         await Users.addUser("AZGD-HungMammoth", default_hashed_pw, false);
+        
+        
+        let BIGBOSS = await Users.findUserByUserName("oX_-oBIGBOSS-FoX");
+        let SunnyJetTw = await Users.findUserByUserName("OADF-SunnyJetTw");
+        let elementofprgress = await Users.findUserByUserName("elementofprgress");
+        let CanadianMason = await Users.findUserByUserName("CanadianMason");
+        let HungMammoth = await Users.findUserByUserName("AZGD-HungMammoth");
+        let Silk2g = await Users.findUserByUserName("Silk2g");
+
 
         //add reports
         let report1 = await Report.addReport("oX_-oBIGBOSS-FoX", "CanadianMason", "aimbot");
-        let CanadianMason = await Users.findUserByUserName("CanadianMason");
-        let BIGBOSS = await Users.findUserByUserName("oX_-oBIGBOSS-FoX");
         CanadianMason.received_reports.push(report1._id);
         BIGBOSS.created_reports.push(report1._id);
         await Users.updateUser(CanadianMason._id, CanadianMason);
         await Users.updateUser(BIGBOSS._id, BIGBOSS);
 
         let report2 = await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report");
-        let HungMammoth = await Users.findUserByUserName("AZGD-HungMammoth");
-        let Silk2g = await Users.findUserByUserName("Silk2g");
         HungMammoth.received_reports.push(report2._id);
         Silk2g.created_reports.push(report2._id);
         await Users.updateUser(HungMammoth._id, HungMammoth);
         await Users.updateUser(Silk2g._id, Silk2g);
 
         //add polls
-        await Poll.addPoll("CanadianMason");
-        await Poll.addPoll("AZGD-HungMammoth");
+        let poll1 = await Poll.addPoll("CanadianMason");
+        BIGBOSS.pending_votes.push(poll1._id);
+        SunnyJetTw.pending_votes.push(poll1._id);
+        elementofprgress.pending_votes.push(poll1._id);
+        await Users.updateUser(BIGBOSS._id, BIGBOSS);
+        await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
+        await Users.updateUser(elementofprgress._id, elementofprgress);
+
+        let poll2 = await Poll.addPoll("AZGD-HungMammoth");
+        BIGBOSS.pending_votes.push(poll2._id);
+        SunnyJetTw.pending_votes.push(poll2._id);
+        elementofprgress.pending_votes.push(poll2._id);
+        await Users.updateUser(BIGBOSS._id, BIGBOSS);
+        await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
+        await Users.updateUser(elementofprgress._id, elementofprgress);
 
         //add comments
         let comment1 = await Comment.addComment("elementofprgress", "I agree he's a cheater.");
