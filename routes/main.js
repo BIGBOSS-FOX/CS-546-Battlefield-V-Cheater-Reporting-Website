@@ -5,7 +5,7 @@ const usersData = data.Users;
 const reportsData = data.Report;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
-var multer  = require('multer');
+var multer = require('multer');
 
 router.use(function(req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
@@ -17,25 +17,25 @@ router.use(function(req, res, next) {
 });
 
 // Check for extension of image
-const getExtension = file =>{
+const getExtension = file => {
     if (file.mimetype == "image/jpeg")
-        ext =  ".jpeg";
+        ext = ".jpeg";
     else if (file.mimetype == "image/jpg")
         est = ".jpg";
     else
-        ext =".png";
+        ext = ".png";
     return ext;
 }
 
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/avatars/')
+    destination: function(req, file, cb) {
+        cb(null, 'public/avatars/')
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
     }
 });
-  
+
 var upload = multer({ storage: storage });
 
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
@@ -43,18 +43,16 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
             const events = await reportsData.getLatest10Reports();
-            console.log(events);
-            if(user === undefined || user === null) throw "Invalid User"
+            if (user === undefined || user === null) throw "Invalid User"
             res.render("layouts/main", { users: user, events: events });
         } else {
             const events = await reportsData.getLatest10Reports();
-            console.log(events);
-            res.render("layouts/main", {events: events});
+            res.render("layouts/main", { events: events });
         }
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(400).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(400).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -144,7 +142,8 @@ router.post("/search", async(req, res) => {
         if (searchData === undefined || searchData === null) {
             //show an error message
             //username doen't exist
-            res.render("layouts/main", { hasErrors: true, errors: "Provide valid username" });
+            const events = await reportsData.getLatest10Reports();
+            res.render("layouts/main", { hasErrors: true, errors: "Provide a valid username!", events: events });
         } else {
             res.redirect('../users/' + searchInfo.username_search);
         }
@@ -159,10 +158,11 @@ router.post("/search", async(req, res) => {
 router.get("/users/:id", async(req, res) => {
     try {
         if (!req.params.id) {
-            res.render("layouts/main", { error: "You must provide a valid data" });
+            const events = await reportsData.getLatest10Reports();
+            res.render("layouts/main", { hasErrors: true, error: "You must provide a valid data!", events: events });
         }
         const user = await usersData.findUserByUserName(req.params.id);
-        if(user === undefined || user === null) throw "Invalid User";
+        if (user === undefined || user === null) throw "Invalid User";
         user.createdinfo = {};
         user.reportedinfo = {};
         let report_received = false;
@@ -203,10 +203,10 @@ router.get("/users/:id", async(req, res) => {
 });
 
 //routes to change avatar
-router.get("/users/:id/avatar", async(req, res) =>{
+router.get("/users/:id/avatar", async(req, res) => {
     try {
-        
-        
+
+
         res.render("layouts/avatar", {})
     } catch (e) {
         console.log(e);
@@ -217,7 +217,7 @@ router.get("/users/:id/avatar", async(req, res) =>{
     }
 });
 
-router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async (req, res, next) => {
+router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     const imageInfo = req.file;
     console.log(req.params.id);
 
@@ -249,7 +249,7 @@ router.get("/list", async(req, res) => { //get the cheater list
         const userList = await usersData.getAllCheaters();
         if (req.session.userlogged) {
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
-            if(user === undefined || user === null) throw "Invalid User";
+            if (user === undefined || user === null) throw "Invalid User";
             res.render('layouts/cheaters', { data: userList, users: user });
         } else {
             res.render('layouts/cheaters', { data: userList });
@@ -278,9 +278,10 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
     }
 });
 
-router.use(function(req, res, next) {
+router.use(async function(req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
-        res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
+        const events = await reportsData.getLatest10Reports();
+        res.render("layouts/main", { hasErrors: true, errors: "Please Login", events: events });
     } else
         next();
 
