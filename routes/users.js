@@ -77,8 +77,16 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 
 //This route will render an appeal page
 router.get("/:id/appeal", async(req, res) => {
-    try {
-        res.render("layouts/appeal", { users: req.session.userlogged, user: req.params.id });
+    try 
+    {
+        if(req.session.userlogged.canAppeal)
+        {
+            res.render("layouts/appeal", { users: req.session.userlogged, user: req.params.id });
+        }
+        else
+        {
+            res.render("layouts/main", { hasErrors: true, errors: "Access denied to view this page" });
+        }
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");

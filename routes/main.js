@@ -170,8 +170,12 @@ router.get("/users/:id", async(req, res) => {
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if (user.canAppeal && user.label_status == "Cheater") {
-            showAppealbtn = true;
+        if(req.session.userlogged != undefined && req.session.userlogged != null)
+        {
+            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) 
+            {
+                showAppealbtn = true;
+            }
         }
         user.showAppealbtn = showAppealbtn;
         let m = n = 0;
