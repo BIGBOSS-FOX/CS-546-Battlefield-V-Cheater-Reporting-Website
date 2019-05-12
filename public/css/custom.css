@@ -1,7 +1,7 @@
 body {
     min-width: 300px;
     background: #000000;
-    background-image: url("https://images-eds-ssl.xboxlive.com/image?url=8Oaj9Ryq1G1_p3lLnXlsaZgGzAie6Mnu24_PawYuDYIoH77pJ.X5Z.MqQPibUVTcN0COtvWjUBaoPpdPSoPPgk81yfyxs.zdx0e3F8B8sxMe9o5G7tnMsat7qyuxctJGo4yLrMOAHowmQygXj1tqnj8.bSGFhm28BytGizgQDP6T9bFWoIo4Fo.ox5PfcKna397Rl0qBP3j77Gl96P95FIQB4utGGFgS9ULKnX7nuG0-&h=1080&w=1920&format=jpg");
+    background-image: url("/public/css/back-image.jpeg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
@@ -182,7 +182,6 @@ body {
 
 .errorpanel {
     position: fixed;
-    top: 60px;
     left: 0;
     right: 0;
     z-index: 7000;
@@ -254,7 +253,7 @@ body {
 }
 
 .nav-icon {
-    width: 25px;
+    height: 30px;
 }
 
 .main-logo div {
