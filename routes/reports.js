@@ -68,9 +68,9 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
         {        
         //add a new report to Report collection
 
-        if (reportInfo.link != undefined || reportInfo.link != null) {
+        if ((reportInfo.link != undefined || reportInfo.link != null) && reportInfo.link != "") {
             let proofLink = reportInfo.link;
-            if (proofLink.substring(0, 7) != "http://") { //Make sure the profile always store absolute link
+            if (proofLink.substring(0, 4) != "http") { //Make sure the profile always store absolute link
                 reportInfo.link = "http://" + proofLink;
             }
         };
