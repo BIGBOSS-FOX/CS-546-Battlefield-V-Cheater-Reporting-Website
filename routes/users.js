@@ -112,13 +112,18 @@ router.post("/:id/appeal", upload.single('exampleFormControlFile1'), async(req, 
         let userInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
         if(userInfo === undefined || userInfo === null) throw "Invalid User"
         userInfo.canAppeal = false;
-        console.log(userInfo);
         await usersData.updateUser(userInfo._id, userInfo);
 
         //add new appeal into appeal collection
+        if ((appealInfo.link != undefined || appealInfo.link != null) && appealInfo.link != "") {
+            let proofLink = appealInfo.link;
+            if (proofLink.substring(0, 4) != "http") { //Make sure the profile always store absolute link
+                appealInfo.link = "http://" + proofLink;
+            }
+        };
         const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, req.file/*appealInfo.exampleFormControlFile1*/, appealInfo.link);
 
-        await usersData.statusChange(userInfo.user_name);
+        await usersData.statusChange(userInfo.user_name, "users");
         res.redirect("/users/" + req.session.userlogged.user_name);
     } 
     catch (e) {
