@@ -85,7 +85,7 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
             const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
 
             //check status and decide whether it will change
-            await usersData.statusChange(reportedPlayerInfo.user_name);
+            await usersData.statusChange(reportedPlayerInfo.user_name, "reports");
 
             res.redirect("/users/" + reportedPlayerInfo.user_name);
         }

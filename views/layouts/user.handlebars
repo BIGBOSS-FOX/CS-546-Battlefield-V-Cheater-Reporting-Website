@@ -1,13 +1,15 @@
 {{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 <div class="row">
     <div class="col-md-2">
+        
         <div class="row">
             <img src="{{userprofile.avatar.path}}" alt="Avatar" class="avatar shadow">
+             {{#if loggedin}}
             <a href="/users/{{userprofile.user_name}}/avatar">
-            <img class="edit-icon " src="/public/css/edit.png"/>
+            <img class="edit-icon " src="/public/css/edit.png" title="Edit Avatar"/>
             </a>
-        </div>
-
+            {{/if}}
+        </div>        
         <div class="row">
             
         </div>
