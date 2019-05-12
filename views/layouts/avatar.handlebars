@@ -1,9 +1,16 @@
 <form method="POST" action="/users/{{user}}/avatar" id="avatar-form" enctype="multipart/form-data">
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="exampleFormControlFile1"></label>
-        <div class="col-sm-10">
-            <input type="file" accept=".jpeg,.jpg,.png" class="form-control-file form-control-lg" id="exampleFormControlFile1" name="exampleFormControlFile1">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 text-center whiteBack">
+            <label  for="exampleFormControlFile1"></label>
+            <input type="file" accept=".jpeg,.jpg,.png" class="form-control-file  form-control-lg"
+                id="exampleFormControlFile1" name="exampleFormControlFile1">
+
+                <button type="submit" class="btn btn-primary btn-block shadow mb-3">Submit</button>
+
         </div>
+        <div class="col-sm-2"></div>
+
     </div>
-    <button type="submit" class="btn btn-primary btn-block shadow">Submit</button>
+    
 </form>

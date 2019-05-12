@@ -397,3 +397,7 @@ body {
 .username {
     font-size: 25px;
 }
+
+.whiteBack {
+    background-color: #ffffffad;
+}
