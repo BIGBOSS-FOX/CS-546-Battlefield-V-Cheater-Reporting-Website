@@ -252,7 +252,7 @@ module.exports = {
                 await this.updateUser(userInfo._id, userInfo);
             }
         }
-        else if (userInfo.label_status === 'Cheater') {
+        else if (userInfo.label_status === 'Cheater' && calledBy === 'users') {
             userInfo.num_report++;
             if (userInfo.num_report === 1) {
                 //trigger a new poll

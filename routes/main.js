@@ -173,15 +173,18 @@ router.get("/users/:id", async(req, res) => {
         let report_created = false;
         let appeal_created = false;
         let showAppealbtn = false;
-        if(req.session.userlogged != undefined && req.session.userlogged != null)
-        {
-            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) 
-            {
+        let showAvatarPen = false;
+        if (req.session.userlogged != undefined && req.session.userlogged != null) {
+            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) {
                 showAppealbtn = true;
+            }
+            if (user.user_name === req.session.userlogged.user_name) {
+                showAvatarPen = true;
             }
         }
         user.showAppealbtn = showAppealbtn;
-        let m = n = k = 0;
+        user.showAvatarPen = showAvatarPen;
+        let m = n = 0;
         for (var i = 0; i < user.created_reports.length; i++) {
             let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]);
             if (createdinfo != undefined && createdinfo != null) {
@@ -207,6 +210,7 @@ router.get("/users/:id", async(req, res) => {
                 user.appealedinfo =  appealinfo;   
             }
         user.created_reports_count = user.created_reports.length;
+        user.submitted_reports_count = user.received_reports.length;
         res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
     } catch (e) {
         console.log(e);
@@ -222,7 +226,7 @@ router.get("/users/:id/avatar", async(req, res) => {
     try {
         const user = req.params.id;
         //console.log(user);
-        res.render("layouts/avatar", {users: req.session.userlogged, user: user });
+        res.render("layouts/avatar", { users: req.session.userlogged, user: user });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
