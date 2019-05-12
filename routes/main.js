@@ -201,6 +201,7 @@ router.get("/users/:id", async(req, res) => {
             user.reportedinfo[i] = reportedinfo;
         };
         user.created_reports_count = user.created_reports.length;
+        user.submitted_reports_count = user.received_reports.length;
         res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received });
     } catch (e) {
         console.log(e);
