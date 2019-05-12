@@ -18,12 +18,23 @@ router.get("/", async(req, res) => { //create a report form
     }
 });
 
+// Check for extension of image
+const getExtension = file =>{
+    if (file.mimetype == "image/jpeg")
+        ext =  ".jpeg";
+    else if (file.mimetype == "image/jpg")
+        est = ".jpg";
+    else
+        ext =".png";
+    return ext;
+}
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'public/uploads/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + ".png")
+      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
     }
 });
   
