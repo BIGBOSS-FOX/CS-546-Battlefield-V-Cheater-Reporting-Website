@@ -4,45 +4,42 @@ const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
 const ObjectID = require("mongodb").ObjectID;
-var multer  = require('multer');
+var multer = require('multer');
 //var upload = multer({ dest: 'public/uploads/' })
 
 router.get("/", async(req, res) => { //create a report form
-    try 
-    {
-        res.render("layouts/createreport", {users: req.session.userlogged});
-    } 
-    catch (e) 
-    {
-        res.status(404).render("layouts/error", {errors: e});
+    try {
+        res.render("layouts/createreport", { users: req.session.userlogged });
+    } catch (e) {
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 // Check for extension of image
-const getExtension = file =>{
+const getExtension = file => {
     if (file.mimetype == "image/jpeg")
-        ext =  ".jpeg";
+        ext = ".jpeg";
     else if (file.mimetype == "image/jpg")
         est = ".jpg";
     else
-        ext =".png";
+        ext = ".png";
     return ext;
 }
 
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/uploads/')
+    destination: function(req, file, cb) {
+        cb(null, 'public/uploads/')
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
     }
 });
-  
+
 var upload = multer({ storage: storage });
 
-router.post("/", upload.single('exampleFormControlFile1'), async (req, res, next) => {
+router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next) => {
 
-// router.post("/", async(req, res) => {
+    // router.post("/", async(req, res) => {
     const reportInfo = req.body;
     console.log(req.file);
     if (!reportInfo) {
@@ -51,48 +48,39 @@ router.post("/", upload.single('exampleFormControlFile1'), async (req, res, next
     if (!reportInfo.userID) {
         res.json({ error: "You must provide a user ID" });
     }
-    if (!reportInfo.exampleFormControlTextarea1) 
-    {
-        res.json({error: "You must provide an evidence"});
+    if (!reportInfo.exampleFormControlTextarea1) {
+        res.json({ error: "You must provide an evidence" });
     }
-    try 
-    {
+    try {
         //get the reported_player info, add newReport to received_reports array, then update user info to database
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
-        if(!reportedPlayerInfo)
-        {
-            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Invalid Userid" , hasErrors:true});
-        }
-        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
-            res.render("layouts/createreport", {users: req.session.userlogged, errors : "You cannot report yourself" , hasErrors:true});
-        }
-        else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
-            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Admin cannot be reported" , hasErrors:true});
-        }
-        else
-        {        
-        //add a new report to Report collection
-        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
-        reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
-        const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
+        if (!reportedPlayerInfo) {
+            res.render("layouts/createreport", { users: req.session.userlogged, errors: "Invalid Userid", hasErrors: true });
+        } else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
+            res.render("layouts/createreport", { users: req.session.userlogged, errors: "You cannot report yourself", hasErrors: true });
+        } else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
+            res.render("layouts/createreport", { users: req.session.userlogged, errors: "Admin cannot be reported", hasErrors: true });
+        } else {
+            //add a new report to Report collection
+            const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file /*reportInfo.exampleFormControlFile1*/ , reportInfo.link);
+            reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
+            const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);
 
-        //get the reported_by info, add newReport to created_reports array, then update user info to database
-        const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
-        reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
-        const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
+            //get the reported_by info, add newReport to created_reports array, then update user info to database
+            const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            reportPlayerInfo.created_reports.push(ObjectID(newReport._id));
+            const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
 
-        //check status and decide whether it will change
-        await usersData.statusChange(reportedPlayerInfo.user_name);
-        
-        res.redirect("/users/" + reportedPlayerInfo.user_name);
-    }
-    } 
-    catch (e) 
-    {
+            //check status and decide whether it will change
+            await usersData.statusChange(reportedPlayerInfo.user_name);
+
+            res.redirect("/users/" + reportedPlayerInfo.user_name);
+        }
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -109,13 +97,11 @@ router.post("/:userid", async(req, res) => { //post a report against userid
             const data = "go to Log In page once it is made";
             res.render('layouts/example', { data });
         }
-    } 
-    catch (e) 
-    {
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -129,13 +115,11 @@ router.put("/:reportid", async(req, res) => { //add a comment to a report
             const data = "go to Log In page once it is made";
             res.render('layouts/example', { data });
         }
-    } 
-    catch (e) 
-    {
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 

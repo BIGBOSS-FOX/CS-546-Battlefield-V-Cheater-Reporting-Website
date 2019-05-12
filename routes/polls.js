@@ -7,95 +7,78 @@ const usersData = data.Users;
 const commentsData = data.Comment;
 //we may not need any routes for this
 
-const adminRequest = async(req, res, next)=>
-{
-        if(!req.session.userlogged.isAdmin) 
-        {
-            res.status(404).render("layouts/error", {users: req.session.userlogged, errors: "Permission denied" , layout: 'errorlayout' });
-        }
-        else
-        {
-            next();
-        }
+const adminRequest = async(req, res, next) => {
+    if (!req.session.userlogged.isAdmin) {
+        res.render("layouts/main", { hasErrors: true, errors: "Access denied to view this page" });
+    } else {
+        next();
+    }
 }
 
-router.get("/", adminRequest, async (req, res) => {
-    try
-    {     
+router.get("/", adminRequest, async(req, res) => {
+    try {
         let pollMessage = false;
         let pollsList = await pollsData.getAllPolls();
         let pollstoshow = []
-        for (var j = 0; j < pollsList.length; j++) 
-        { 
-            let show = true;            
-            for(var i = 0; i < pollsList[j].votes.length; i++){
-               if(pollsList[j].votes[i].admin == req.session.userlogged.user_name){
-                   show = false;
-               }
-            }
-            if(show)
-            {
-                let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);  
-                if (reportedinfo != undefined && reportedinfo != null) 
-                {
-                    pollMessage = true;                   
+        for (var j = 0; j < pollsList.length; j++) {
+            let show = true;
+            for (var i = 0; i < pollsList[j].votes.length; i++) {
+                if (pollsList[j].votes[i].admin == req.session.userlogged.user_name) {
+                    show = false;
                 }
-                pollsList[j]["reportedinfo"] = reportedinfo;  
+            }
+            if (show) {
+                let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);
+                if (reportedinfo != undefined && reportedinfo != null) {
+                    pollMessage = true;
+                }
+                pollsList[j]["reportedinfo"] = reportedinfo;
                 pollstoshow.push(pollsList[j]);
-            }            
-                    
+            }
+
         }
-        res.render('layouts/polls', { users: req.session.userlogged, data : pollstoshow, hasdata : pollMessage});
-    }
-    catch (e) {
+        res.render('layouts/polls', { users: req.session.userlogged, data: pollstoshow, hasdata: pollMessage });
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 
-router.get("/:username",adminRequest, async (req, res) => {
-    try
-    {
+router.get("/:username", adminRequest, async(req, res) => {
+    try {
         let pollMessage = false;
         let dummy = await pollsData.getAllPolls();
         let pollsList = [];
-        for (var j = 0; j < dummy.length; j++) 
-        {
-            if(dummy[j].voting_about == req.params.username)
-            {
+        for (var j = 0; j < dummy.length; j++) {
+            if (dummy[j].voting_about == req.params.username) {
                 pollsList.push(dummy[j]);
             }
-        }  
-        for (var j = 0; j < pollsList.length; j++) 
-        {
-            let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);  
-            if (reportedinfo != undefined && reportedinfo != null) 
-                {
-                    pollMessage = true;                   
-                }
-                pollsList[j]["reportedinfo"] = reportedinfo;          
         }
-        res.render('layouts/polls', { users: req.session.userlogged, data : pollsList, hasdata : pollMessage });
-    }
-    catch (e) 
-    {
+        for (var j = 0; j < pollsList.length; j++) {
+            let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);
+            if (reportedinfo != undefined && reportedinfo != null) {
+                pollMessage = true;
+            }
+            pollsList[j]["reportedinfo"] = reportedinfo;
+        }
+        res.render('layouts/polls', { users: req.session.userlogged, data: pollsList, hasdata: pollMessage });
+    } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 
-router.post("/", async (req, res) => {
-    try{
+router.post("/", async(req, res) => {
+    try {
         //we need a function to update a poll for voting about a userID
         const voteinfo = req.body;
-        if (!voteinfo || !voteinfo.id) 
-        {
+        if (!voteinfo || !voteinfo.id) {
             throw "Provide valid info";
         }
         const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
@@ -105,60 +88,51 @@ router.post("/", async (req, res) => {
         //if already voted: error
         let adminExists = false;
         const votesArray = FullPoll.votes;
-        if(votesArray.length == 3)
-        {
+        if (votesArray.length == 3) {
             throw "More than 3 admins cannot vote!";
         }
         //check if admin exists in vote list
-        for (let i = 0; i < votesArray.length; i++){
+        for (let i = 0; i < votesArray.length; i++) {
             if (votesArray[i].admin == req.session.userlogged.user_name) {
                 adminExists = true;
                 break;
             }
         }
-        if(adminExists) throw "One admin cannot vote on the same poll twice";
+        if (adminExists) throw "One admin cannot vote on the same poll twice";
 
         let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
         //await usersData.statusChangeAfterVoting(updatedpoll);
         await usersData.statusChange(FullPoll.voting_about);
         res.redirect("/");
-    }
-    catch (e) 
-    {
+    } catch (e) {
         req.session.userlogged = null;
         console.log(e);
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 //get admin info, vote info, poll id
 
-router.post("/addComment", async (req, res) => {
-try
-{
-    const commentinfo = req.body;
-    if(!commentinfo) throw "Provide valid info";
-    if(!commentinfo.reportid)throw "Provide valid info";
-    if(!commentinfo.comment)throw "Provide valid info";
-    const comments = await commentsData.addComment(req.session.userlogged.user_name, commentinfo.comment);
-    const updatreports = await reportsData.updateReportComments(commentinfo.reportid, commentinfo.comment);
-    if(comments && updatreports)
-    {
-        res.json({ message: "success" });
+router.post("/addComment", async(req, res) => {
+    try {
+        const commentinfo = req.body;
+        if (!commentinfo) throw "Provide valid info";
+        if (!commentinfo.reportid) throw "Provide valid info";
+        if (!commentinfo.comment) throw "Provide valid info";
+        const comments = await commentsData.addComment(req.session.userlogged.user_name, commentinfo.comment);
+        const updatreports = await reportsData.updateReportComments(commentinfo.reportid, commentinfo.comment);
+        if (comments && updatreports) {
+            res.json({ message: "success" });
+        } else {
+            res.json({ message: "error" });
+        }
+    } catch (e) {
+        req.session.userlogged = null;
+        console.log(e);
+        res.clearCookie("AuthCookie");
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
-    else
-    {
-        res.json({ message: "error" });
-    }
-}
-catch (e) 
-{
-    req.session.userlogged = null;
-    console.log(e);
-    res.clearCookie("AuthCookie");
-    res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
-}
 });
 
 module.exports = router;

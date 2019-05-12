@@ -12,7 +12,9 @@ const constructorMethod = app => {
     app.use("*", (req, res) => {
         const e = "404: Page Not Found!"
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true});
     });
 };
 
