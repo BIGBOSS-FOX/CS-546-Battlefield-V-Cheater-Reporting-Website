@@ -71,6 +71,14 @@ router.post("/", upload.single('exampleFormControlFile1'), async (req, res, next
         else
         {        
         //add a new report to Report collection
+
+        if (reportInfo.link != undefined || reportInfo.link != null) {
+            let proofLink = reportInfo.link;
+            if (proofLink.substring(0, 7) != "http://") { //Make sure the profile always store absolute link
+                reportInfo.link = "http://" + proofLink;
+            }
+        };
+
         const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
         reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
