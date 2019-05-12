@@ -387,3 +387,7 @@ body {
     background-color: #e1626a;
     padding: 10px;
 }
+
+.username {
+    font-size: 25px;
+}
