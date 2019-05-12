@@ -149,3 +149,5 @@ function Addcomment(i) {
 $(document).ready(function() {
     $('#banlisttable').DataTable();
 });
+
+$('html').css('overflow', 'hidden');
