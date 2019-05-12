@@ -257,6 +257,12 @@ body {
     height: 30px;
 }
 
+.edit-icon {
+    height: 30px;
+    margin-top: 70px;
+    margin-left: -20px;
+}
+
 .main-logo {
     height: 70px;
 }

@@ -3,6 +3,13 @@
     <div class="col-md-2">
         <div class="row">
             <img src="{{userprofile.avatar.path}}" alt="Avatar" class="avatar shadow">
+            <a href="/users/{{userprofile.user_name}}/avatar">
+            <img class="edit-icon " src="/public/css/edit.png"/>
+            </a>
+        </div>
+
+        <div class="row">
+            
         </div>
     </div>
     <div class="col-md-10">
@@ -34,9 +41,6 @@
         </div>
         {{/if}}
         {{/if}}
-        <div class="row">
-            <h3><a class="btn btn-danger btn-block shadow rounded ml-2" href="/users/{{userprofile.user_name}}/avatar">Change Avatar</a></h3>
-        </div>
 
     </div>
     <div class="col-md-10">
