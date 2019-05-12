@@ -11,7 +11,7 @@ const adminRequest = async(req, res, next)=>
 {
         if(!req.session.userlogged.isAdmin) 
         {
-            res.status(404).render("layouts/error", {errors: "Permission denied" , layout: 'errorlayout' });
+            res.status(404).render("layouts/error", {users: req.session.userlogged, errors: "Permission denied" , layout: 'errorlayout' });
         }
         else
         {
@@ -45,11 +45,12 @@ router.get("/", adminRequest, async (req, res) => {
             }            
                     
         }
-        res.render('layouts/polls', { data : pollstoshow, hasdata : pollMessage});
+        res.render('layouts/polls', { users: req.session.userlogged, data : pollstoshow, hasdata : pollMessage});
     }
     catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -83,6 +84,7 @@ router.get("/:username",adminRequest, async (req, res) => {
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -117,7 +119,7 @@ router.post("/", async (req, res) => {
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
         let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
-        await usersData.statusChangeAfterVoting(updatedpoll);
+        //await usersData.statusChangeAfterVoting(updatedpoll);
         await usersData.statusChange(FullPoll.voting_about);
         res.redirect("/");
     }
@@ -126,6 +128,7 @@ router.post("/", async (req, res) => {
         req.session.userlogged = null;
         console.log(e);
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });

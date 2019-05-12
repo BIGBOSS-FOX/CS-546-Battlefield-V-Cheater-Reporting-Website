@@ -146,38 +146,38 @@ module.exports = {
 
     },
 
-    async statusChangeAfterVoting(poll){
-        if(poll.votes.length == 3){
-            let cheaterCount = 0;
-            let InnocentCount = 0;
-            for (let i = 0; i < poll.votes.length; i++)
-            {
-                if(poll.votes[i].vote == "Cheater")
-                {
-                    cheaterCount++;
-                }
-                else if (poll.votes[i].vote == "Innocent")
-                {
-                    InnocentCount++;
-                }
-            }
-            user = await this.findUserByUserName(poll.voting_about);
-            if(cheaterCount == 3)
-            {
-                user.label_status = "Cheater";
-            }
-            else if(InnocentCount == 3)
-            {                
-                user.label_status = "Innocent";
-            }
-            else
-            {
-                user.status = "Suspicious";
-            }            
-            await this.updateUser(user._id, user);
-            await Poll.deletePoll(poll._id);
-        }
-    },
+    // async statusChangeAfterVoting(poll){
+    //     if(poll.votes.length == 3){
+    //         let cheaterCount = 0;
+    //         let InnocentCount = 0;
+    //         for (let i = 0; i < poll.votes.length; i++)
+    //         {
+    //             if(poll.votes[i].vote == "Cheater")
+    //             {
+    //                 cheaterCount++;
+    //             }
+    //             else if (poll.votes[i].vote == "Innocent")
+    //             {
+    //                 InnocentCount++;
+    //             }
+    //         }
+    //         user = await this.findUserByUserName(poll.voting_about);
+    //         if(cheaterCount == 3)
+    //         {
+    //             user.label_status = "Cheater";
+    //         }
+    //         else if(InnocentCount == 3)
+    //         {                
+    //             user.label_status = "Innocent";
+    //         }
+    //         else
+    //         {
+    //             user.status = "Suspicious";
+    //         }            
+    //         await this.updateUser(user._id, user);
+    //         await Poll.deletePoll(poll._id);
+    //     }
+    // },
 
     async statusChange(user_name) { // This function is to count numbers of report a user received and decide what will change base on new status
         if (user_name === undefined) throw new Error("You must provide a user_name");
@@ -356,7 +356,7 @@ module.exports = {
         if (legit != 0 && cheater == 0) {
             return "Legit";
         }
-        else if (cheater != 0 && cheater == 0) {
+        else if (cheater != 0 && legit == 0) {
             return "Cheater";
         }
         else {
@@ -370,12 +370,12 @@ module.exports = {
         const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
 
         return CheaterList;
-    },
-
-    async addPolltoPending_votes(user_name, poll_id) {
-        const UsersCollection = await Users();
-        let admin_user = await UsersCollection.findUserByUserName(user_name);
-        admin_user.pending_votes.push(poll_id);
-        await UsersCollection.updateUser(admin_user._id, admin_user);
     }
+
+    // async addPolltoPending_votes(user_name, poll_id) {
+    //     const UsersCollection = await Users();
+    //     let admin_user = await UsersCollection.findUserByUserName(user_name);
+    //     admin_user.pending_votes.push(poll_id);
+    //     await UsersCollection.updateUser(admin_user._id, admin_user);
+    // }
 };

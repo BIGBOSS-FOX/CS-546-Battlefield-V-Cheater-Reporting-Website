@@ -21,7 +21,7 @@
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-success active">
                                         <input type="radio" name="options" id="vote" value="Innocent" autocomplete="off" checked>
-                                        Innocent
+                                        Legit
                                     </label>
                                     <label class="btn btn-warning">
                                         <input type="radio" name="options" id="vote" value="Suspicious" autocomplete="off"> Suspicious
@@ -58,9 +58,9 @@
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
                             <br>
                             <div class="bs-callout bs-callout-default shadow">
-                                Evidence: {{body}}
+                                Evidence explained: {{body}}
                                 <br>
-                                {{image}}
+                                <img src="/{{this.image.path}}"/>
                                 <br>
                                 <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                <br>                                 

@@ -4,6 +4,8 @@ const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
 const ObjectID = require("mongodb").ObjectID;
+var multer  = require('multer');
+//var upload = multer({ dest: 'public/uploads/' })
 
 router.get("/", async(req, res) => { //create a report form
     try 
@@ -16,7 +18,20 @@ router.get("/", async(req, res) => { //create a report form
     }
 });
 
-router.post("/", async(req, res) => {
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + ".png")
+    }
+});
+  
+var upload = multer({ storage: storage });
+
+router.post("/", upload.single('exampleFormControlFile1'), async (req, res, next) => {
+
+// router.post("/", async(req, res) => {
     const reportInfo = req.body;
     if (!reportInfo) {
         res.json({ error: "You must provide data to add a report" });
@@ -45,7 +60,7 @@ router.post("/", async(req, res) => {
         else
         {        
         //add a new report to Report collection
-        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, reportInfo.exampleFormControlFile1, reportInfo.link);
+        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
         reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
 
@@ -64,6 +79,7 @@ router.post("/", async(req, res) => {
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -86,6 +102,7 @@ router.post("/:userid", async(req, res) => { //post a report against userid
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
@@ -105,6 +122,7 @@ router.put("/:reportid", async(req, res) => { //add a comment to a report
     {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
         res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
     }
 });
