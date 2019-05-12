@@ -143,9 +143,13 @@
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{this.body}}
                                 <br>
+                                {{#if this.image.path}}
                                 <img src="/{{this.image.path}}" alt="Report Image" />
                                 <br>
+                                {{/if}}
+                                {{#if proof_link}}
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
+                                {{/if}}
                             </div>
                         </div>
                     </div>
