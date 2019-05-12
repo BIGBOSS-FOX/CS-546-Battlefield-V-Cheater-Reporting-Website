@@ -47,6 +47,16 @@ module.exports =
         return foundReport;
     },
 
+    async updateReportComments(obj_id, comment) 
+    {
+        if (obj_id === undefined) throw new Error("You must provide an id to search for");
+        if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
+        const ReportCollection = await Report();
+        const updatedata = await ReportCollection.updateOne({_id: ObjectId(obj_id)}, {$addToSet :{comments: {$each:[comment]}}});
+        const updatedReport = await this.getReportByObjectId(ObjectId(obj_id));
+        return updatedReport;
+    },
+
     async updateReport(obj_id, ReportInfo) 
     {
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
@@ -132,6 +142,14 @@ module.exports =
 
         const ReportCollection = await Report();
         const ReportList = await ReportCollection.find({reported_player: reported_player}).toArray();
+
+        return ReportList;
+    },
+
+    async getLatest10Reports()
+    {
+        const ReportCollection = await Report();
+        const ReportList = await ReportCollection.find({}).sort({"creation_time": -1}).limit(10).toArray();
 
         return ReportList;
     }

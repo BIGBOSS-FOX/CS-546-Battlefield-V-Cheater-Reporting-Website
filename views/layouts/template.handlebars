@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/public/css/favicon.png" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/public/css/bootstrap.min.css">
@@ -36,6 +37,12 @@
                 <li class="nav-item active">
                     <a class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2 redBSO" href="/list"><img class="nav-icon" src="/public/css/banlist.ico" alt="ban list logo" />Cheater List</a>
                 </li>
+                {{#if loggedin}}
+                <li class="nav-item active">
+                    <a class="btn btn-outline-warning my-2 my-sm-0 mr-sm-2" href="/list"><img class="nav-icon"
+                            src="/public/css/vote.gif" alt="vote button"/>Polls</a>
+                </li>
+                {{/if}}
             </ul>
             <form class="form-inline my-2 my-lg-0">
 
@@ -43,7 +50,7 @@
                 {{#unless ErrorPage}}
                 {{#if loggedin}}
                 <a href="/users/{{users.user_name}}"
-                    class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">{{users.user_name}}</a>
+                    class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">My Profile: {{users.user_name}}</a>
                 <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Log Out</a>
                 {{else}}
                 <a href="" class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" data-toggle="modal"
@@ -67,6 +74,9 @@
         pul all our other styles in separate linked css files and agree with the best practices of web design, but kept these
         in particular as an exception and hope you'll allow because of the above reasons. -->
         <div>
+            <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-10px) scale(11);"> <img
+                    src="/public/css/favicon.png" style="margin-top: -45px; margin-left: 20px"/></div>
+
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-2px) scale(2);"> <img
                     src="/public/css/bullet.png" alt="" class="bullet" style="margin-top: 50px; margin-left: 345px"></div>
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-2.5px) scale(2);"> <img
@@ -191,7 +201,7 @@
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/jquery.dataTables.min.js"></script>
     <script src="/public/js/dataTables.bootstrap4.min.js"></script>
-    
+
 
     {{!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

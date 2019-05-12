@@ -5,6 +5,7 @@ const usersData = data.Users;
 const reportsData = data.Report;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
+var multer  = require('multer');
 
 router.use(function(req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
@@ -15,14 +16,29 @@ router.use(function(req, res, next) {
     next();
 });
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/avatars/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + ".png")
+    }
+});
+  
+var upload = multer({ storage: storage });
+
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try {
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            const events = await reportsData.getLatest10Reports();
+            console.log(events);
             if(user === undefined || user === null) throw "Invalid User"
-            res.render("layouts/main", { users: user });
+            res.render("layouts/main", { users: user, events: events });
         } else {
-            res.render("layouts/main", {});
+            const events = await reportsData.getLatest10Reports();
+            console.log(events);
+            res.render("layouts/main", {events: events});
         }
     } catch (e) {
         req.session.userlogged = null;
@@ -174,8 +190,6 @@ router.get("/users/:id", async(req, res) => {
         res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
-
-
 
 // Ban List Routes
 router.get("/list", async(req, res) => { //get the cheater list

@@ -25,7 +25,8 @@ module.exports = {
             received_reports: [],
             created_reports: [],
             canAppeal: true,
-            num_report: 0
+            num_report: 0,
+            avatar: {path: "http://localhost:3000/public/avatars/default_avatar.png"}
         };
 
         const insertInfo = await UsersCollection.insertOne(newUser);
@@ -99,6 +100,10 @@ module.exports = {
         if (UserInfo.num_report !== null || UserInfo.num_report !== undefined) {
             UserInfoToUpdate.num_report = UserInfo.num_report;
         }
+
+        if (UserInfo.avatar !== null || UserInfo.avatar !== undefined) {
+            UserInfoToUpdate.avatar = UserInfo.avatar;
+        }
         /*
         Add What other UserInfo you want to update here
         */
@@ -146,38 +151,38 @@ module.exports = {
 
     },
 
-    async statusChangeAfterVoting(poll){
-        if(poll.votes.length == 3){
-            let cheaterCount = 0;
-            let InnocentCount = 0;
-            for (let i = 0; i < poll.votes.length; i++)
-            {
-                if(poll.votes[i].vote == "Cheater")
-                {
-                    cheaterCount++;
-                }
-                else if (poll.votes[i].vote == "Innocent")
-                {
-                    InnocentCount++;
-                }
-            }
-            user = await this.findUserByUserName(poll.voting_about);
-            if(cheaterCount == 3)
-            {
-                user.label_status = "Cheater";
-            }
-            else if(InnocentCount == 3)
-            {                
-                user.label_status = "Innocent";
-            }
-            else
-            {
-                user.status = "Suspicious";
-            }            
-            await this.updateUser(user._id, user);
-            await Poll.deletePoll(poll._id);
-        }
-    },
+    // async statusChangeAfterVoting(poll){
+    //     if(poll.votes.length == 3){
+    //         let cheaterCount = 0;
+    //         let InnocentCount = 0;
+    //         for (let i = 0; i < poll.votes.length; i++)
+    //         {
+    //             if(poll.votes[i].vote == "Cheater")
+    //             {
+    //                 cheaterCount++;
+    //             }
+    //             else if (poll.votes[i].vote == "Innocent")
+    //             {
+    //                 InnocentCount++;
+    //             }
+    //         }
+    //         user = await this.findUserByUserName(poll.voting_about);
+    //         if(cheaterCount == 3)
+    //         {
+    //             user.label_status = "Cheater";
+    //         }
+    //         else if(InnocentCount == 3)
+    //         {                
+    //             user.label_status = "Innocent";
+    //         }
+    //         else
+    //         {
+    //             user.status = "Suspicious";
+    //         }            
+    //         await this.updateUser(user._id, user);
+    //         await Poll.deletePoll(poll._id);
+    //     }
+    // },
 
     async statusChange(user_name) { // This function is to count numbers of report a user received and decide what will change base on new status
         if (user_name === undefined) throw new Error("You must provide a user_name");
@@ -356,7 +361,7 @@ module.exports = {
         if (legit != 0 && cheater == 0) {
             return "Legit";
         }
-        else if (cheater != 0 && cheater == 0) {
+        else if (cheater != 0 && legit == 0) {
             return "Cheater";
         }
         else {
@@ -372,10 +377,17 @@ module.exports = {
         return CheaterList;
     },
 
-    async addPolltoPending_votes(user_name, poll_id) {
-        const UsersCollection = await Users();
-        let admin_user = await UsersCollection.findUserByUserName(user_name);
-        admin_user.pending_votes.push(poll_id);
-        await UsersCollection.updateUser(admin_user._id, admin_user);
+    async addAvatar(user_name) {
+        //const UsersCollection = await Users();
+        let foundUser = await this.findUserByUserName(user_name);
+        foundUser.avatar.path = "http://localhost:3000/public/avatars/" + user_name.toString() + ".png";
+        await this.updateUser(foundUser._id, foundUser);
     }
+
+    // async addPolltoPending_votes(user_name, poll_id) {
+    //     const UsersCollection = await Users();
+    //     let admin_user = await UsersCollection.findUserByUserName(user_name);
+    //     admin_user.pending_votes.push(poll_id);
+    //     await UsersCollection.updateUser(admin_user._id, admin_user);
+    // }
 };

@@ -4,6 +4,7 @@ const data = require("../data");
 const pollsData = data.Poll;
 const reportsData = data.Report;
 const usersData = data.Users;
+const commentsData = data.Comment;
 //we may not need any routes for this
 
 const adminRequest = async(req, res, next)=>
@@ -20,8 +21,7 @@ const adminRequest = async(req, res, next)=>
 
 router.get("/", adminRequest, async (req, res) => {
     try
-    {      
-        
+    {     
         let pollMessage = false;
         let pollsList = await pollsData.getAllPolls();
         let pollstoshow = []
@@ -94,6 +94,10 @@ router.post("/", async (req, res) => {
     try{
         //we need a function to update a poll for voting about a userID
         const voteinfo = req.body;
+        if (!voteinfo || !voteinfo.id) 
+        {
+            throw "Provide valid info";
+        }
         const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
         if (FullPoll == undefined || FullPoll == null) {
             throw "cannot get poll with that id";
@@ -115,7 +119,7 @@ router.post("/", async (req, res) => {
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
         let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
-        await usersData.statusChangeAfterVoting(updatedpoll);
+        //await usersData.statusChangeAfterVoting(updatedpoll);
         await usersData.statusChange(FullPoll.voting_about);
         res.redirect("/");
     }
@@ -130,6 +134,31 @@ router.post("/", async (req, res) => {
 });
 //get admin info, vote info, poll id
 
-
+router.post("/addComment", async (req, res) => {
+try
+{
+    const commentinfo = req.body;
+    if(!commentinfo) throw "Provide valid info";
+    if(!commentinfo.reportid)throw "Provide valid info";
+    if(!commentinfo.comment)throw "Provide valid info";
+    const comments = await commentsData.addComment(req.session.userlogged.user_name, commentinfo.comment);
+    const updatreports = await reportsData.updateReportComments(commentinfo.reportid, commentinfo.comment);
+    if(comments && updatreports)
+    {
+        res.json({ message: "success" });
+    }
+    else
+    {
+        res.json({ message: "error" });
+    }
+}
+catch (e) 
+{
+    req.session.userlogged = null;
+    console.log(e);
+    res.clearCookie("AuthCookie");
+    res.status(404).render("layouts/error", {errors: e , layout: 'errorlayout' });
+}
+});
 
 module.exports = router;

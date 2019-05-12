@@ -1,6 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const Comment = mongoCollections.Comment;
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb').ObjectID;
 
 module.exports = {
     async addComment (commenter, comment) {
