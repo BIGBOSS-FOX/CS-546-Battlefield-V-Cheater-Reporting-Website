@@ -25,7 +25,8 @@ module.exports = {
             received_reports: [],
             created_reports: [],
             canAppeal: true,
-            num_report: 0
+            num_report: 0,
+            avatar: {path: "http://localhost:3000/public/avatars/default_avatar.png"}
         };
 
         const insertInfo = await UsersCollection.insertOne(newUser);
@@ -98,6 +99,10 @@ module.exports = {
 
         if (UserInfo.num_report !== null || UserInfo.num_report !== undefined) {
             UserInfoToUpdate.num_report = UserInfo.num_report;
+        }
+
+        if (UserInfo.avatar !== null || UserInfo.avatar !== undefined) {
+            UserInfoToUpdate.avatar = UserInfo.avatar;
         }
         /*
         Add What other UserInfo you want to update here
@@ -370,9 +375,14 @@ module.exports = {
         const CheaterList = await UsersCollection.find({label_status: "Cheater"}).toArray();
 
         return CheaterList;
+    },
+
+    async addAvatar(user_name) {
+        //const UsersCollection = await Users();
+        let foundUser = await this.findUserByUserName(user_name);
+        foundUser.avatar.path = "http://localhost:3000/public/avatars/" + user_name.toString() + ".png";
+        await this.updateUser(foundUser._id, foundUser);
     }
-
-
 
     // async addPolltoPending_votes(user_name, poll_id) {
     //     const UsersCollection = await Users();

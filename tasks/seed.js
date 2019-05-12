@@ -39,6 +39,29 @@ async function main() {
         await Users.addUser("FLOT-Crotan", default_hashed_pw, false);
         await Users.addUser("leonid_47", default_hashed_pw, false);
         await Users.addUser("AZGD-HungMammoth", default_hashed_pw, false);
+
+        //add avatars
+        await Users.addAvatar("oX_-oBIGBOSS-FoX");
+        await Users.addAvatar("OADF-SunnyJetTw");
+        await Users.addAvatar("elementofprgress");
+        await Users.addAvatar("PrecisionWing");
+        await Users.addAvatar("Lumen-NyaRuko");
+        await Users.addAvatar("HeroLonely_PvP");
+        await Users.addAvatar("CanadianMason");
+        await Users.addAvatar("AGI4RexIegend01");
+        await Users.addAvatar("7gates_of_hell");
+        await Users.addAvatar("Silk2g");
+        await Users.addAvatar("_Ecli9seS7y");
+        await Users.addAvatar("HuyaTV-11748951");
+        await Users.addAvatar("MBT_Layzan");
+        await Users.addAvatar("Lt-Zomb1e");
+        await Users.addAvatar("Superiorities");
+        await Users.addAvatar("HEHLL1225");
+        await Users.addAvatar("SYM-Incarnate");
+        await Users.addAvatar("FLOT-Crotan");
+        await Users.addAvatar("leonid_47");
+        await Users.addAvatar("AZGD-HungMammoth");
+
         
         
         let BIGBOSS = await Users.findUserByUserName("oX_-oBIGBOSS-FoX");
