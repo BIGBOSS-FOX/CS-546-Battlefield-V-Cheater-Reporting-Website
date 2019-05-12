@@ -356,7 +356,7 @@ module.exports = {
         if (legit != 0 && cheater == 0) {
             return "Legit";
         }
-        else if (cheater != 0 && cheater == 0) {
+        else if (cheater != 0 && legit == 0) {
             return "Cheater";
         }
         else {

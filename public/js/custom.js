@@ -122,6 +122,31 @@ $(function() {
     });
 });
 
+function Addcomment(i)
+{
+    var comment = $("#report_Comments"+i).val();
+            var reportid = $("#reportid"+i).val();
+            var ul = $("#commentsList"+i);
+            //var ol = document.getElementById("commentsList"); 
+            if (comment) {            
+                request = $.ajax({
+                    url: "/polls/addComment",
+                    type: "POST",
+                   data: {comment: comment, reportid : reportid},
+                    success: function(response) {                       
+                        if(response.message == "success")
+                        {
+                            ul.append("<li>"+comment+"</li>");
+                        }                        
+                        $("#report_Comments"+i).val("");                                         
+                    },
+                    error: function(e) {
+                       alert("An error has occurred"); 
+                    }
+                });
+            }
+}
+
 
 $(document).ready(function() {
     $('#banlisttable').DataTable();

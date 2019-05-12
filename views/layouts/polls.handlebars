@@ -20,14 +20,17 @@
 
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" id="vote" value="Innocent" autocomplete="off" checked>
-                                        Innocent
+                                        <input type="radio" name="options" id="vote" value="Innocent" autocomplete="off"
+                                            checked>
+                                        Legit
                                     </label>
                                     <label class="btn btn-warning">
-                                        <input type="radio" name="options" id="vote" value="Suspicious" autocomplete="off"> Suspicious
+                                        <input type="radio" name="options" id="vote" value="Suspicious"
+                                            autocomplete="off"> Suspicious
                                     </label>
                                     <label class="btn btn-danger">
-                                        <input type="radio" name="options" id="vote" value="Cheater" autocomplete="off"> Cheater
+                                        <input type="radio" name="options" id="vote" value="Cheater" autocomplete="off">
+                                        Cheater
                                     </label>
 
                                 </div>
@@ -60,9 +63,26 @@
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{body}}
                                 <br>
-                                <img src="/{{this.image.path}}"/>
+                                <img src="/{{this.image.path}}" />
                                 <br>
-                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>                               
+                                <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
+                                <br>
+                                
+                                Comments:
+                                <ul id="commentsList{{_id}}">
+                                    {{#each comments}}
+                                    <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>                             
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-lg btn-block"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    required="required">
+                                <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <br>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}"
+                                    onclick="Addcomment('{{_id}}');">Add Comment</button>
                             </div>
                         </div>
 
