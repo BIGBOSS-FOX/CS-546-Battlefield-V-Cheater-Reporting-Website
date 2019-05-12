@@ -64,20 +64,22 @@ async function main() {
 
         //add polls
         let poll1 = await Poll.addPoll("CanadianMason");
-        BIGBOSS.pending_votes.push(poll1._id);
-        SunnyJetTw.pending_votes.push(poll1._id);
-        elementofprgress.pending_votes.push(poll1._id);
-        await Users.updateUser(BIGBOSS._id, BIGBOSS);
-        await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
-        await Users.updateUser(elementofprgress._id, elementofprgress);
+        await Users.newAdminPendingVote(poll1)
+        // BIGBOSS.pending_votes.push(poll1._id);
+        // SunnyJetTw.pending_votes.push(poll1._id);
+        // elementofprgress.pending_votes.push(poll1._id);
+        // await Users.updateUser(BIGBOSS._id, BIGBOSS);
+        // await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
+        // await Users.updateUser(elementofprgress._id, elementofprgress);
 
         let poll2 = await Poll.addPoll("AZGD-HungMammoth");
-        BIGBOSS.pending_votes.push(poll2._id);
-        SunnyJetTw.pending_votes.push(poll2._id);
-        elementofprgress.pending_votes.push(poll2._id);
-        await Users.updateUser(BIGBOSS._id, BIGBOSS);
-        await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
-        await Users.updateUser(elementofprgress._id, elementofprgress);
+        await Users.newAdminPendingVote(poll2)
+        // BIGBOSS.pending_votes.push(poll2._id);
+        // SunnyJetTw.pending_votes.push(poll2._id);
+        // elementofprgress.pending_votes.push(poll2._id);
+        // await Users.updateUser(BIGBOSS._id, BIGBOSS);
+        // await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
+        // await Users.updateUser(elementofprgress._id, elementofprgress);
 
         //add comments
         let comment1 = await Comment.addComment("elementofprgress", "I agree he's a cheater.");
