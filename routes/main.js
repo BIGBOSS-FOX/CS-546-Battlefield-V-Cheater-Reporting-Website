@@ -158,13 +158,10 @@ router.post("/search", async(req, res) => {
 
 router.get("/users/:id", async(req, res) => {
     try {
-        if (!req.params.id) { <<
-            << << < HEAD
+        if (!req.params.id) {
             const events = await reportsData.getLatest10Reports();
-            res.render("layouts/main", { hasErrors: true, error: "You must provide a valid data!", events: events }); ===
-            === =
-            throw "You must provide a valid data"; >>>
-            >>> > 4 f00aa4bfee8eb1ca2435708a9b88eab07a3b979
+            res.render("layouts/main", { hasErrors: true, error: "You must provide a valid data!", events: events });
+            throw "You must provide a valid data";
         }
         const user = await usersData.findUserByUserName(req.params.id);
         if (user === undefined || user === null) throw "Invalid User";
