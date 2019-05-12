@@ -78,7 +78,7 @@ router.get("/:username",adminRequest, async (req, res) => {
                 }
                 pollsList[j]["reportedinfo"] = reportedinfo;          
         }
-        res.render('layouts/polls', { data : pollsList, hasdata : pollMessage });
+        res.render('layouts/polls', { users: req.session.userlogged, data : pollsList, hasdata : pollMessage });
     }
     catch (e) 
     {

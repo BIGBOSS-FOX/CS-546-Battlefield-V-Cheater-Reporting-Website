@@ -9,7 +9,7 @@
         </div>
         {{/if}}
         <div class="row">
-            <h3><span class="badge badge-success ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
+            <h3><span class="badge badge-successn ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
         </div>
         {{#if userprofile.showAppealbtn}}
         <div class="row">
@@ -35,7 +35,8 @@
     </div>
     <div class="col-md-10">
         <h2 class="report-title text-center shadow">Received Reports</h2>
-
+        <h3 class="hiddden"></h1>
+        <h4 class="hiddden"></h1>
         <div class="smallPad">
             <div class="accordion" id="accordionRecieved">
                 {{#if isreceived}}
@@ -69,7 +70,7 @@
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{this.body}}
                                 <br>
-                                <img src="/{{this.image.path}}"/>
+                                <img src="/{{this.image.path}}" alt="Report Image"/>
                                 <br>
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                             </div>
@@ -79,7 +80,7 @@
                 {{/each}}
                 {{else}}
                 <div class="card user-no-report">
-                    <div class="card-header">No reports found</div>
+                    <div class="card-headern">No reports found</div>
                 </div>
                 {{/if}}
             </div>
@@ -95,6 +96,8 @@
     <div class="col-md-10">
 
         <h2 class="report-title text-center shadow mt-4">Submitted Reports</h2>
+        <h3 class="hiddden"></h1>
+        <h4 class="hiddden"></h1>
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
                 {{#if isCreated}}
@@ -126,9 +129,9 @@
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{this.body}}
                                 <br>
-                                {{this.image}}
+                                <img src="/{{this.image.path}}" alt="Report Image"/>
                                 <br>
-                                Proof Link: <a href="{{this.proof_link}}" target="_blank">{{this.proof_link}}</a>
+                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                             </div>
                         </div>
                     </div>
@@ -136,7 +139,7 @@
                 {{/each}}
                 {{else}}
                 <div class="card user-no-report">
-                    <div class="card-header">No reports found</div>
+                    <div class="card-headern">No reports found</div>
                 </div>
                 {{/if}}
             </div>

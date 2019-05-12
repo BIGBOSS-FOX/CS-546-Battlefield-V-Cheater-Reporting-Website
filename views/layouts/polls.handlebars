@@ -11,7 +11,7 @@
 
                         <div class="col-sm">
                             <a href="/users/{{this.voting_about}}"
-                                class="badge badge-pill badge-primary polls-username shadow">{{this.voting_about}}</a>
+                                class="badge badge-pill badge-primaryn polls-username shadow">{{this.voting_about}}</a>
                         </div>
 
                         <form class="form-inline" method="POST" action="/polls">
@@ -31,13 +31,14 @@
                                     </label>
 
                                 </div>
-                                <button type="submit" class="btn btn-primary shadow ml-2">Vote</button>
+                                <button type="submit" class="btn btn-primaryn shadow ml-2">Vote</button>
 
                             </div>
                         </form>
                     </div>
 
-
+                    <h3 class="hiddden"></h3>
+                    <h4 class="hiddden"></h4>
 
                     {{#each this.reportedinfo}}
                     <div class="card">
@@ -58,11 +59,11 @@
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
                             <br>
                             <div class="bs-callout bs-callout-default shadow">
-                                Evidence explained: {{body}}
+                                Evidence explained: {{this.body}}
                                 <br>
-                                <img src="/{{this.image.path}}"/>
+                                <img src="/{{this.image.path}}" alt="Report Image"/>
                                 <br>
-                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>                               
+                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                             </div>
                         </div>
 
