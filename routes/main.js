@@ -170,14 +170,17 @@ router.get("/users/:id", async(req, res) => {
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if(req.session.userlogged != undefined && req.session.userlogged != null)
-        {
-            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) 
-            {
+        let showAvatarPen = false;
+        if (req.session.userlogged != undefined && req.session.userlogged != null) {
+            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) {
                 showAppealbtn = true;
+            }
+            if (user.user_name === req.session.userlogged.user_name) {
+                showAvatarPen = true;
             }
         }
         user.showAppealbtn = showAppealbtn;
+        user.showAvatarPen = showAvatarPen;
         let m = n = 0;
         for (var i = 0; i < user.created_reports.length; i++) {
             let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]);
@@ -213,7 +216,7 @@ router.get("/users/:id/avatar", async(req, res) => {
     try {
         const user = req.params.id;
         //console.log(user);
-        res.render("layouts/avatar", {users: req.session.userlogged, user: user });
+        res.render("layouts/avatar", { users: req.session.userlogged, user: user });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;

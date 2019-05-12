@@ -1,23 +1,24 @@
 {{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 <div class="row">
     <div class="col-md-2">
-        
+
         <div class="row">
             <img src="{{userprofile.avatar.path}}" alt="Avatar" class="avatar shadow">
-             {{#if loggedin}}
+            {{#if userprofile.showAvatarPen}}
             <a href="/users/{{userprofile.user_name}}/avatar">
-            <img class="edit-icon " src="/public/css/edit.png" title="Edit Avatar"/>
+                <img class="edit-icon " src="/public/css/edit.png" title="Edit Avatar" />
             </a>
             {{/if}}
-        </div>        
+        </div>
         <div class="row">
-            
+
         </div>
     </div>
     <div class="col-md-10">
         <div class="bs-callout bs-callout-default shadow">
             <h4> <span class="userpage-username">{{userprofile.user_name}}</span>
-                <span class="badge badge-pill badge-info floatRight shadow">{{userprofile.created_reports_count}} report(s)
+                <span class="badge badge-pill badge-info floatRight shadow">{{userprofile.created_reports_count}}
+                    report(s)
                     submitted</span>
             </h4>
         </div>
@@ -36,10 +37,11 @@
         {{else}}
         <div class="row">
             <h3><span class="badge badge-successn ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
-        </div>      
+        </div>
         {{#if userprofile.showAppealbtn}}
         <div class="row">
-            <h3><a class="btn btn-danger btn-block shadow rounded ml-2" href="/users/{{userprofile.user_name}}/appeal">Appeal!</a></h3>
+            <h3><a class="btn btn-danger btn-block shadow rounded ml-2"
+                    href="/users/{{userprofile.user_name}}/appeal">Appeal!</a></h3>
         </div>
         {{/if}}
         {{/if}}
@@ -81,7 +83,7 @@
                                 Evidence explained: {{this.body}}
                                 <br>
                                 {{#if this.image.path}}
-                                <img src="/{{this.image.path}}" alt="Report Image"/>
+                                <img src="/{{this.image.path}}" alt="Report Image" />
                                 <br>
                                 {{/if}}
                                 {{#if proof_link}}
@@ -141,7 +143,7 @@
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{this.body}}
                                 <br>
-                                <img src="/{{this.image.path}}" alt="Report Image"/>
+                                <img src="/{{this.image.path}}" alt="Report Image" />
                                 <br>
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                             </div>
