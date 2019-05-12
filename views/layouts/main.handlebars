@@ -15,8 +15,8 @@
 <div style="padding:10px">
     {{#each events}}
         <div class="bs-callout bs-callout-default">
-            <h4>{{this.creation_time}}</h4>
-            <a href="http://localhost:3000/users/{{this.reported_by}}">{{this.reported_by}}</a> reported <a href="http://localhost:3000/users/{{this.reported_player}}">{{this.reported_player}}</a>
+            <h4>{{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</h4>
+             <a class="username" href="http://localhost:3000/users/{{this.reported_player}}">{{this.reported_player}}</a>  reported by   <a href="http://localhost:3000/users/{{this.reported_by}}">{{this.reported_by}}</a> 
         </div>
     {{/each}}
 </div>

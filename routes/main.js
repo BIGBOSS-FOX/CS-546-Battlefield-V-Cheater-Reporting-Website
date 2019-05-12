@@ -5,15 +5,12 @@ const usersData = data.Users;
 const reportsData = data.Report;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
-var multer  = require('multer');
+var multer = require('multer');
 
 router.use(function(req, res, next) {
-    if (req.session.userlogged === undefined || req.session.userlogged === null) 
-    {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) {
         res.locals.loggedin = false;
-    } 
-    else 
-    {
+    } else {
         res.locals.loggedin = true;
         res.locals.isAdmin = req.session.userlogged.isAdmin;
     }
@@ -21,25 +18,25 @@ router.use(function(req, res, next) {
 });
 
 // Check for extension of image
-const getExtension = file =>{
+const getExtension = file => {
     if (file.mimetype == "image/jpeg")
-        ext =  ".jpeg";
+        ext = ".jpeg";
     else if (file.mimetype == "image/jpg")
         est = ".jpg";
     else
-        ext =".png";
+        ext = ".png";
     return ext;
 }
 
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/avatars/')
+    destination: function(req, file, cb) {
+        cb(null, 'public/avatars/')
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
     }
 });
-  
+
 var upload = multer({ storage: storage });
 
 router.get("/", async(req, res) => { //get the MAIN PAGE! :)
@@ -47,18 +44,16 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
             const events = await reportsData.getLatest10Reports();
-            console.log(events);
-            if(user === undefined || user === null) throw "Invalid User"
+            if (user === undefined || user === null) throw "Invalid User"
             res.render("layouts/main", { users: user, events: events });
         } else {
             const events = await reportsData.getLatest10Reports();
-            console.log(events);
-            res.render("layouts/main", {events: events});
+            res.render("layouts/main", { events: events });
         }
     } catch (e) {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
-        res.status(400).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(400).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -67,13 +62,13 @@ router.post("/register", async(req, res) => {
         let newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.json({ error: "You must provide a valid data" });
+            throw "You must provide a valid data";
         }
         if (!newUserInfo.username_signup) {
-            res.json({ error: "You must provide a username" });
+            throw "You must provide a username";
         }
         if (!newUserInfo.password_signup) {
-            res.json({ error: "You must provide a password" });
+            throw "You must provide a password";
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
@@ -100,13 +95,13 @@ router.post("/login", async(req, res) => {
     try {
         let newUserInfo = req.body;
         if (!newUserInfo) {
-            res.json({ error: "You must provide data to log in" });
+            throw "You must provide data to log in";
         }
         if (!newUserInfo.username_login) {
-            res.json({ error: "You must provide a username" });
+            throw "You must provide a username";
         }
         if (!newUserInfo.password_login) {
-            res.json({ error: "You must provide a password" });
+            throw "You must provide a password";
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         if (!compareUser) {
@@ -116,7 +111,7 @@ router.post("/login", async(req, res) => {
             if (!hashed) {
                 res.json({ error: "Provide valid Username/Password" });
             } else {
-                req.session.userlogged = compareUser;                
+                req.session.userlogged = compareUser;
                 res.redirect('/')
             }
         }
@@ -139,16 +134,17 @@ router.post("/search", async(req, res) => {
     try {
         const searchInfo = req.body;
         if (!searchInfo) {
-            res.json({ error: "You must provide a valid data" });
+            throw "You must provide a valid data";
         }
         if (!searchInfo.username_search) {
-            res.json({ error: "Provide Username" });
+            throw "Provide Username";
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
         if (searchData === undefined || searchData === null) {
             //show an error message
             //username doen't exist
-            res.render("layouts/main", { hasErrors: true, errors: "Provide valid username" });
+            const events = await reportsData.getLatest10Reports();
+            res.render("layouts/main", { hasErrors: true, errors: "Provide a valid username!", events: events });
         } else {
             res.redirect('../users/' + searchInfo.username_search);
         }
@@ -163,17 +159,23 @@ router.post("/search", async(req, res) => {
 router.get("/users/:id", async(req, res) => {
     try {
         if (!req.params.id) {
-            res.render("layouts/main", { error: "You must provide a valid data" });
+            const events = await reportsData.getLatest10Reports();
+            res.render("layouts/main", { hasErrors: true, error: "You must provide a valid data!", events: events });
+            throw "You must provide a valid data";
         }
         const user = await usersData.findUserByUserName(req.params.id);
-        if(user === undefined || user === null) throw "Invalid User";
+        if (user === undefined || user === null) throw "Invalid User";
         user.createdinfo = {};
         user.reportedinfo = {};
         let report_received = false;
         let report_created = false;
         let showAppealbtn = false;
-        if (user.canAppeal && user.label_status == "Cheater") {
-            showAppealbtn = true;
+        if(req.session.userlogged != undefined && req.session.userlogged != null)
+        {
+            if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) 
+            {
+                showAppealbtn = true;
+            }
         }
         user.showAppealbtn = showAppealbtn;
         let m = n = 0;
@@ -207,11 +209,11 @@ router.get("/users/:id", async(req, res) => {
 });
 
 //routes to change avatar
-router.get("/users/:id/avatar", async(req, res) =>{
+router.get("/users/:id/avatar", async(req, res) => {
     try {
-        
-        
-        res.render("layouts/avatar", {})
+        const user = req.params.id;
+        //console.log(user);
+        res.render("layouts/avatar", { user: user });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
@@ -221,9 +223,13 @@ router.get("/users/:id/avatar", async(req, res) =>{
     }
 });
 
-router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async (req, res, next) => {
+router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     const imageInfo = req.file;
-    console.log(req.params.id);
+
+    console.log(imageInfo);
+    imageInfo.path = "http://localhost:3000/public/avatars/" + imageInfo.filename;
+    console.log(req.body);
+    //console.log(req.params.id);
 
     try {
 
@@ -253,7 +259,7 @@ router.get("/list", async(req, res) => { //get the cheater list
         const userList = await usersData.getAllCheaters();
         if (req.session.userlogged) {
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
-            if(user === undefined || user === null) throw "Invalid User";
+            if (user === undefined || user === null) throw "Invalid User";
             res.render('layouts/cheaters', { data: userList, users: user });
         } else {
             res.render('layouts/cheaters', { data: userList });
@@ -282,9 +288,10 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
     }
 });
 
-router.use(function(req, res, next) {
+router.use(async function(req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
-        res.render("layouts/main", { hasErrors: true, errors: "Please Login" });
+        const events = await reportsData.getLatest10Reports();
+        res.render("layouts/main", { hasErrors: true, errors: "Please Login", events: events });
     } else
         next();
 

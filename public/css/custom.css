@@ -257,6 +257,12 @@ body {
     height: 30px;
 }
 
+.edit-icon {
+    height: 30px;
+    margin-top: 70px;
+    margin-left: -20px;
+}
+
 .main-logo {
     height: 70px;
 }
@@ -333,7 +339,7 @@ body {
     border-color: #007a00
 }
 
-.btn-outline-success-dark:hover {
+.btn-outline-success-dark:hover:enabled {
     color: #fff;
     background-color: #007a00;
     border-color: #007a00
@@ -344,7 +350,7 @@ body {
     border-color: #008faf
 }
 
-.btn-outline-primary-dark:hover {
+.btn-outline-primary-dark:hover:enabled {
     color: #fff;
     background-color: #008faf;
     border-color: #008faf
@@ -386,4 +392,8 @@ body {
 .card-headern {
     background-color: #e1626a;
     padding: 10px;
+}
+
+.username {
+    font-size: 25px;
 }
