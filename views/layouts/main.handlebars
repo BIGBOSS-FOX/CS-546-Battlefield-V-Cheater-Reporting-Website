@@ -1,16 +1,14 @@
 {{#if users.isAdmin}}
     {{#each users.pending_votes}}
-        <div style="padding:10px">
+        <div class="smallPad">
             <div class="bs-callout bs-callout-default">
                 <h4>{{this.createdTime}}</h4>
-                User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}</a>  is waiting for your vote.
-                <a href="http://localhost:3000/polls/{{this.pollUser}}">To vote for him/her!</a>
+                User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}'s</a> status is waiting to be determined by your vote.
+                <a href="http://localhost:3000/polls/{{this.pollUser}}">Click here to place a vote on him/her!</a>
             </div>
         </div>
     {{/each}}
 {{/if}}
-
-
 
 <div class="separatingBar"></div>
 
@@ -63,4 +61,4 @@
     <div class="col-md-2">
         Column3
     </div>
-</div>
+</div> 

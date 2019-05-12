@@ -115,7 +115,7 @@ router.post("/", async (req, res) => {
         if(adminExists) throw "One admin cannot vote on the same poll twice";
 
         let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
-        await usersData.statusChangeAfterVoting(updatedpoll);
+        //await usersData.statusChangeAfterVoting(updatedpoll);
         await usersData.statusChange(FullPoll.voting_about);
         res.redirect("/");
     }
