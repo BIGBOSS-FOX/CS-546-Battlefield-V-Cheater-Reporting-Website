@@ -373,9 +373,24 @@ body {
     background-color: #0072ee
 }
 
-.badge-successn {
+.Innocent {
     color: #fff;
     background-color: #008a00
+}
+
+.Cheater {
+    color: #fff;
+    background-color: #a01f1f
+}
+
+.Suspicious {
+    color: #111;
+    background-color: #ceca06
+}
+
+.Processing {
+    color: #fff;
+    background-color: #00198a
 }
 
 .badge-info {
