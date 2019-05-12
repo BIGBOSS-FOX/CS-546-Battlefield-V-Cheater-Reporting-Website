@@ -54,13 +54,19 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
     try {
         //get the reported_player info, add newReport to received_reports array, then update user info to database
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
-        if (!reportedPlayerInfo) {
+        if (!reportedPlayerInfo) 
+        {
             res.render("layouts/createreport", { users: req.session.userlogged, errors: "Invalid Userid", hasErrors: true });
-        } else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
+        } 
+        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) 
+        { //Check name, you cannot report yourself
             res.render("layouts/createreport", { users: req.session.userlogged, errors: "You cannot report yourself", hasErrors: true });
-        } else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
+        } 
+        else if (reportedPlayerInfo.isAdmin) 
+        { //Check admin, who cannot be reporeted
             res.render("layouts/createreport", { users: req.session.userlogged, errors: "Admin cannot be reported", hasErrors: true });
-        } else {
+        } 
+        else {
             //add a new report to Report collection
             const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file /*reportInfo.exampleFormControlFile1*/ , reportInfo.link);
             reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
