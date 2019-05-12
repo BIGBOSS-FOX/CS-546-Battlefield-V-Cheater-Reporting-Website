@@ -64,7 +64,9 @@ async function main() {
 
         //add polls
         let poll1 = await Poll.addPoll("CanadianMason");
-        await Users.newAdminPendingVote(poll1)
+        await Users.newAdminPendingVote(poll1);
+        CanadianMason.label_status = "Processing";
+        await Users.updateUser(CanadianMason._id, CanadianMason);
         // BIGBOSS.pending_votes.push(poll1._id);
         // SunnyJetTw.pending_votes.push(poll1._id);
         // elementofprgress.pending_votes.push(poll1._id);
@@ -73,7 +75,9 @@ async function main() {
         // await Users.updateUser(elementofprgress._id, elementofprgress);
 
         let poll2 = await Poll.addPoll("AZGD-HungMammoth");
-        await Users.newAdminPendingVote(poll2)
+        await Users.newAdminPendingVote(poll2);
+        HungMammoth.label_status = "Processing";
+        await Users.updateUser(HungMammoth._id, HungMammoth);
         // BIGBOSS.pending_votes.push(poll2._id);
         // SunnyJetTw.pending_votes.push(poll2._id);
         // elementofprgress.pending_votes.push(poll2._id);
