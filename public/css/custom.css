@@ -95,7 +95,6 @@ body {
 
 .userpage-username {
     font-size: 50px;
-    background-color: #b8b8b8;
     color: #636363;
 }
 
@@ -258,19 +257,23 @@ body {
     height: 30px;
 }
 
+.main-logo {
+    height: 70px;
+}
+
 .main-logo div {
     font-family: Tahoma, Geneva, sans-serif;
     font-size: 24px;
     letter-spacing: 6px;
     word-spacing: -5px;
-    color: #6d989b;
+    color: #dffcfe;
     font-weight: 700;
     text-decoration: none;
     font-style: italic;
     font-variant: normal;
     text-transform: none;
     text-align: center;
-    text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+    text-shadow: -1px -1px 0 #97a0bb, 1px -1px 0 #97a0bb, -1px 1px 0 #97a0bb, 1px 1px 0 #97a0bb;
 }
 
 .paddingbottomone {
@@ -281,32 +284,106 @@ body {
     padding-top: 1px;
 }
 
+
 /* Special styles because of tota11y accesibility */
+
 .fullwidth {
     width: 100%;
 }
-.hiddden{
+
+.hiddden {
     display: none;
 }
-.btn-outline-danger{color:#da2b3e;border-color:#da2b3e}
-.btn-outline-danger:hover{color:#fff;background-color:#da2b3e;border-color:#da2b3e}
-.btn-outline-success{color:#008600;border-color:#008600}
-.btn-outline-success:hover{color:#fff;background-color:#008600;border-color:#008600}
-.btn-outline-primary{color:#006fe7;border-color:#006fe7}
-.btn-outline-primary:hover{color:#fff;background-color:#006fe7;border-color:#006fe7}
-.btn-outline-success-dark{color:#007a00;border-color:#007a00}
-.btn-outline-success-dark:hover{color:#fff;background-color:#007a00;border-color:#007a00}
-.btn-outline-primary-dark{color:#008faf;border-color:#008faf}
-.btn-outline-primary-dark:hover{color:#fff;background-color:#008faf;border-color:#008faf}
-.btn-primaryn{color:#fff;background-color:#0072ee;border-color:#0072ee}
-.btn-primaryn:hover{color:#fff;background-color:#0072ee;border-color:#0072ee}
-.badge-primaryn{color:#fff;background-color:#0072ee}
-.badge-successn{color:#fff;background-color:#008a00}
-.badge-info{color:#fff;background-color:#008295}
-.btn-link{font-weight:400;color:#007c98;text-decoration:none}
 
+.btn-outline-danger {
+    color: #da2b3e;
+    border-color: #da2b3e
+}
 
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #da2b3e;
+    border-color: #da2b3e
+}
 
-.card-headern{
+.btn-outline-success {
+    color: #008600;
+    border-color: #008600
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #008600;
+    border-color: #008600
+}
+
+.btn-outline-primary {
+    color: #006fe7;
+    border-color: #006fe7
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #006fe7;
+    border-color: #006fe7
+}
+
+.btn-outline-success-dark {
+    color: #007a00;
+    border-color: #007a00
+}
+
+.btn-outline-success-dark:hover {
+    color: #fff;
+    background-color: #007a00;
+    border-color: #007a00
+}
+
+.btn-outline-primary-dark {
+    color: #008faf;
+    border-color: #008faf
+}
+
+.btn-outline-primary-dark:hover {
+    color: #fff;
+    background-color: #008faf;
+    border-color: #008faf
+}
+
+.btn-primaryn {
+    color: #fff;
+    background-color: #0072ee;
+    border-color: #0072ee
+}
+
+.btn-primaryn:hover {
+    color: #fff;
+    background-color: #0072ee;
+    border-color: #0072ee
+}
+
+.badge-primaryn {
+    color: #fff;
+    background-color: #0072ee
+}
+
+.badge-successn {
+    color: #fff;
+    background-color: #008a00
+}
+
+.badge-info {
+    color: #fff;
+    background-color: #008295
+}
+
+.btn-link {
+    font-weight: 400;
+    color: #007c98;
+    text-decoration: none
+}
+
+.card-headern {
     background-color: #e1626a;
+    padding: 10px;
 }
