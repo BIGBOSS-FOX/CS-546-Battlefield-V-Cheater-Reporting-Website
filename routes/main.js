@@ -19,10 +19,14 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
     try {
         if (req.session.userlogged) { // use for show notification for admin
             const user = await usersData.findUserByUserName(req.session.userlogged.user_name);
+            const events = await reportsData.getLatest10Reports();
+            console.log(events);
             if(user === undefined || user === null) throw "Invalid User"
-            res.render("layouts/main", { users: user });
+            res.render("layouts/main", { users: user, events: events });
         } else {
-            res.render("layouts/main", {});
+            const events = await reportsData.getLatest10Reports();
+            console.log(events);
+            res.render("layouts/main", {events: events});
         }
     } catch (e) {
         req.session.userlogged = null;

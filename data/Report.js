@@ -134,6 +134,14 @@ module.exports =
         const ReportList = await ReportCollection.find({reported_player: reported_player}).toArray();
 
         return ReportList;
+    },
+
+    async getLatest10Reports()
+    {
+        const ReportCollection = await Report();
+        const ReportList = await ReportCollection.find({}).sort({"creation_time": -1}).limit(10).toArray();
+
+        return ReportList;
     }
 
 };

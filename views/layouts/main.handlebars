@@ -16,39 +16,18 @@
 
 
 <div style="padding:10px">
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
+    {{#each events}}
+        <div class="bs-callout bs-callout-default">
+            <h4>{{this.creation_time}}</h4>
+            <a href="http://localhost:3000/users/{{this.reported_by}}">{{this.reported_by}}</a> reported <a href="http://localhost:3000/users/{{this.reported_player}}">{{this.reported_player}}</a>
+        </div>
+    {{/each}}
 
-    <div class="bs-callout bs-callout-default">
+    {{!-- <div class="bs-callout bs-callout-default">
         <h4>05/04/2020</h4>
         This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
-    <div class="bs-callout bs-callout-default">
-        <h4>05/04/2020</h4>
-        This is a default callout.
-    </div>
+    </div> --}}
+
 </div>
 
 <div class="row">
