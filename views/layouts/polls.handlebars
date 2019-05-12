@@ -58,11 +58,27 @@
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
                             <br>
                             <div class="bs-callout bs-callout-default shadow">
-                                {{body}}
+                                Evidence: {{body}}
                                 <br>
                                 {{image}}
                                 <br>
-                                 <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>                               
+                                <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
+                               <br>                                 
+                               {{#if comments}} 
+                               Comments:                                                                 
+                                {{#each comments}}
+                                     <ul id="commentsList{{_id}}"> 
+                                         <li>{{this}}</li>                                                  
+                                     </ul> 
+                                {{/each}}                                 
+                                {{/if}}                                
+                                <ul id="commentsList{{_id}}"></ul>                         
+                            </div>
+                            <div class="col-sm-12">                                                              
+                                <input type="text" class="form-control form-control-lg btn-block" id="report_Comments{{_id}}" name="comments" placeholder="Enter description" required="required">
+                                 <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <br>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}" onclick="Addcomment('{{_id}}');">Add Comment</button>
                             </div>
                         </div>
 
