@@ -8,17 +8,15 @@
         <div class="row">
             <h3><span class="badge badge-dark ml-2">Admin</span></h3>
         </div>
-        {{!-- {{/if}} --}}
         {{else}}
         <div class="row">
             <h3><span class="badge badge-successn ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
-        </div>
-        {{/if}}
-       
+        </div>      
         {{#if userprofile.showAppealbtn}}
         <div class="row">
             <a type="button" class="btn btn-danger btn-lg btn-block ml-2" href="/users/{{userprofile.user_name}}/appeal">Appeal!</a>
         </div>
+        {{/if}}
         {{/if}}
     </div>
     <div class="col-md-10">
