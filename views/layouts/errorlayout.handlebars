@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/public/css/favicon.png" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/public/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="/public/css/dataTables.bootstrap4.min.css">
+
     <link rel="stylesheet" href="/public/css/custom.css">
 
-    <link rel="stylesheet" href="/public/css/dataTables.bootstrap4.min.css">
 
 
     <title>Battlefield V Cheater Report</title>
 </head>
 
 <body>
+    <h1 class="hiddden">a</h1>
+    <h2 class="hiddden">b</h2>
+    <h3 class="hiddden">c</h3>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light paddingbottomone shadow">
 
-        <a class="navbar-brand main-logo paddingtopone paddingbottomone" href="/"><img src="/public/css/nav-logo.png" /> <div>Reporting</div></a>
+        <a class="navbar-brand main-logo paddingtopone paddingbottomone" href="/"><img src="/public/css/nav-logo.png" alt="logo" /> <div>Reporting</div></a>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,8 +35,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/list"><img class="nav-icon" src="/public/css/banlist.png"/>Banlist</a>
+                    <a class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2 redBSO" href="/list"><img class="nav-icon" src="/public/css/banlist.ico" alt="ban list logo" />Cheater List</a>
                 </li>
+                {{#if loggedin}}
+                <li class="nav-item active">
+                    <a class="btn btn-outline-warning my-2 my-sm-0 mr-sm-2" href="/list"><img class="nav-icon"
+                            src="/public/css/vote.gif" alt="vote button"/>Polls</a>
+                </li>
+                {{/if}}
             </ul>
             <form class="form-inline my-2 my-lg-0">
 
@@ -42,7 +50,7 @@
                 {{#unless ErrorPage}}
                 {{#if loggedin}}
                 <a href="/users/{{users.user_name}}"
-                    class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">{{users.user_name}}</a>
+                    class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2">My Profile: {{users.user_name}}</a>
                 <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Log Out</a>
                 {{else}}
                 <a href="" class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" data-toggle="modal"
@@ -52,39 +60,23 @@
                 {{/if}}
                 {{/unless}}
 
-                <!-- <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username">
-        <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password">
-        <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Login</button>
-        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign Up!</button> -->
 
             </form>
 
         </div>
     </nav>
 
-    <!-- <div class="d-none d-lg-block" style="background-image:url('https://i.ytimg.com/vi/vS9AXGUBqj0/maxresdefault.jpg');background-repeat: no-repeat;  background-attachment: fixed;   background-size: cover;">
-    <div class="container search-bar " >
-      <div class="row h-25">
-            <div class="col align-self-center ">
-                <div class="input-group">
-                    <input class="form-control has-success" type="search" placeholder="Search" aria-label="Search">
-                </div>
-            </div>
-            <div class="col-md-2 align-self-center">
-                <button class="btn btn-dark btn-block" type="submit">Search</button>
-            </div>
-        </div>
-    </div>
-
-  </div> -->
 
     <div class="parallax">
-         <!-- bullets -->
+        <!-- bullets -->
         <!-- NOTE TO PROFESSOR/GRADER ABOUT THE FOLLOWING STYLES: These styles in particular add the bullet effect to the page 
         and each element is specialized and unique, so linking to a separate css file would add no benefit and waste time. We
         pul all our other styles in separate linked css files and agree with the best practices of web design, but kept these
         in particular as an exception and hope you'll allow because of the above reasons. -->
         <div>
+            <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-10px) scale(11);"> <img
+                    src="/public/css/favicon.png" style="margin-top: -45px; margin-left: 20px" alt=""/></div>
+
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-2px) scale(2);"> <img
                     src="/public/css/bullet.png" alt="" class="bullet" style="margin-top: 50px; margin-left: 345px"></div>
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-2.5px) scale(2);"> <img
@@ -130,32 +122,17 @@
         </div>
 
         <div class="parallax__layer parallax__layer--base">
-
-
-
             <div class="separatingBar"></div>
-
-
-
-
-
             <div class="container greyBack">
                 {{{body}}}
-
             </div>
-
-            <!-- <div class="container page-size">
-                <h1>Hello, world!2</h1>
-            </div> -->
-
             <!-- Footer -->
             <footer class="page-footer font-small blue">
 
                 <!-- Copyright -->
                 <div class="footer-copyright text-center pt-3">© 2019 Copyright: Group 5
                     <img class="footer-img"
-                        ng-src="https://data4.origin.com/asset/content/dam/originx/web/app/games/battlefield/battlefield-v/gdp-redesign/BFV_GDP_overview_ww_v2.jpg/1d94ce42-8954-4bc2-a778-529d32d8b724/original.jpg"
-                        src="https://data4.origin.com/asset/content/dam/originx/web/app/games/battlefield/battlefield-v/gdp-redesign/BFV_GDP_overview_ww_v2.jpg/1d94ce42-8954-4bc2-a778-529d32d8b724/original.jpg">
+                        src="/public/css/footer.jpg" alt="Footer Soldiers">
                 </div>
                 <!-- Copyright -->
 
@@ -170,21 +147,21 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/jquery.dataTables.min.js"></script>
+    <script src="/public/js/dataTables.bootstrap4.min.js"></script>
+
 
     {{!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="/public/js/popper.min.js"></script>
+
+    <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/custom.js"></script>
 
     <!-- Sign In - Login -->
-    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -197,19 +174,18 @@
 
 
 
-                {{!-- <form id="login_form" action="/login" method="POST" enctype="x-www-form-urlencoded"> --}}
                 <form id="login_form">
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+                            <label data-error="wrong" data-success="right" for="username_login">Username</label>
                             <input type="text" id="username_login" name="username_login" class="form-control validate"
                                 required="required">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
+                            <label data-error="wrong" data-success="right" for="password_login">Password</label>
                             <input type="password" id="password_login" name="password_login"
                                 class="form-control validate" required="required">
                         </div>
@@ -217,14 +193,14 @@
 
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button id="login_submit" class="btn btn-outline-success">Login</button>
+                        <button id="login_submit" class="btn btn-outline-success-dark">Login</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalSignUpForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="modalSignUpForm" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -235,11 +211,11 @@
                     </button>
                 </div>
 
-                <form id="signup_form" action="/register" method="POST" enctype="x-www-form-urlencoded">
+                <form id="signup_form" action="/register" method="POST">
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+                            <label data-error="wrong" data-success="right" for="username_signup">Username</label>
                             <input type="text" id="username_signup" name="username_signup" required="required"
                                 class="form-control validate">
                         </div>
@@ -247,20 +223,21 @@
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right"
-                                for="defaultForm-pass-signup">Password</label>
+                                for="password_signup">Password</label>
                             <input type="password" id="password_signup" name="password_signup"
                                 class="form-control validate" required="required">
                         </div>
                         <span id="span-signup"></span>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button id="signup_submit" class="btn btn-outline-primary" type="submit">Sign Up</button>
+                        <button id="signup_submit" class="btn btn-outline-primary-dark" type="submit">Sign Up</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    
 </body>
 
 

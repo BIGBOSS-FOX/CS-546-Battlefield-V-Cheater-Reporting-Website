@@ -1,3 +1,4 @@
+{{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 {{#if users.isAdmin}}
     {{#each users.pending_votes}}
         <div class="smallPad">
@@ -9,12 +10,8 @@
         </div>
     {{/each}}
 {{/if}}
-
 <div class="separatingBar"></div>
-
 <h2 class="report-title text-center shadow">Latest Events</h2>
-
-
 <div style="padding:10px">
     {{#each events}}
         <div class="bs-callout bs-callout-default">
@@ -23,15 +20,3 @@
         </div>
     {{/each}}
 </div>
-
-{{!-- <div class="row">
-    <div class="col-md-2">
-        Column1
-    </div>
-    <div class="col-md-8" style="background-color: #f8f9fa">
-        Column2
-    </div>
-    <div class="col-md-2">
-        Column3
-    </div>
-</div>  --}}

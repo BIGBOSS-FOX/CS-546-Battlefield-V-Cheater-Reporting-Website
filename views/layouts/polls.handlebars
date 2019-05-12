@@ -1,3 +1,4 @@
+{{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 <div class="row my-5">
     <div class="col-md-12">
         <h2 class="report-title text-center shadow">Reports to be Polled</h2>
@@ -6,30 +7,27 @@
                 {{#if hasdata}}
                 {{#each data}}
                 <div class="card outer-card">
-
                     <div class="row">
-
                         <div class="col-sm">
                             <a href="/users/{{this.voting_about}}"
                                 class="badge badge-pill badge-primaryn polls-username shadow">{{this.voting_about}}</a>
                         </div>
-
                         <form class="form-inline" method="POST" action="/polls">
                             <input type="hidden" name="id" id="id" value="{{this._id}}">
                             <div class="col-sm">
 
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" id="vote" value="Innocent" autocomplete="off"
+                                        <input type="radio" name="options" id="vote1" value="Innocent"
                                             checked>
                                         Legit
                                     </label>
                                     <label class="btn btn-warning">
-                                        <input type="radio" name="options" id="vote" value="Suspicious"
-                                            autocomplete="off"> Suspicious
+                                        <input type="radio" name="options" id="vote2" value="Suspicious">
+                                         Suspicious
                                     </label>
                                     <label class="btn btn-danger">
-                                        <input type="radio" name="options" id="vote" value="Cheater" autocomplete="off">
+                                        <input type="radio" name="options" id="vote3" value="Cheater">
                                         Cheater
                                     </label>
 
@@ -39,10 +37,8 @@
                             </div>
                         </form>
                     </div>
-
-                    <h3 class="hiddden"></h3>
-                    <h4 class="hiddden"></h4>
-
+                    <h3 class="hiddden">a</h3>
+                    <h4 class="hiddden">b</h4>
                     {{#each this.reportedinfo}}
                     <div class="card">
                         <div class="card-header" id="heading{{_id}}">
@@ -54,7 +50,6 @@
                             </h5>
                         </div>
                     </div>
-
                     <div id="collapse{{_id}}" class="collapse" aria-labelledby="heading{{_id}}"
                         data-parent="#accordionRecieved">
                         <div class="card-body">
@@ -94,9 +89,6 @@
                 {{else}}
                 <p>No reports found</p>
                 {{/if}}
-
-
-
             </div>
 
         </div>

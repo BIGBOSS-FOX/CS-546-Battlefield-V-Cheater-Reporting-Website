@@ -1,3 +1,4 @@
+{{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 <div class="row">
     <div class="col-md-2">
         <div class="row">
@@ -37,31 +38,29 @@
     </div>
     <div class="col-md-10">
         <h2 class="report-title text-center shadow">Received Reports</h2>
-        <h3 class="hiddden"></h1>
-        <h4 class="hiddden"></h1>
+        <h3 class="hiddden">a</h3>
+        <h4 class="hiddden">a</h4>
         <div class="smallPad">
             <div class="accordion" id="accordionRecieved">
                 {{#if isreceived}}
                 {{#each userprofile.reportedinfo}}
                 <div class="card">
                     <div class="card-header" id="heading{{this.reportNumber}}">
-                        <h5 class="mb-0">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapse{{this.reportNumber}}" aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                        Report {{this.reportNumber}}
+                        <div class="row mb-0">
+                            <div class="col-sm">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapse{{this.reportNumber}}" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    Report {{this.reportNumber}}
 
 
-                                    </button>
-                                </div>
-                                <div class="col-sm-auto">
-                                    <div class="badge badge-pill user-date">
-                                        {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
-                                </div>
+                                </button>
                             </div>
-                        </h5>
+                            <div class="col-sm-auto">
+                                <div class="badge badge-pill user-date">
+                                    {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="collapse{{this.reportNumber}}" class="collapse"
@@ -98,29 +97,27 @@
     <div class="col-md-10">
 
         <h2 class="report-title text-center shadow mt-4">Submitted Reports</h2>
-        <h3 class="hiddden"></h1>
-        <h4 class="hiddden"></h1>
+        <h3 class="hiddden">a</h3>
+        <h4 class="hiddden">a</h4>
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
                 {{#if isCreated}}
                 {{#each userprofile.createdinfo}}
                 <div class="card">
                     <div class="card-header" id="headingSubmit{{this.reportNumber}}">
-                        <h5 class="mb-0">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseSubmit{{this.reportNumber}}" aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                        Report {{this.reportNumber}}
-                                    </button>
-                                </div>
-                                <div class="col-sm-auto">
-                                    <div class="badge badge-pill user-date">
-                                        {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
-                                </div>
+                        <div class="row mb-0">
+                            <div class="col-sm">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapseSubmit{{this.reportNumber}}" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    Report {{this.reportNumber}}
+                                </button>
                             </div>
-                        </h5>
+                            <div class="col-sm-auto">
+                                <div class="badge badge-pill user-date">
+                                    {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="collapseSubmit{{this.reportNumber}}" class="collapse"

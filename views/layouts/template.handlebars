@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <h1 class="hiddden"></h1>
-    <h2 class="hiddden"></h1>
-    <h3 class="hiddden"></h1>
+    <h1 class="hiddden">a</h1>
+    <h2 class="hiddden">b</h2>
+    <h3 class="hiddden">c</h3>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light paddingbottomone shadow">
 
         <a class="navbar-brand main-logo paddingtopone paddingbottomone" href="/"><img src="/public/css/nav-logo.png" alt="logo" /> <div>Reporting</div></a>
@@ -75,7 +75,7 @@
         in particular as an exception and hope you'll allow because of the above reasons. -->
         <div>
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-10px) scale(11);"> <img
-                    src="/public/css/favicon.png" style="margin-top: -45px; margin-left: 20px"/></div>
+                    src="/public/css/favicon.png" style="margin-top: -45px; margin-left: 20px" alt=""/></div>
 
             <div class="parallax__layer parallax__layer--back" style="transform: translateZ(-2px) scale(2);"> <img
                     src="/public/css/bullet.png" alt="" class="bullet" style="margin-top: 50px; margin-left: 345px"></div>
@@ -136,7 +136,7 @@
                 </div>
                 {{/if}}
                 <div class="container search-bar">
-                    <form action="/search" method="POST" enctype="x-www-form-urlencoded">
+                    <form action="/search" method="POST">
                         <div class="row h-25">
                             <div class="col ">
                                 <div class="input-group">
@@ -212,7 +212,7 @@
     <script src="/public/js/custom.js"></script>
 
     <!-- Sign In - Login -->
-    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -225,19 +225,18 @@
 
 
 
-                {{!-- <form id="login_form" action="/login" method="POST" enctype="x-www-form-urlencoded"> --}}
                 <form id="login_form">
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+                            <label data-error="wrong" data-success="right" for="username_login">Username</label>
                             <input type="text" id="username_login" name="username_login" class="form-control validate"
                                 required="required">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
+                            <label data-error="wrong" data-success="right" for="password_login">Password</label>
                             <input type="password" id="password_login" name="password_login"
                                 class="form-control validate" required="required">
                         </div>
@@ -252,7 +251,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalSignUpForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="modalSignUpForm" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -263,11 +262,11 @@
                     </button>
                 </div>
 
-                <form id="signup_form" action="/register" method="POST" enctype="x-www-form-urlencoded">
+                <form id="signup_form" action="/register" method="POST">
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+                            <label data-error="wrong" data-success="right" for="username_signup">Username</label>
                             <input type="text" id="username_signup" name="username_signup" required="required"
                                 class="form-control validate">
                         </div>
@@ -275,7 +274,7 @@
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right"
-                                for="defaultForm-pass-signup">Password</label>
+                                for="password_signup">Password</label>
                             <input type="password" id="password_signup" name="password_signup"
                                 class="form-control validate" required="required">
                         </div>
