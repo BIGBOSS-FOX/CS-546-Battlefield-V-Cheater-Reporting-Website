@@ -16,11 +16,24 @@
     </div>
     <div class="col-md-10">
         <div class="bs-callout bs-callout-default shadow">
-            <h4> <span class="userpage-username">{{userprofile.user_name}}</span>
-                <span class="badge badge-pill badge-info floatRight shadow">{{userprofile.created_reports_count}}
+            
+
+                <span class="userpage-username">{{userprofile.user_name}}</span>
+           
+                <span class="badge badge-pill badge-info floatRight shadow"> 
+                    {{userprofile.submitted_reports_count}} report(s) recieved
+                    
+                    <br>
+                    
+
+                    {{userprofile.created_reports_count}}
                     report(s)
-                    submitted</span>
-            </h4>
+                    submitted
+                </span>
+                
+
+
+
         </div>
 
     </div>
@@ -36,7 +49,8 @@
         </div>
         {{else}}
         <div class="row">
-            <h3><span class="badge {{userprofile.label_status}} ml-2 text-uppercase">{{userprofile.label_status}}</span></h3>
+            <h3><span class="badge {{userprofile.label_status}} ml-2 text-uppercase">{{userprofile.label_status}}</span>
+            </h3>
         </div>
         {{#if userprofile.showAppealbtn}}
         <div class="row">
