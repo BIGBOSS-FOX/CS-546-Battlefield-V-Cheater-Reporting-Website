@@ -67,13 +67,13 @@ router.post("/register", async(req, res) => {
         let newUserInfo = req.body;
 
         if (!newUserInfo) {
-            res.json({ error: "You must provide a valid data" });
+           throw "You must provide a valid data";
         }
         if (!newUserInfo.username_signup) {
-            res.json({ error: "You must provide a username" });
+            throw "You must provide a username";
         }
         if (!newUserInfo.password_signup) {
-            res.json({ error: "You must provide a password" });
+            throw "You must provide a password";
         }
         let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
 
@@ -92,7 +92,7 @@ router.post("/register", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 });
 
@@ -100,13 +100,13 @@ router.post("/login", async(req, res) => {
     try {
         let newUserInfo = req.body;
         if (!newUserInfo) {
-            res.json({ error: "You must provide data to log in" });
+            throw "You must provide data to log in";
         }
         if (!newUserInfo.username_login) {
-            res.json({ error: "You must provide a username" });
+            throw "You must provide a username";
         }
         if (!newUserInfo.password_login) {
-            res.json({ error: "You must provide a password" });
+            throw "You must provide a password";
         }
         const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
         if (!compareUser) {
@@ -124,7 +124,7 @@ router.post("/login", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 });
 
@@ -139,10 +139,10 @@ router.post("/search", async(req, res) => {
     try {
         const searchInfo = req.body;
         if (!searchInfo) {
-            res.json({ error: "You must provide a valid data" });
+           throw "You must provide a valid data";
         }
         if (!searchInfo.username_search) {
-            res.json({ error: "Provide Username" });
+            throw "Provide Username";
         }
         let searchData = await usersData.findUserByUserName(searchInfo.username_search);
         if (searchData === undefined || searchData === null) {
@@ -156,14 +156,14 @@ router.post("/search", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 });
 
 router.get("/users/:id", async(req, res) => {
     try {
         if (!req.params.id) {
-            res.render("layouts/main", { error: "You must provide a valid data" });
+           throw "You must provide a valid data";
         }
         const user = await usersData.findUserByUserName(req.params.id);
         if(user === undefined || user === null) throw "Invalid User";
@@ -202,22 +202,21 @@ router.get("/users/:id", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 });
 
 //routes to change avatar
 router.get("/users/:id/avatar", async(req, res) =>{
-    try {
-        
-        
+    try 
+    {        
         res.render("layouts/avatar", {})
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 });
 
@@ -237,7 +236,7 @@ router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout'});
     }
 
 
