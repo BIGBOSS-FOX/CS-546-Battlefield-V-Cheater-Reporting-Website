@@ -35,12 +35,10 @@ module.exports = {
 
     async getAppealByObjectId(obj_id) {
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
-        if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
+        if (!typeof(obj_id) === "string" ) throw new Error("ObjectId is invalid!");
 
         const AppealCollection = await Appeal();
-        const foundAppeal = await AppealCollection.findOne({_id: obj_id});
-        if (foundAppeal === null) throw new Error("No appeal with that id");
-
+        const foundAppeal = await AppealCollection.find({appealed_by : obj_id}).toArray();
         return foundAppeal;
     },
 

@@ -49,15 +49,12 @@ module.exports = {
         if (PollInfo.votes) {
             PollInfoToUpdate.votes = PollInfo.votes;
         }
-
         /*
         Add What other PollInfo you want to update here
         */
-
         let updateCommand = {
             $set: PollInfoToUpdate
         };
-
         const query = {
             _id: obj_id
         };

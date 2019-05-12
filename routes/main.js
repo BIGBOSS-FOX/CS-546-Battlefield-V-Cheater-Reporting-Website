@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
+const appealData = data.Appeal;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 var multer = require('multer');
@@ -167,8 +168,10 @@ router.get("/users/:id", async(req, res) => {
         if (user === undefined || user === null) throw "Invalid User";
         user.createdinfo = {};
         user.reportedinfo = {};
+        user.appealedinfo = {};
         let report_received = false;
         let report_created = false;
+        let appeal_created = false;
         let showAppealbtn = false;
         if(req.session.userlogged != undefined && req.session.userlogged != null)
         {
@@ -178,7 +181,7 @@ router.get("/users/:id", async(req, res) => {
             }
         }
         user.showAppealbtn = showAppealbtn;
-        let m = n = 0;
+        let m = n = k = 0;
         for (var i = 0; i < user.created_reports.length; i++) {
             let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]);
             if (createdinfo != undefined && createdinfo != null) {
@@ -197,8 +200,14 @@ router.get("/users/:id", async(req, res) => {
             }
             user.reportedinfo[i] = reportedinfo;
         };
+            let appealinfo = await appealData.getAppealByObjectId(user.user_name);
+            if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
+            {
+                appeal_created = true;
+                user.appealedinfo =  appealinfo;   
+            }
         user.created_reports_count = user.created_reports.length;
-        res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received });
+        res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;

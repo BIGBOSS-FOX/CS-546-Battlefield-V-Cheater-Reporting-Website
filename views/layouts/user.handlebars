@@ -159,3 +159,63 @@
 
     </div>
 </div>
+
+
+
+
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+
+        <h2 class="report-title text-center shadow mt-4">Appealed Reports</h2>
+        <h3 class="hiddden">a</h3>
+        <h4 class="hiddden">a</h4>
+        <div class="smallPad">
+            <div class="accordion" id="accordionSubmitted">
+                {{#if isappealed}}
+                {{#each userprofile.appealedinfo}}
+                <div class="card">
+                    <div class="card-header" id="headingSubmit{{this._id}}">
+                        <div class="row mb-0">
+                            <div class="col-sm">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapseSubmit{{this._id}}" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    Report {{this._id}}
+                                </button>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="badge badge-pill user-date">
+                                    {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapseSubmit{{this._id}}" class="collapse"
+                        aria-labelledby="headingSubmit{{this._id}}" data-parent="#accordionSubmitted">
+                        <div class="card-body">
+                            Appealed Player: {{this.appealed_by}}
+                            <br>
+                            <div class="bs-callout bs-callout-default shadow">
+                                Evidence explained: {{this.body}}
+                                <br>
+                                <img src="/{{this.image.path}}" alt="Report Image"/>
+                                <br>
+                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                {{else}}
+                <div class="card user-no-report">
+                    <div class="card-headern">No reports found</div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+</div>

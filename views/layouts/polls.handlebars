@@ -46,6 +46,9 @@
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
                                     data-target="#collapse{{_id}}" aria-expanded="true" aria-controls="collapseOne">
                                     Report #{{_id}}
+                                    {{#if appealed}}
+                                        Appealed
+                                    {{/if}}
                                 </button>
                             </h5>
                         </div>
@@ -53,8 +56,11 @@
                     <div id="collapse{{_id}}" class="collapse" aria-labelledby="heading{{_id}}"
                         data-parent="#accordionRecieved">
                         <div class="card-body">
-
+                            {{#if appealed}}
+                               Appealed By: {{this.appealed_by}}
+                            {{else}}
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
+                            {{/if}}
                             <br>
                             <div class="bs-callout bs-callout-default shadow">
                                 Evidence explained: {{this.body}}

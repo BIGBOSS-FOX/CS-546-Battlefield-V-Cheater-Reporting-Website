@@ -5,12 +5,16 @@ const pollsData = data.Poll;
 const reportsData = data.Report;
 const usersData = data.Users;
 const commentsData = data.Comment;
+const appealData = data.Appeal;
 //we may not need any routes for this
 
 const adminRequest = async(req, res, next) => {
-    if (!req.session.userlogged.isAdmin) {
+    if (!req.session.userlogged.isAdmin) 
+    {
         res.render("layouts/main", { hasErrors: true, errors: "Access denied to view this page" });
-    } else {
+    } 
+    else 
+    {
         next();
     }
 }
@@ -23,14 +27,26 @@ router.get("/", adminRequest, async(req, res) => {
         for (var j = 0; j < pollsList.length; j++) {
             let show = true;
             for (var i = 0; i < pollsList[j].votes.length; i++) {
-                if (pollsList[j].votes[i].admin == req.session.userlogged.user_name) {
+                if (pollsList[j].votes[i].admin == req.session.userlogged.user_name) 
+                {
                     show = false;
                 }
             }
-            if (show) {
+            if (show) 
+            {
                 let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);
-                if (reportedinfo != undefined && reportedinfo != null) {
+                if (reportedinfo != undefined && reportedinfo != null) 
+                {                   
                     pollMessage = true;
+                    let appealinfo = await appealData.getAppealByObjectId(pollsList[j].voting_about);
+                    if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
+                    {                       
+                        for(var a=0; a < appealinfo.length; a++)
+                        {
+                            appealinfo[a]["appealed"] = true;
+                            reportedinfo.push(appealinfo[a]);
+                        }                        
+                    }
                 }
                 pollsList[j]["reportedinfo"] = reportedinfo;
                 pollstoshow.push(pollsList[j]);
@@ -52,15 +68,27 @@ router.get("/:username", adminRequest, async(req, res) => {
         let pollMessage = false;
         let dummy = await pollsData.getAllPolls();
         let pollsList = [];
-        for (var j = 0; j < dummy.length; j++) {
+        for (var j = 0; j < dummy.length; j++) 
+        {
             if (dummy[j].voting_about == req.params.username) {
                 pollsList.push(dummy[j]);
             }
         }
         for (var j = 0; j < pollsList.length; j++) {
             let reportedinfo = await reportsData.getAllReceivedReportsByReportedPlayer(pollsList[j].voting_about);
-            if (reportedinfo != undefined && reportedinfo != null) {
+            if (reportedinfo != undefined && reportedinfo != null) 
+            {
                 pollMessage = true;
+                reportedinfo["appealed"] = false;
+                let appealinfo = await appealData.getAppealByObjectId(pollsList[j].voting_about);
+                if(appealinfo!= undefined && appealinfo != null)
+                {
+                    for(var a=0; a < appealinfo.length; a++)
+                    {
+                        appealinfo[i]["appealed"] = true;
+                        reportedinfo.push(appealinfo[a]);
+                    } 
+                }
             }
             pollsList[j]["reportedinfo"] = reportedinfo;
         }
