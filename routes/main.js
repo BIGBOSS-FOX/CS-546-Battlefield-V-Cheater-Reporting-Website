@@ -16,12 +16,23 @@ router.use(function(req, res, next) {
     next();
 });
 
+// Check for extension of image
+const getExtension = file =>{
+    if (file.mimetype == "image/jpeg")
+        ext =  ".jpeg";
+    else if (file.mimetype == "image/jpg")
+        est = ".jpg";
+    else
+        ext =".png";
+    return ext;
+}
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'public/avatars/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + ".png")
+      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
     }
 });
   
@@ -190,6 +201,47 @@ router.get("/users/:id", async(req, res) => {
         res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
+
+//routes to change avatar
+router.get("/users/:id/avatar", async(req, res) =>{
+    try {
+        
+        
+        res.render("layouts/avatar", {})
+    } catch (e) {
+        console.log(e);
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+    }
+});
+
+router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async (req, res, next) => {
+    const imageInfo = req.file;
+    console.log(req.params.id);
+
+    try {
+
+        let userInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
+        userInfo.avatar = imageInfo;
+        await usersData.updateUser(userInfo._id, userInfo);
+
+        res.redirect("/users/" + req.session.userlogged.user_name);
+    } catch (e) {
+        console.log(e);
+        req.session.userlogged = null;
+        res.clearCookie("AuthCookie");
+        res.locals.loggedin = false;
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
+    }
+
+
+});
+
+
+
+
 
 // Ban List Routes
 router.get("/list", async(req, res) => { //get the cheater list

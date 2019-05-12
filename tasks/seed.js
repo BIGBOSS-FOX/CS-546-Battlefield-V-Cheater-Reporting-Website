@@ -73,7 +73,7 @@ async function main() {
 
 
         //add reports
-        let report1 = await Report.addReport("oX_-oBIGBOSS-FoX", "CanadianMason", "aimbot");
+        let report1 = await Report.addReport("oX_-oBIGBOSS-FoX", "CanadianMason", "aimbot", {path: "public/uploads/seed1.png"});
         CanadianMason.received_reports.push(report1._id);
         BIGBOSS.created_reports.push(report1._id);
         await Users.updateUser(CanadianMason._id, CanadianMason);
