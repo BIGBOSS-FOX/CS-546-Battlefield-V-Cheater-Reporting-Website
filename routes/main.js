@@ -205,9 +205,9 @@ router.get("/users/:id", async(req, res) => {
 //routes to change avatar
 router.get("/users/:id/avatar", async(req, res) =>{
     try {
-        
-        
-        res.render("layouts/avatar", {})
+        const user = req.params.id;
+        //console.log(user);
+        res.render("layouts/avatar", {user: user});
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
@@ -219,7 +219,11 @@ router.get("/users/:id/avatar", async(req, res) =>{
 
 router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async (req, res, next) => {
     const imageInfo = req.file;
-    console.log(req.params.id);
+    
+    console.log(imageInfo);
+    imageInfo.path = "http://localhost:3000/public/avatars/" + imageInfo.filename;
+    console.log(req.body);
+    //console.log(req.params.id);
 
     try {
 
