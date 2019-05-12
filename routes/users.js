@@ -3,7 +3,30 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.Users;
 const appealData = data.Appeal;
-//const ObjectID = require("mongodb").ObjectID;
+var multer  = require('multer');
+const ObjectID = require("mongodb").ObjectID;
+
+// Check for extension of image
+const getExtension = file =>{
+    if (file.mimetype == "image/jpeg")
+        ext =  ".jpeg";
+    else if (file.mimetype == "image/jpg")
+        est = ".jpg";
+    else
+        ext =".png";
+    return ext;
+}
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + getExtension(file))
+    }
+});
+  
+var upload = multer({ storage: storage });
 
 router.post("/", async(req, res) => { //this is the rout for adding a new user
     const userInfo = req.body;
@@ -65,7 +88,7 @@ router.get("/:id/appeal", async(req, res) => {
 });
 
 
-router.post("/:id/appeal", async(req, res) => {
+router.post("/:id/appeal", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     const appealInfo = req.body;
     const appealed_by = req.params.id;
     console.log(appealed_by);
@@ -85,7 +108,7 @@ router.post("/:id/appeal", async(req, res) => {
         await usersData.updateUser(userInfo._id, userInfo);
 
         //add new appeal into appeal collection
-        const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, appealInfo.exampleFormControlFile1, appealInfo.link);
+        const newAppeal = await appealData.addAppeal(req.session.userlogged.user_name, appealInfo.exampleFormControlTextarea1, req.file/*appealInfo.exampleFormControlFile1*/, appealInfo.link);
 
         await usersData.statusChange(userInfo.user_name);
         res.redirect("/users/" + req.session.userlogged.user_name);
