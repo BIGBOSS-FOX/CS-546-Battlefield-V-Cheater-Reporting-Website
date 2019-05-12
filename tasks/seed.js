@@ -79,7 +79,7 @@ async function main() {
         await Users.updateUser(CanadianMason._id, CanadianMason);
         await Users.updateUser(BIGBOSS._id, BIGBOSS);
 
-        let report2 = await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report");
+        let report2 = await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report", {path: "public/uploads/seed2.jpg"});
         HungMammoth.received_reports.push(report2._id);
         Silk2g.created_reports.push(report2._id);
         await Users.updateUser(HungMammoth._id, HungMammoth);
