@@ -54,23 +54,30 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
     try {
         //get the reported_player info, add newReport to received_reports array, then update user info to database
         const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
-        if (!reportedPlayerInfo) 
+        if(!reportedPlayerInfo)
         {
-            res.render("layouts/createreport", { users: req.session.userlogged, errors: "Invalid Userid", hasErrors: true });
-        } 
-        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) 
-        { //Check name, you cannot report yourself
-            res.render("layouts/createreport", { users: req.session.userlogged, errors: "You cannot report yourself", hasErrors: true });
-        } 
-        else if (reportedPlayerInfo.isAdmin) 
-        { //Check admin, who cannot be reporeted
-            res.render("layouts/createreport", { users: req.session.userlogged, errors: "Admin cannot be reported", hasErrors: true });
-        } 
-        else {
-            //add a new report to Report collection
-            const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file /*reportInfo.exampleFormControlFile1*/ , reportInfo.link);
-            reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
-            const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Invalid Userid" , hasErrors:true});
+        }
+        else if (reportedPlayerInfo.user_name === req.session.userlogged.user_name) { //Check name, you cannot report yourself
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "You cannot report yourself" , hasErrors:true});
+        }
+        else if (reportedPlayerInfo.isAdmin) { //Check admin, who cannot be reporeted
+            res.render("layouts/createreport", {users: req.session.userlogged, errors : "Admin cannot be reported" , hasErrors:true});
+        }
+        else
+        {        
+        //add a new report to Report collection
+
+        if ((reportInfo.link != undefined || reportInfo.link != null) && reportInfo.link != "") {
+            let proofLink = reportInfo.link;
+            if (proofLink.substring(0, 4) != "http") { //Make sure the profile always store absolute link
+                reportInfo.link = "http://" + proofLink;
+            }
+        };
+
+        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
+        reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
+        const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
 
             //get the reported_by info, add newReport to created_reports array, then update user info to database
             const reportPlayerInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
@@ -78,7 +85,7 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
             const updatedReportPlayer = await usersData.updateUser(reportPlayerInfo._id, reportPlayerInfo);
 
             //check status and decide whether it will change
-            await usersData.statusChange(reportedPlayerInfo.user_name);
+            await usersData.statusChange(reportedPlayerInfo.user_name, "reports");
 
             res.redirect("/users/" + reportedPlayerInfo.user_name);
         }

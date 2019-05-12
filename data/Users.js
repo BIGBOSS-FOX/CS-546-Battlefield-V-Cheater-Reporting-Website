@@ -184,7 +184,7 @@ module.exports = {
     //     }
     // },
 
-    async statusChange(user_name) { // This function is to count numbers of report a user received and decide what will change base on new status
+    async statusChange(user_name, calledBy) { // This function is to count numbers of report a user received and decide what will change base on new status
         if (user_name === undefined) throw new Error("You must provide a user_name");
         if (typeof user_name !== "string") throw new Error("User_name needs to be a string");
 
@@ -209,21 +209,29 @@ module.exports = {
             
         }
         else if (userInfo.label_status === 'Processing') {
-            const pollInfo = await Poll.getPollByVoting_about(userInfo.user_name);
-            const latestVote = pollInfo.votes[pollInfo.votes.length - 1];
-            const latestAdmin = latestVote.admin;
+            if (calledBy === "polls") {
+                const pollInfo = await Poll.getPollByVoting_about(userInfo.user_name);
+                const latestVote = pollInfo.votes[pollInfo.votes.length - 1];
+                const latestAdmin = latestVote.admin;
 
-            await this.removePendingVote(latestAdmin, pollInfo._id); // remove pending vote
+                await this.removePendingVote(latestAdmin, pollInfo._id); // remove pending vote
 
-            //Judge whether all admins voted
-            if (await this.checkAllAdminVoted(pollInfo._id)) {
-                let result = await this.countingVotes(pollInfo._id); //start counting
-                await Poll.deletePoll(pollInfo._id); // delete vote
+                //Judge whether all admins voted
+                if (await this.checkAllAdminVoted(pollInfo._id)) {
+                    let result = await this.countingVotes(pollInfo._id); //start counting
+                    await Poll.deletePoll(pollInfo._id); // delete vote
 
-                userInfo.label_status = result; // change status
+                    userInfo.label_status = result; // change status
 
-                await this.updateUser(userInfo._id, userInfo);
+                    await this.updateUser(userInfo._id, userInfo);
+                }
             }
+            else if (calledBy === "reports") {
+                // do nothing
+            }
+            else {
+                // do nothing
+            };
 
             
         }

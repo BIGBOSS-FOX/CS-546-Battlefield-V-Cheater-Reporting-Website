@@ -102,7 +102,7 @@ router.post("/", async(req, res) => {
 
         let updatedpoll = await pollsData.addVoteToPoll(FullPoll.voting_about, req.session.userlogged.user_name, voteinfo.options);
         //await usersData.statusChangeAfterVoting(updatedpoll);
-        await usersData.statusChange(FullPoll.voting_about);
+        await usersData.statusChange(FullPoll.voting_about, "polls");
         res.redirect("/");
     } catch (e) {
         req.session.userlogged = null;
