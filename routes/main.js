@@ -8,10 +8,14 @@ const saltRounds = 16;
 var multer  = require('multer');
 
 router.use(function(req, res, next) {
-    if (req.session.userlogged === undefined || req.session.userlogged === null) {
+    if (req.session.userlogged === undefined || req.session.userlogged === null) 
+    {
         res.locals.loggedin = false;
-    } else {
+    } 
+    else 
+    {
         res.locals.loggedin = true;
+        res.locals.isAdmin = req.session.userlogged.isAdmin;
     }
     next();
 });
@@ -112,7 +116,7 @@ router.post("/login", async(req, res) => {
             if (!hashed) {
                 res.json({ error: "Provide valid Username/Password" });
             } else {
-                req.session.userlogged = compareUser;
+                req.session.userlogged = compareUser;                
                 res.redirect('/')
             }
         }
