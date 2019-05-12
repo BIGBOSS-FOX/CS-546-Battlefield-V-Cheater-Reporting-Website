@@ -224,15 +224,17 @@ router.get("/users/:id/avatar", async(req, res) => {
 });
 
 router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
-    try 
-    {
-        if (req.file && req.file.mimetype != 'image/jpeg' || req.file.mimetype != 'image/jpg' || req.file.mimetype != 'image/png') {
+    try {
+        console.log(req.file);
+        if (!req.file && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/jpg' || req.file.mimetype == 'image/png')) {
             throw "Avatar extension is must be jpeg, jpg or png !";
         }
         const imageInfo = req.file;
-        console.log(imageInfo);
+
+        //console.log(imageInfo);
         imageInfo.path = "http://localhost:3000/public/avatars/" + imageInfo.filename;
-        console.log(req.body);
+
+        //console.log(req.body);
         //console.log(req.params.id);
         let userInfo = await usersData.findUserByUserName(req.session.userlogged.user_name);
         userInfo.avatar = imageInfo;
