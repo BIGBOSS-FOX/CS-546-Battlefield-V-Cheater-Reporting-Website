@@ -87,7 +87,7 @@ router.post("/register", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -119,7 +119,7 @@ router.post("/login", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -152,7 +152,7 @@ router.post("/search", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -204,7 +204,7 @@ router.get("/users/:id", async(req, res) => {
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
@@ -213,19 +213,19 @@ router.get("/users/:id/avatar", async(req, res) => {
     try {
         const user = req.params.id;
         //console.log(user);
-        res.render("layouts/avatar", {user: user});
+        res.render("layouts/avatar", { user: user });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 });
 
 router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     const imageInfo = req.file;
-    
+
     console.log(imageInfo);
     imageInfo.path = "http://localhost:3000/public/avatars/" + imageInfo.filename;
     console.log(req.body);
@@ -243,7 +243,7 @@ router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async
         req.session.userlogged = null;
         res.clearCookie("AuthCookie");
         res.locals.loggedin = false;
-        res.status(404).render("layouts/error", { errors: e, ErrorPage: true, layout: 'errorlayout' });
+        res.status(404).render("layouts/error", { errors: e, ErrorPage: true });
     }
 
 
