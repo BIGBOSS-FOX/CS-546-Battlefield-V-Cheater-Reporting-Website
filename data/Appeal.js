@@ -16,7 +16,8 @@ module.exports = {
             body: body,
             image: image,
             proof_link: proof_link,
-            creation_time: new Date()
+            creation_time: new Date(),
+            comments: []
         };
 
         const insertInfo = await AppealCollection.insertOne(newAppeal);
@@ -51,8 +52,24 @@ module.exports = {
         const AppealCollection = await Appeal();
         const AppealInfoToUpdate = {};
 
-        if (AppealInfo.new_appealed_by) {
-            AppealInfoToUpdate.appealed_by = AppealInfo.new_appealed_by;
+        if (AppealInfo.appealed_by) {
+            AppealInfoToUpdate.appealed_by = AppealInfo.appealed_by;
+        }
+
+        if (AppealInfo.body) {
+            AppealInfoToUpdate.body = AppealInfo.body;
+        }
+
+        if (AppealInfo.image) {
+            AppealInfoToUpdate.image = AppealInfo.image;
+        }
+
+        if (AppealInfo.proof_link) {
+            AppealInfoToUpdate.proof_link = AppealInfo.proof_link;
+        }
+
+        if (AppealInfo.comments) {
+            AppealInfoToUpdate.comments = AppealInfo.comments;
         }
 
         /*
