@@ -9,7 +9,7 @@ const commentsData = data.Comment;
 
 const adminRequest = async(req, res, next) => {
     if (!req.session.userlogged.isAdmin) {
-        res.status(404).render("layouts/error", { users: req.session.userlogged, errors: "Permission denied" });
+        res.render("layouts/main", { hasErrors: true, errors: "Access denied to view this page" });
     } else {
         next();
     }

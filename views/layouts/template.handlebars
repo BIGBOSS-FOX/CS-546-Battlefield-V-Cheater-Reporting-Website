@@ -38,10 +38,12 @@
                     <a class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2 redBSO" href="/list"><img class="nav-icon" src="/public/css/banlist.ico" alt="ban list logo" />Cheater List</a>
                 </li>
                 {{#if loggedin}}
+                {{#if isAdmin}}
                 <li class="nav-item active">
-                    <a class="btn btn-outline-warning my-2 my-sm-0 mr-sm-2" href="/list"><img class="nav-icon"
+                    <a class="btn btn-outline-warning my-2 my-sm-0 mr-sm-2" href="/polls"><img class="nav-icon"
                             src="/public/css/vote.gif" alt="vote button"/>Polls</a>
                 </li>
+                {{/if}}
                 {{/if}}
             </ul>
             <form class="form-inline my-2 my-lg-0">
