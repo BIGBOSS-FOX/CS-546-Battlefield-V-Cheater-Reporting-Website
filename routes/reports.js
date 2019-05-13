@@ -74,7 +74,7 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
             }
         };
 
-        const newReport = await reportsData.addReport(req.session.userlogged.user_name, xss(reportInfo.userID), xss(reportInfo.exampleFormControlTextarea1), req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
+        const newReport = await reportsData.addReport(req.session.userlogged.user_name, xss(reportInfo.userID), xss(reportInfo.exampleFormControlTextarea1), req.file/*reportInfo.exampleFormControlFile1*/, xss(reportInfo.link));
         reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
 
