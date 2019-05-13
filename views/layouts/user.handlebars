@@ -66,7 +66,7 @@
         <h3 class="hiddden">a</h3>
         <h4 class="hiddden">a</h4>
         <div class="smallPad">
-            <div class="accordion" id="accordionRecieved">
+            <div class="accordion" id="accordionRecieved1">
                 {{#if isreceived}}
                 {{#each userprofile.reportedinfo}}
                 <div class="card">
@@ -89,7 +89,7 @@
                     </div>
 
                     <div id="collapse{{this.reportNumber}}" class="collapse"
-                        aria-labelledby="heading{{this.reportNumber}}" data-parent="#accordionRecieved">
+                        aria-labelledby="heading{{this.reportNumber}}" data-parent="#accordionRecieved1">
                         <div class="card-body">
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
                             <br>
@@ -147,7 +147,7 @@
         <h3 class="hiddden">a</h3>
         <h4 class="hiddden">a</h4>
         <div class="smallPad">
-            <div class="accordion" id="accordionSubmitted">
+            <div class="accordion" id="accordionSubmitted2">
                 {{#if isCreated}}
                 {{#each userprofile.createdinfo}}
                 <div class="card">
@@ -168,7 +168,7 @@
                     </div>
 
                     <div id="collapseSubmit{{this.reportNumber}}" class="collapse"
-                        aria-labelledby="headingSubmit{{this.reportNumber}}" data-parent="#accordionSubmitted">
+                        aria-labelledby="headingSubmit{{this.reportNumber}}" data-parent="#accordionSubmitted2">
                         <div class="card-body">
                             Reported Player: <a href="/users/{{this.reported_player}}">{{this.reported_player}}</a>
                             <br>
@@ -229,7 +229,7 @@
         <h3 class="hiddden">a</h3>
         <h4 class="hiddden">a</h4>
         <div class="smallPad">
-            <div class="accordion" id="accordionSubmitted">
+            <div class="accordion" id="accordionSubmitted3">
                 {{#if isappealed}}
                 <script>console.log(123);</script>
                 <div class="card">
@@ -250,7 +250,7 @@
                     </div>
 
                     <div id="collapseSubmit{{userprofile.appealedinfo._id}}" class="collapse"
-                        aria-labelledby="headingSubmit{{userprofile.appealedinfo._id}}" data-parent="#accordionSubmitted">
+                        aria-labelledby="headingSubmit{{userprofile.appealedinfo._id}}" data-parent="#accordionSubmitted3">
                         <div class="card-body">
                             Appealed Player: {{userprofile.appealedinfo.appealed_by}}
                             <br>
