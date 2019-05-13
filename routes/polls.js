@@ -6,6 +6,7 @@ const reportsData = data.Report;
 const usersData = data.Users;
 const commentsData = data.Comment;
 const appealData = data.Appeal;
+const xss = require("xss");
 //we may not need any routes for this
 
 const adminRequest = async(req, res, next) => {
@@ -68,9 +69,10 @@ router.get("/:username", adminRequest, async(req, res) => {
         let pollMessage = false;
         let dummy = await pollsData.getAllPolls();
         let pollsList = [];
+        if(!req.params.username) throw "Invalid username";
         for (var j = 0; j < dummy.length; j++) 
         {
-            if (dummy[j].voting_about == req.params.username) {
+            if (dummy[j].voting_about == xss(req.params.username)) {
                 pollsList.push(dummy[j]);
             }
         }
@@ -109,7 +111,7 @@ router.post("/", async(req, res) => {
         if (!voteinfo || !voteinfo.id) {
             throw "Provide valid info";
         }
-        const FullPoll = await pollsData.getPollByObjectId(voteinfo.id);
+        const FullPoll = await pollsData.getPollByObjectId(xss(voteinfo.id));
         if (FullPoll == undefined || FullPoll == null) {
             throw "cannot get poll with that id";
         }
@@ -148,9 +150,9 @@ router.post("/addComment", async(req, res) => {
         if (!commentinfo) throw "Provide valid info";
         if (!commentinfo.reportid) throw "Provide valid info";
         if (!commentinfo.comment) throw "Provide valid info";
-        const comments = await commentsData.addComment(req.session.userlogged.user_name, commentinfo.comment);
-        const updatreports = await reportsData.updateReportComments(commentinfo.reportid, commentinfo.comment);
-        const updatappeal = await appealData.updateAppealComments(commentinfo.reportid, commentinfo.comment);
+        const comments = await commentsData.addComment(req.session.userlogged.user_name, xss(commentinfo.comment));
+        const updatreports = await reportsData.updateReportComments(xss(commentinfo.reportid), xss(commentinfo.comment));
+        const updatappeal = await appealData.updateAppealComments(xss(commentinfo.reportid), xss(commentinfo.comment));
         if (comments && (updatreports || updatappeal)) {
             res.json({ message: "success" });
         } else {

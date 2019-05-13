@@ -5,7 +5,7 @@ const usersData = data.Users;
 const reportsData = data.Report;
 const ObjectID = require("mongodb").ObjectID;
 var multer = require('multer');
-//var upload = multer({ dest: 'public/uploads/' })
+const xss = require("xss");
 
 router.get("/", async(req, res) => { //create a report form
     try {
@@ -52,7 +52,7 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
     }
     try {
         //get the reported_player info, add newReport to received_reports array, then update user info to database
-        const reportedPlayerInfo = await usersData.findUserByUserName(reportInfo.userID);
+        const reportedPlayerInfo = await usersData.findUserByUserName(xss(reportInfo.userID));
         if(!reportedPlayerInfo)
         {
             res.render("layouts/createreport", {users: req.session.userlogged, errors : "Invalid Userid" , hasErrors:true});
@@ -68,13 +68,13 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
         //add a new report to Report collection
 
         if ((reportInfo.link != undefined || reportInfo.link != null) && reportInfo.link != "") {
-            let proofLink = reportInfo.link;
+            let proofLink = xss(reportInfo.link);
             if (proofLink.substring(0, 4) != "http") { //Make sure the profile always store absolute link
                 reportInfo.link = "http://" + proofLink;
             }
         };
 
-        const newReport = await reportsData.addReport(req.session.userlogged.user_name, reportInfo.userID, reportInfo.exampleFormControlTextarea1, req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
+        const newReport = await reportsData.addReport(req.session.userlogged.user_name, xss(reportInfo.userID), xss(reportInfo.exampleFormControlTextarea1), req.file/*reportInfo.exampleFormControlFile1*/, reportInfo.link);
         reportedPlayerInfo.received_reports.push(ObjectID(newReport._id));
         const updatedReportedPlayer = await usersData.updateUser(reportedPlayerInfo._id, reportedPlayerInfo);      
 

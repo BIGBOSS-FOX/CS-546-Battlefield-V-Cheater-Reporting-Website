@@ -7,6 +7,7 @@ const appealData = data.Appeal;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 var multer = require('multer');
+const xss = require("xss");
 
 router.use(function(req, res, next) {
     if (req.session.userlogged === undefined || req.session.userlogged === null) {
@@ -61,7 +62,6 @@ router.get("/", async(req, res) => { //get the MAIN PAGE! :)
 router.post("/register", async(req, res) => {
     try {
         let newUserInfo = req.body;
-
         if (!newUserInfo) {
             throw "You must provide a valid data";
         }
@@ -71,12 +71,12 @@ router.post("/register", async(req, res) => {
         if (!newUserInfo.password_signup) {
             throw "You must provide a password";
         }
-        let compareUser = await usersData.findUserByUserName(newUserInfo.username_signup);
+        let compareUser = await usersData.findUserByUserName(xss(newUserInfo.username_signup));
 
         if (compareUser === undefined || compareUser === null) {
-            bcrypt.hash(newUserInfo.password_signup, saltRounds, function(err, hash) {
+            bcrypt.hash(xss(newUserInfo.password_signup), saltRounds, function(err, hash) {
                 // Store hash in password DB.
-                usersData.addUser(newUserInfo.username_signup, hash, false);
+                usersData.addUser(xss(newUserInfo.username_signup), hash, false);
             });
             req.body.username_login = newUserInfo.username_signup;
             req.body.password_login = newUserInfo.password_signup;
@@ -104,11 +104,11 @@ router.post("/login", async(req, res) => {
         if (!newUserInfo.password_login) {
             throw "You must provide a password";
         }
-        const compareUser = await usersData.findUserByUserName(newUserInfo.username_login);
+        const compareUser = await usersData.findUserByUserName(xss(newUserInfo.username_login));
         if (!compareUser) {
             res.json({ error: "Provide valid Username/Password" });
         } else {
-            const hashed = await bcrypt.compare(newUserInfo.password_login, compareUser.hashedPassword);
+            const hashed = await bcrypt.compare(xss(newUserInfo.password_login), compareUser.hashedPassword);
             if (!hashed) {
                 res.json({ error: "Provide valid Username/Password" });
             } else {
@@ -140,14 +140,14 @@ router.post("/search", async(req, res) => {
         if (!searchInfo.username_search) {
             throw "Provide Username";
         }
-        let searchData = await usersData.findUserByUserName(searchInfo.username_search);
+        let searchData = await usersData.findUserByUserName(xss(searchInfo.username_search));
         if (searchData === undefined || searchData === null) {
             //show an error message
             //username doen't exist
             const events = await reportsData.getLatest10Reports();
             res.render("layouts/main", { hasErrors: true, errors: "Provide a valid username!", events: events });
         } else {
-            res.redirect('../users/' + searchInfo.username_search);
+            res.redirect('../users/' + xss(searchInfo.username_search));
         }
     } catch (e) {
         req.session.userlogged = null;
@@ -164,7 +164,7 @@ router.get("/users/:id", async(req, res) => {
             res.render("layouts/main", { hasErrors: true, error: "You must provide a valid data!", events: events });
             throw "You must provide a valid data";
         }
-        const user = await usersData.findUserByUserName(req.params.id);
+        const user = await usersData.findUserByUserName(xss(req.params.id));
         if (user === undefined || user === null) throw "Invalid User";
         user.createdinfo = {};
         user.reportedinfo = {};
@@ -224,7 +224,8 @@ router.get("/users/:id", async(req, res) => {
 //routes to change avatar
 router.get("/users/:id/avatar", async(req, res) => {
     try {
-        const user = req.params.id;
+        if(!req.params.id) throw "Invalid data";
+        const user = xss(req.params.id);
         //console.log(user);
         res.render("layouts/avatar", { users: req.session.userlogged, user: user });
     } catch (e) {
@@ -237,7 +238,7 @@ router.get("/users/:id/avatar", async(req, res) => {
 });
 
 router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
-    try {
+    try {        
         if (!req.file && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/jpg' || req.file.mimetype == 'image/png')) {
             throw "Avatar extension is must be jpeg, jpg or png !";
         }
@@ -286,7 +287,8 @@ router.get("/list/:status", async(req, res) => { //get the list of players with 
     try {
         //if status is admin, get all admins
         //otherwise go through entire user list and only get users if they have that status
-        const userList = "List of players with status" + req.params.status;
+        if(!req.params.status) throw "Invalid data";
+        const userList = "List of players with status" + xss(req.params.status);
         res.render('layouts/cheaters', { users: req.session.userlogged, data: userList });
     } catch (e) {
         req.session.userlogged = null;
