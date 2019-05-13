@@ -78,7 +78,7 @@ router.put("/", async(req, res) => { //this is the route for updating the databa
 router.get("/:id/appeal", async(req, res) => {
     try 
     {
-        if(req.session.userlogged.canAppeal)
+        if(req.session.userlogged.canAppeal && !req.session.userlogged.isAdmin)
         {
             res.render("layouts/appeal", { users: req.session.userlogged, user: req.params.id });
         }
