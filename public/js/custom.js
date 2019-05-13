@@ -139,7 +139,7 @@ function Addcomment(i) {
                 $("#report_Comments" + i).val("");
             },
             error: function(e) {
-                alert("An error has occurred");
+                alert("Comment could not be not added");
             }
         });
     }
