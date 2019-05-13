@@ -99,7 +99,6 @@ router.get("/:id/appeal", async(req, res) => {
 router.post("/:id/appeal", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     const appealInfo = req.body;
     const appealed_by = req.params.id;
-    console.log(appealed_by);
 
     if (!appealInfo) {
         res.json({ error: "You must provide data to add an appeal" });
