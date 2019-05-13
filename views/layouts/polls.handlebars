@@ -18,13 +18,12 @@
 
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" id="vote1" value="Legit"
-                                            checked>
+                                        <input type="radio" name="options" id="vote1" value="Legit" checked>
                                         Legit
                                     </label>
                                     <label class="btn btn-warning">
                                         <input type="radio" name="options" id="vote2" value="Suspicious">
-                                         Suspicious
+                                        Suspicious
                                     </label>
                                     <label class="btn btn-danger">
                                         <input type="radio" name="options" id="vote3" value="Cheater">
@@ -47,7 +46,7 @@
                                     data-target="#collapse{{_id}}" aria-expanded="true" aria-controls="collapseOne">
                                     Report #{{_id}}
                                     {{#if appealed}}
-                                        <span class="badge badge-danger ml-2">Appealed</span>
+                                    <span class="badge badge-danger ml-2">Appealed</span>
                                     {{/if}}
                                 </button>
                             </h5>
@@ -57,7 +56,7 @@
                         data-parent="#accordionRecieved">
                         <div class="card-body">
                             {{#if appealed}}
-                               Appealed By: {{this.appealed_by}}
+                            Appealed By: {{this.appealed_by}}
                             {{else}}
                             Reported By: <a href="/users/{{this.reported_by}}">{{this.reported_by}}</a>
                             {{/if}}
@@ -66,21 +65,42 @@
                                 Evidence explained: {{this.body}}
                                 <br>
                                 {{#if this.image.path}}
-                                <img src="/{{this.image.path}}" alt="Report Image"/>
+                                <img class="report-img" src="/{{this.image.path}}" alt="Report Image" />
                                 <br>
                                 {{/if}}
                                 {{#if proof_link}}
                                 <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 <br>
                                 {{/if}}
-                                
-                                
+
+
                                 Comments:
                                 <ul id="commentsList{{_id}}">
                                     {{#each comments}}
                                     <li>{{this}}</li>
                                     {{/each}}
-                                </ul>                             
+                                </ul>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+
+                                        <img class="avatar shadow"
+                                            src="https://bootdey.com/files/SnippetsImages/bootstrap-snippets-630.png">
+
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <strong>myusername</strong> <span class="text-muted">commented 5 days
+                                                    ago</span>
+                                            </div>
+                                            <div class="panel-body">
+                                                Panel content
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
