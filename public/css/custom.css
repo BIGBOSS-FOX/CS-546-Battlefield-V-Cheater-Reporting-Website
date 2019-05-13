@@ -123,11 +123,22 @@ body {
 }
 
 .bs-callout-warning {
-    border-left-color: #f0ad4e;
+    border-left-color: #926d00;
 }
 
+
 .bs-callout-warning h4 {
-    color: #f0ad4e;
+    color: #926d00;
+}
+.btn-outline-warningn {
+    color:  #926d00;
+    border-color:  #926d00;
+}
+
+.btn-outline-warningn:hover {
+    color: #fff;
+    background-color:  #926d00;
+    border-color:  #926d00;
 }
 
 .bs-callout-info {
@@ -172,6 +183,15 @@ body {
     color: #008faf;
     background: #f8f9fae8;
     border-radius: 5px;
+}
+.notification-date{
+    color: #ad403d !important;
+}
+.event-date{
+    color: #4e4e4e !important;
+}
+.darkerLink{
+    color: #15406d;
 }
 
 .appeal {
@@ -381,7 +401,7 @@ body {
 
 .Legit {
     color: #fff;
-    background-color: #02ff02
+    background-color: #113d11
 }
 
 .Cheater {
@@ -391,7 +411,7 @@ body {
 
 .Suspicious {
     color: #111;
-    background-color: #ceca06
+    background-color: #838104
 }
 
 .Processing {

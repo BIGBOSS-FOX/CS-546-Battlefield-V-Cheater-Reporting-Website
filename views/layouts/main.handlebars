@@ -2,13 +2,14 @@
 {{#if users.isAdmin}}
 {{#if users.pending_votes}}
 <h2 class="report-title text-center shadow text-danger">Notifications</h2>
+<h3 class="hiddden">c</h3>
 {{#each users.pending_votes}}
 <div class="smallPad">
     <div class="bs-callout bs-callout-danger">
-        <h4>{{dateFormat this.createdTime "MMMM Do YYYY - h:mm:ss a"}}</h4>
-        User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}'s</a> status is waiting to be
+        <h4 class="notification-date">{{dateFormat this.createdTime "MMMM Do YYYY - h:mm:ss a"}}</h4>
+        User: <a class="darkerLink" href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}'s</a> status is waiting to be
         determined by your vote.
-        <a href="http://localhost:3000/polls/{{this.pollUser}}">Click here to place a vote on him/her!</a>
+        <a class="darkerLink" href="http://localhost:3000/polls/{{this.pollUser}}">Click here to place a vote on him/her!</a>
     </div>
 </div>
 {{/each}}
@@ -17,12 +18,13 @@
 
 {{#if events}}
 <h2 class="report-title text-center shadow">Latest Events</h2>
+<h3 class="hiddden">c</h3>
 <div style="padding:10px">
     {{#each events}}
     <div class="bs-callout bs-callout-default">
-        <h4>{{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</h4>
-        <a class="username" href="http://localhost:3000/users/{{this.reported_player}}">{{this.reported_player}}</a>
-        reported by <a href="http://localhost:3000/users/{{this.reported_by}}">{{this.reported_by}}</a>
+        <h4 class="event-date">{{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</h4>
+        <a class="username darkerLink" href="http://localhost:3000/users/{{this.reported_player}}">{{this.reported_player}}</a>
+        reported by <a class="darkerLink" href="http://localhost:3000/users/{{this.reported_by}}">{{this.reported_by}}</a>
     </div>
     {{/each}}
 </div>
