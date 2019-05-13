@@ -52,7 +52,7 @@ module.exports =
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
         const ReportCollection = await Report();
-        const updatedata = await ReportCollection.updateOne({_id: ObjectId(obj_id)}, {$addToSet :{comments: {$each:[comment]}}});
+        const updatedata = await ReportCollection.updateOne({_id: ObjectId(obj_id)}, {$push :{comments: {$each:[comment]}}});
         const updatedReport = await this.getReportByObjectId(ObjectId(obj_id));
         return updatedReport;
     },
