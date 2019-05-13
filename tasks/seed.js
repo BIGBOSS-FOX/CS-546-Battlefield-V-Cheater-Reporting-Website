@@ -122,10 +122,15 @@ async function main() {
         //add appeals
         await Appeal.addAppeal("AZGD-HungMammoth", "My friend is trolling");
 
+        //for the appeal one, update his canAppeal to be false.
+        let appealedGuy = await Users.findUserByUserName("AZGD-HungMammoth");
+        appealedGuy.canAppeal = false;
+        await Users.updateUser(appealedGuy._id, appealedGuy);
+
         console.log('Done seeding database');
         console.log('All these seeded users have a default password of \"123\"')
 
-        await db.close();
+        //await db.close();
     } catch (e) {
         console.log(e);
     }        
