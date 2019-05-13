@@ -106,12 +106,12 @@
 
                                 Comments:
                                 <ul id="commentsList{{_id}}">
-                                    {{#each comments}}
-                                    <li>{{this}}</li>
+                                    {{#each comments_content}}
+                                    <li>{{this.comment}}</li>
                                     {{/each}}
                                 </ul>
                             </div>
-                            {{#if users}}
+                            {{#if ../userprofile.cancomment}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
                                     id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
@@ -185,12 +185,12 @@
 
                                 Comments:
                                 <ul id="commentsList{{_id}}">
-                                    {{#each comments}}
-                                    <li>{{this}}</li>
+                                    {{#each comments_content}}
+                                    <li>{{this.comment}}</li>
                                     {{/each}}
                                 </ul>
                             </div>
-                            {{#if users}}
+                            {{#if ../userprofile.cancomment}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
                                     id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
@@ -267,12 +267,12 @@
 
                                 Comments:
                                 <ul id="commentsList{{_id}}">
-                                    {{#each comments}}
-                                    <li>{{this}}</li>
+                                    {{#each comments_content}}
+                                    <li>{{this.comment}}</li>
                                     {{/each}}
                                 </ul>
                             </div>
-                            {{#if users}}
+                            {{#if ../userprofile.cancomment}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
                                     id="report_Comments{{_id}}" name="comments" placeholder="Enter description"

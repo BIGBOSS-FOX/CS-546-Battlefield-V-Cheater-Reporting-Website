@@ -4,6 +4,7 @@ const data = require("../data");
 const usersData = data.Users;
 const reportsData = data.Report;
 const appealData = data.Appeal;
+const commentData = data.Comment;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 var multer = require('multer');
@@ -169,11 +170,13 @@ router.get("/users/:id", async(req, res) => {
         user.createdinfo = {};
         user.reportedinfo = {};
         user.appealedinfo = {};
+        user.commentInfo = {};
         let report_received = false;
         let report_created = false;
         let appeal_created = false;
         let showAppealbtn = false;
         let showAvatarPen = false;
+        let cancomment = false;
         if (req.session.userlogged != undefined && req.session.userlogged != null) {
             if (user.canAppeal && user.label_status == "Cheater" && user.user_name === req.session.userlogged.user_name) {
                 showAppealbtn = true;
@@ -181,10 +184,13 @@ router.get("/users/:id", async(req, res) => {
             if (user.user_name === req.session.userlogged.user_name) {
                 showAvatarPen = true;
             }
+            cancomment = true;
         }
+        user.cancomment = cancomment;
         user.showAppealbtn = showAppealbtn;
         user.showAvatarPen = showAvatarPen;
         let m = n = 0;
+
         for (var i = 0; i < user.created_reports.length; i++) {
             let createdinfo = await reportsData.getReportByObjectId(user.created_reports[i]);
             if (createdinfo != undefined && createdinfo != null) {
@@ -194,24 +200,34 @@ router.get("/users/:id", async(req, res) => {
             }
             user.createdinfo[i] = createdinfo;
         };
+
         for (var i = 0; i < user.received_reports.length; i++) {
             let reportedinfo = await reportsData.getReportByObjectId(user.received_reports[i].toString());
             if (reportedinfo != undefined && reportedinfo != null) {
                 n++;
                 reportedinfo.reportNumber = n;
                 report_received = true;
+            };
+            
+            reportedinfo.comments_content = [];
+            for (let j = 0; j < reportedinfo.comments.length; j++) {
+                let content = await commentData.getCommentByObjectId(reportedinfo.comments[j]);
+                reportedinfo.comments_content.push(content);
             }
+
             user.reportedinfo[i] = reportedinfo;
         };
-            let appealinfo = await appealData.getAppealByObjectId(user.user_name);
-            if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
-            {
-                appeal_created = true;
-                user.appealedinfo =  appealinfo;   
-            }
+
+        let appealinfo = await appealData.getAppealByObjectId(user.user_name);
+        if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
+        {
+            appeal_created = true;
+            user.appealedinfo =  appealinfo;   
+        }
         user.created_reports_count = user.created_reports.length;
         user.submitted_reports_count = user.received_reports.length;
-        res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
+        
+        res.render("layouts/user", { userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;
