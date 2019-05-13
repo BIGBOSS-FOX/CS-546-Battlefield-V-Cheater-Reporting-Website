@@ -134,6 +134,7 @@ function Addcomment(i) {
             data: { comment: comment, reportid: reportid },
             success: function(response) {
                 if (response.message == "success") {
+                    alert("asd");
                     ul.append("<li>" + comment + "</li>");
                 }
                 $("#report_Comments" + i).val("");
