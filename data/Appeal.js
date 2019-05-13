@@ -42,6 +42,16 @@ module.exports = {
         return foundAppeal;
     },
 
+    async updateAppealComments(obj_id, comment) 
+    {
+        if (obj_id === undefined) throw new Error("You must provide an id to search for");
+        if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");
+        const AppealCollection = await Appeal();
+        const updatedata = await AppealCollection.updateOne({_id: ObjectId(obj_id)}, {$addToSet :{comments: {$each:[comment]}}});
+        const updatedappeal = await this.getAppealByObjectId(ObjectId(obj_id));
+        return updatedappeal;
+    },
+
     async updateAppeal(obj_id, AppealInfo) {
         if (obj_id === undefined) throw new Error("You must provide an id to search for");
         if (!ObjectId.isValid(obj_id)) throw new Error("ObjectId is invalid!");

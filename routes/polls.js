@@ -150,7 +150,8 @@ router.post("/addComment", async(req, res) => {
         if (!commentinfo.comment) throw "Provide valid info";
         const comments = await commentsData.addComment(req.session.userlogged.user_name, commentinfo.comment);
         const updatreports = await reportsData.updateReportComments(commentinfo.reportid, commentinfo.comment);
-        if (comments && updatreports) {
+        const updatappeal = await appealData.updateReportComments(commentinfo.reportid, commentinfo.comment);
+        if (comments && (updatreports || updatappeal)) {
             res.json({ message: "success" });
         } else {
             res.json({ message: "error" });
