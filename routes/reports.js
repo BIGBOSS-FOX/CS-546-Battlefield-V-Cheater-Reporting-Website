@@ -41,7 +41,6 @@ router.post("/", upload.single('exampleFormControlFile1'), async(req, res, next)
 
     // router.post("/", async(req, res) => {
     const reportInfo = req.body;
-    console.log(req.file);
     if (!reportInfo) {
         res.json({ error: "You must provide data to add a report" });
     }
