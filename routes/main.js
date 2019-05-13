@@ -238,7 +238,6 @@ router.get("/users/:id/avatar", async(req, res) => {
 
 router.post("/users/:id/avatar", upload.single('exampleFormControlFile1'), async(req, res, next) => {
     try {
-        console.log(req.file);
         if (!req.file && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/jpg' || req.file.mimetype == 'image/png')) {
             throw "Avatar extension is must be jpeg, jpg or png !";
         }
