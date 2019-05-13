@@ -19,9 +19,9 @@ async function main() {
 
 
         //add users
-        await Users.addUser("admin1", default_hashed_pw, true);
-        await Users.addUser("admin2", default_hashed_pw, true);
-        await Users.addUser("admin3", default_hashed_pw, true);
+        await Users.addUser("oX_-oBIGBOSS-FoX", default_hashed_pw, true);
+        await Users.addUser("OADF-SunnyJetTw", default_hashed_pw, true);
+        await Users.addUser("elementofprgress", default_hashed_pw, true);
         await Users.addUser("PrecisionWing", default_hashed_pw, false);
         await Users.addUser("Lumen-NyaRuko", default_hashed_pw, false);
         await Users.addUser("HeroLonely_PvP", default_hashed_pw, false);
@@ -41,9 +41,9 @@ async function main() {
         await Users.addUser("AZGD-HungMammoth", default_hashed_pw, false);
 
         //add avatars
-        await Users.addAvatar("admin1");
-        await Users.addAvatar("admin2");
-        await Users.addAvatar("admin3");
+        await Users.addAvatar("oX_-oBIGBOSS-FoX");
+        await Users.addAvatar("OADF-SunnyJetTw");
+        await Users.addAvatar("elementofprgress");
         await Users.addAvatar("PrecisionWing");
         await Users.addAvatar("Lumen-NyaRuko");
         await Users.addAvatar("HeroLonely_PvP");
@@ -62,24 +62,24 @@ async function main() {
         await Users.addAvatar("leonid_47");
         await Users.addAvatar("AZGD-HungMammoth");
 
-
-
-        let BIGBOSS = await Users.findUserByUserName("admin1");
-        let SunnyJetTw = await Users.findUserByUserName("admin2");
-        let admin3 = await Users.findUserByUserName("admin3");
+        
+        
+        let BIGBOSS = await Users.findUserByUserName("oX_-oBIGBOSS-FoX");
+        let SunnyJetTw = await Users.findUserByUserName("OADF-SunnyJetTw");
+        let elementofprgress = await Users.findUserByUserName("elementofprgress");
         let CanadianMason = await Users.findUserByUserName("CanadianMason");
         let HungMammoth = await Users.findUserByUserName("AZGD-HungMammoth");
         let Silk2g = await Users.findUserByUserName("Silk2g");
 
 
         //add reports
-        let report1 = await Report.addReport("admin1", "CanadianMason", "aimbot", { path: "public/uploads/seed1.png" });
+        let report1 = await Report.addReport("oX_-oBIGBOSS-FoX", "CanadianMason", "aimbot", {path: "public/uploads/seed1.png"});
         CanadianMason.received_reports.push(report1._id);
         BIGBOSS.created_reports.push(report1._id);
         await Users.updateUser(CanadianMason._id, CanadianMason);
         await Users.updateUser(BIGBOSS._id, BIGBOSS);
 
-        let report2 = await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report", { path: "public/uploads/seed2.jpg" });
+        let report2 = await Report.addReport("Silk2g", "AZGD-HungMammoth", "test the report", {path: "public/uploads/seed2.jpg"});
         HungMammoth.received_reports.push(report2._id);
         Silk2g.created_reports.push(report2._id);
         await Users.updateUser(HungMammoth._id, HungMammoth);
@@ -92,10 +92,10 @@ async function main() {
         await Users.updateUser(CanadianMason._id, CanadianMason);
         // BIGBOSS.pending_votes.push(poll1._id);
         // SunnyJetTw.pending_votes.push(poll1._id);
-        // admin3.pending_votes.push(poll1._id);
+        // elementofprgress.pending_votes.push(poll1._id);
         // await Users.updateUser(BIGBOSS._id, BIGBOSS);
         // await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
-        // await Users.updateUser(admin3._id, admin3);
+        // await Users.updateUser(elementofprgress._id, elementofprgress);
 
         let poll2 = await Poll.addPoll("AZGD-HungMammoth");
         await Users.newAdminPendingVote(poll2);
@@ -103,13 +103,13 @@ async function main() {
         await Users.updateUser(HungMammoth._id, HungMammoth);
         // BIGBOSS.pending_votes.push(poll2._id);
         // SunnyJetTw.pending_votes.push(poll2._id);
-        // admin3.pending_votes.push(poll2._id);
+        // elementofprgress.pending_votes.push(poll2._id);
         // await Users.updateUser(BIGBOSS._id, BIGBOSS);
         // await Users.updateUser(SunnyJetTw._id, SunnyJetTw);
-        // await Users.updateUser(admin3._id, admin3);
+        // await Users.updateUser(elementofprgress._id, elementofprgress);
 
         //add comments
-        let comment1 = await Comment.addComment("admin3", "I agree he's a cheater.");
+        let comment1 = await Comment.addComment("elementofprgress", "I agree he's a cheater.");
         report1 = await Report.getReportByReportedPlayer("CanadianMason");
         report1.comments.push(comment1._id);
         await Report.updateReport(report1._id, report1)
@@ -120,7 +120,7 @@ async function main() {
         await Report.updateReport(report2._id, report2)
 
         //add appeals
-        await Appeal.addAppeal("AZGD-HungMammoth", "My friend is trolling");
+        //await Appeal.addAppeal("AZGD-HungMammoth", "My friend is trolling");
 
         //for the appeal one, update his canAppeal to be false.
         let appealedGuy = await Users.findUserByUserName("AZGD-HungMammoth");
@@ -133,7 +133,7 @@ async function main() {
         //await db.close();
     } catch (e) {
         console.log(e);
-    }
+    }        
 }
 
 main();
