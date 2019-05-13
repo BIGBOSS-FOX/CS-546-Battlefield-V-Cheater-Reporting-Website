@@ -1,8 +1,9 @@
 {{!-- THIS IS A CONTINUATION OF TEMPLATE.HANDLEBARS, WHICH HAS THE REQUIRED ELEMENTS OF THE VALIDATOR --}}
 {{#if users.isAdmin}}
+<h2 class="report-title text-center shadow text-danger">Notifications</h2>
     {{#each users.pending_votes}}
         <div class="smallPad">
-            <div class="bs-callout bs-callout-default">
+            <div class="bs-callout bs-callout-danger">
                 <h4>{{dateFormat this.createdTime "MMMM Do YYYY - h:mm:ss a"}}</h4>
                 User: <a href="http://localhost:3000/users/{{this.pollUser}}">{{this.pollUser}}'s</a> status is waiting to be determined by your vote.
                 <a href="http://localhost:3000/polls/{{this.pollUser}}">Click here to place a vote on him/her!</a>
@@ -10,7 +11,7 @@
         </div>
     {{/each}}
 {{/if}}
-<div class="separatingBar"></div>
+
 <h2 class="report-title text-center shadow">Latest Events</h2>
 <div style="padding:10px">
     {{#each events}}

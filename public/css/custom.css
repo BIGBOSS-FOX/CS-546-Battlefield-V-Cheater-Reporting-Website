@@ -416,3 +416,25 @@ body {
 .whiteBack {
     background-color: #ffffffad;
 }
+
+.btn-danger:not(:disabled):not(.disabled).active,
+.btn-danger:not(:disabled):not(.disabled):active,
+.show>.btn-danger.dropdown-toggle {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.89);
+}
+
+.btn-warning:not(:disabled):not(.disabled).active,
+.btn-warning:not(:disabled):not(.disabled):active,
+.show>.btn-warning.dropdown-toggle {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.89);
+}
+
+.btn-success:not(:disabled):not(.disabled).active,
+.btn-success:not(:disabled):not(.disabled):active,
+.show>.btn-success.dropdown-toggle {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.89);
+}
+
+.text-danger {
+    color: #dc3545;
+}
