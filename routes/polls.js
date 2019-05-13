@@ -49,6 +49,13 @@ router.get("/", adminRequest, async(req, res) => {
                         }                        
                     }
                 }
+                for(let k = 0; k < reportedinfo.length; k++) {
+                    reportedinfo[k].comments_content = [];
+                    for (let l = 0; l < reportedinfo[k].comments.length; l++) {
+                        let content = await commentsData.getCommentByObjectId(reportedinfo[k].comments[l]);
+                        reportedinfo[k].comments_content.push(content);
+                    }
+                };
                 pollsList[j]["reportedinfo"] = reportedinfo;
                 pollstoshow.push(pollsList[j]);
             }
@@ -81,7 +88,7 @@ router.get("/:username", adminRequest, async(req, res) => {
             if (reportedinfo != undefined && reportedinfo != null) 
             {
                 pollMessage = true;
-                reportedinfo["appealed"] = false;
+                //reportedinfo["appealed"] = false;
                 let appealinfo = await appealData.getAppealByObjectId(pollsList[j].voting_about);
                 if(appealinfo!= undefined && appealinfo != null)
                 {
@@ -91,7 +98,14 @@ router.get("/:username", adminRequest, async(req, res) => {
                         reportedinfo.push(appealinfo[a]);
                     } 
                 }
-            }
+            };
+            for(let k = 0; k < reportedinfo.length; k++) {
+                reportedinfo[k].comments_content = [];
+                for (let l = 0; l < reportedinfo[k].comments.length; l++) {
+                    let content = await commentsData.getCommentByObjectId(reportedinfo[k].comments[l]);
+                    reportedinfo[k].comments_content.push(content);
+                }
+            };
             pollsList[j]["reportedinfo"] = reportedinfo;
         }
         res.render('layouts/polls', { users: req.session.userlogged, data: pollsList, hasdata: pollMessage });
