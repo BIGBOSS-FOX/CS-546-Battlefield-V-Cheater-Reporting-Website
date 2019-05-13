@@ -197,7 +197,14 @@ router.get("/users/:id", async(req, res) => {
                 m++;
                 createdinfo.reportNumber = m;
                 report_created = true;
-            }
+            };
+
+            createdinfo.comments_content = [];
+            for (let j = 0; j < createdinfo.comments.length; j++) {
+                let content = await commentData.getCommentByObjectId(createdinfo.comments[j]);
+                createdinfo.comments_content.push(content);
+            };
+
             user.createdinfo[i] = createdinfo;
         };
 
@@ -222,7 +229,17 @@ router.get("/users/:id", async(req, res) => {
         if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
         {
             appeal_created = true;
-            user.appealedinfo =  appealinfo;   
+            appealinfo.comments_content = [];
+            for(let c = 0; c< appealinfo.length; c++)
+            {
+                for (let j = 0; j < appealinfo[c].comments.length; j++) {
+                    let content = await commentData.getCommentByObjectId(appealinfo[c].comments[j]);
+                    appealinfo[c].comments_content = content;
+                }
+            }
+            
+            user.appealedinfo =  appealinfo; 
+              
         }
         user.created_reports_count = user.created_reports.length;
         user.submitted_reports_count = user.received_reports.length;
