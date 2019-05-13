@@ -229,22 +229,20 @@ router.get("/users/:id", async(req, res) => {
         if(appealinfo!= undefined && appealinfo != null && appealinfo.length > 0)
         {
             appeal_created = true;
-            appealinfo.comments_content = [];
-            for(let c = 0; c< appealinfo.length; c++)
-            {
-                for (let j = 0; j < appealinfo[c].comments.length; j++) {
-                    let content = await commentData.getCommentByObjectId(appealinfo[c].comments[j]);
-                    appealinfo[c].comments_content = content;
-                }
+            appealinfo[0].comments_content = [];
+            for (let j = 0; j < appealinfo[0].comments.length; j++) {
+                let content = await commentData.getCommentByObjectId(appealinfo[0].comments[j]);
+                appealinfo[0].comments_content.push(content);
             }
             
-            user.appealedinfo =  appealinfo; 
+            user.appealedinfo = appealinfo[0];
+            console.log(user.appealedinfo);
               
         }
         user.created_reports_count = user.created_reports.length;
         user.submitted_reports_count = user.received_reports.length;
         
-        res.render("layouts/user", { userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
+        res.render("layouts/user", { users: req.session.userlogged, userprofile: user, isCreated: report_created, isreceived: report_received, isappealed : appeal_created });
     } catch (e) {
         console.log(e);
         req.session.userlogged = null;

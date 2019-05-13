@@ -231,48 +231,48 @@
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted">
                 {{#if isappealed}}
-                {{#each userprofile.appealedinfo}}
+                <script>console.log(123);</script>
                 <div class="card">
-                    <div class="card-header" id="headingSubmit{{this._id}}">
+                    <div class="card-header" id="headingSubmit{{userprofile.appealedinfo._id}}">
                         <div class="row mb-0">
                             <div class="col-sm">
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
-                                    data-target="#collapseSubmit{{this._id}}" aria-expanded="true"
+                                    data-target="#collapseSubmit{{userprofile.appealedinfo._id}}" aria-expanded="true"
                                     aria-controls="collapseOne">
-                                    Report {{this._id}}
+                                    Report {{userprofile.appealedinfo._id}}
                                 </button>
                             </div>
                             <div class="col-sm-auto">
                                 <div class="badge badge-pill user-date">
-                                    {{dateFormat this.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                                    {{dateFormat userprofile.appealedinfo.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="collapseSubmit{{this._id}}" class="collapse"
-                        aria-labelledby="headingSubmit{{this._id}}" data-parent="#accordionSubmitted">
+                    <div id="collapseSubmit{{userprofile.appealedinfo._id}}" class="collapse"
+                        aria-labelledby="headingSubmit{{userprofile.appealedinfo._id}}" data-parent="#accordionSubmitted">
                         <div class="card-body">
-                            Appealed Player: {{this.appealed_by}}
+                            Appealed Player: {{userprofile.appealedinfo.appealed_by}}
                             <br>
                             <div class="bs-callout bs-callout-default shadow">
-                                Evidence explained: {{this.body}}
+                                Evidence explained: {{userprofile.appealedinfo.body}}
                                 <br>
-                                {{#if this.image.path}}
-                                <img class="report-img" src="/{{this.image.path}}" alt="Report Image"/>
+                                {{#if userprofile.appealedinfo.image.path}}
+                                <img class="report-img" src="/{{userprofile.appealedinfo.image.path}}" alt="Report Image"/>
                                 <br>
                                 {{/if}}
-                                {{#if proof_link}}
-                                Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
+                                {{#if userprofile.appealedinfo.proof_link}}
+                                Proof Link: <a href="{{userprofile.appealedinfo.proof_link}}" target="_blank">{{userprofile.appealedinfo.proof_link}}</a>
                                 {{/if}}
 
                                 Comments:
-                                <ul id="commentsList{{_id}}">
-                                    {{#each comments_content}}
+                                <ul id="commentsList{{userprofile.appealedinfo._id}}">
+                                    {{#each userprofile.appealedinfo.comments_content}}
                                     <li>{{this.comment}}</li>
                                     {{/each}}
                                 </ul>
                             </div>
-                            {{#if ../userprofile.cancomment}}
+                            {{#if loggedin}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
                                     id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
@@ -286,7 +286,7 @@
                         </div>
                     </div>
                 </div>
-                {{/each}}
+                
                 {{else}}
                 <div class="card user-no-report">
                     <div class="card-headern">No reports found</div>
