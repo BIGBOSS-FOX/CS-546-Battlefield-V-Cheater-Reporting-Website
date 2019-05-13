@@ -103,6 +103,22 @@
                                 {{#if proof_link}}
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 {{/if}}
+
+                                Comments:
+                                <ul id="commentsList{{_id}}">
+                                    {{#each comments}}
+                                    <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-lg btn-block"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    required="required">
+                                <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <br>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}"
+                                    onclick="Addcomment('{{_id}}');">Add Comment</button>
                             </div>
                         </div>
                     </div>
@@ -164,6 +180,22 @@
                                 {{#if proof_link}}
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 {{/if}}
+
+                                Comments:
+                                <ul id="commentsList{{_id}}">
+                                    {{#each comments}}
+                                    <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-lg btn-block"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    required="required">
+                                <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <br>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}"
+                                    onclick="Addcomment('{{_id}}');">Add Comment</button>
                             </div>
                         </div>
                     </div>
@@ -228,6 +260,22 @@
                                 {{#if proof_link}}
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 {{/if}}
+
+                                Comments:
+                                <ul id="commentsList{{_id}}">
+                                    {{#each comments}}
+                                    <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-lg btn-block"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    required="required">
+                                <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <br>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}"
+                                    onclick="Addcomment('{{_id}}');">Add Comment</button>
                             </div>
                         </div>
                     </div>
