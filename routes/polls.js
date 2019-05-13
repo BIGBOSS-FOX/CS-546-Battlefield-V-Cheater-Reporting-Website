@@ -85,7 +85,7 @@ router.get("/:username", adminRequest, async(req, res) => {
                 {
                     for(var a=0; a < appealinfo.length; a++)
                     {
-                        appealinfo[i]["appealed"] = true;
+                        appealinfo[a]["appealed"] = true;
                         reportedinfo.push(appealinfo[a]);
                     } 
                 }
