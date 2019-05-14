@@ -236,7 +236,6 @@ router.get("/users/:id", async(req, res) => {
             }
             
             user.appealedinfo = appealinfo[0];
-            console.log(user.appealedinfo);
               
         }
         user.created_reports_count = user.created_reports.length;

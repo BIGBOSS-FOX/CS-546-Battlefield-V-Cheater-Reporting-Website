@@ -242,7 +242,6 @@
         <div class="smallPad">
             <div class="accordion" id="accordionSubmitted3">
                 {{#if isappealed}}
-                <script>console.log(123);</script>
                 <div class="card">
                     <div class="card-header" id="headingSubmit{{userprofile.appealedinfo._id}}">
                         <div class="row mb-0">
@@ -282,8 +281,8 @@
 
                                 <div class="comments">
                                     <h3>Comments:</h3>
-                                    <ul class="commentul" id="commentsList{{_id}}">
-                                        {{#each comments_content}}
+                                    <ul class="commentul" id="commentsList{{userprofile.appealedinfo._id}}">
+                                        {{#each userprofile.appealedinfo.comments_content}}
                                         <li>
                                             <div><a href="/users/{{this.commenter}}">{{this.commenter}} </a> </div>
                                             <div class="commentdiv">{{this.comment}}</div>
@@ -296,12 +295,12 @@
                             {{#if loggedin}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
-                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter Comment"
+                                    id="report_Comments{{userprofile.appealedinfo._id}}" name="comments" placeholder="Enter Comment"
                                     required="required">
-                                <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
+                                <input type="hidden" name="reportid" id="reportid{{userprofile.appealedinfo._id}}" value="{{userprofile.appealedinfo._id}}">
                                 <br>
-                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{_id}}"
-                                    onclick="Addcomment('{{_id}}');">Add Comment</button>
+                                <button type="button" class="btn btn-primary shadow ml-2" id="add_Comment{{userprofile.appealedinfo._id}}"
+                                    onclick="Addcomment('{{userprofile.appealedinfo._id}}');">Add Comment</button>
                             </div>
                             {{/if}}
                         </div>
