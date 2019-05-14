@@ -13,20 +13,20 @@
                                 class="badge badge-pill badge-primaryn polls-username shadow">{{this.voting_about}}</a>
                         </div>
                         <form class="form-inline" method="POST" action="/polls">
-                            <input type="hidden" name="id" id="id" value="{{this._id}}">
+                            <input type="hidden" name="id" id="{{this._id}}" value="{{this._id}}">
                             <div class="col-sm">
 
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" id="vote1" value="Legit" checked>
+                                        <input type="radio" name="options" id="vote1{{this._id}}" value="Legit" checked>
                                         Legit
                                     </label>
                                     <label class="btn btn-warning">
-                                        <input type="radio" name="options" id="vote2" value="Suspicious">
+                                        <input type="radio" name="options" id="vote2{{this._id}}" value="Suspicious">
                                         Suspicious
                                     </label>
                                     <label class="btn btn-danger">
-                                        <input type="radio" name="options" id="vote3" value="Cheater">
+                                        <input type="radio" name="options" id="vote3{{this._id}}" value="Cheater">
                                         Cheater
                                     </label>
 
@@ -74,36 +74,22 @@
                                 {{/if}}
 
 
-                                Comments:
-                                <ul id="commentsList{{_id}}">
-                                    {{#each comments_content}}
-                                    <li>{{this.comment}}</li>
-                                    {{/each}}
-                                </ul>
-                                <div class="row">
-                                    <div class="col-sm-3">
+                                <div class="comments">
+                                    <h3>Comments:</h3>
+                                    <ul class="commentul" id="commentsList{{_id}}">
+                                        {{#each comments_content}}
+                                        <li>
+                                            <div><a href="/user/{{this.commenter}}">{{this.commenter}} </a> </div>
+                                            <div class="commentdiv">{{this.comment}}</div>
 
-                                        <img class="avatar shadow" alt="avatar"
-                                            src="https://bootdey.com/files/SnippetsImages/bootstrap-snippets-630.png">
-
-                                    </div>
-
-                                    <div class="col">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <strong>myusername</strong> <span class="text-muted">commented 5 days
-                                                    ago</span>
-                                            </div>
-                                            <div class="panel-body">
-                                                Panel content
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
-                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter comment"
                                     required="required">
                                 <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
                                 <br>

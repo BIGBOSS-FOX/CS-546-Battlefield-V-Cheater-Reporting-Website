@@ -470,3 +470,29 @@ body {
     height: auto;
     width: auto;
 }
+
+.commentul li{
+    list-style:none;
+    padding : 10px;
+}
+
+.commentdiv{
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    border: solid 2px;
+    border-color: #cecbcb;
+    background: rgba(212, 212, 212, 0.3);
+}
+
+.comments{
+    margin-top: 10px;
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    border: solid 2px;
+    border-color: #cecbcb;
+    background: rgba(212, 212, 212, 0.3);
+}

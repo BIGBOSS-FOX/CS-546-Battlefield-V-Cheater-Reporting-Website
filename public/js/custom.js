@@ -1,5 +1,4 @@
-jQuery('body').bind('click', function(e) {
-    console.log("Clicked!");
+jQuery('body').bind('click', function (e) {
     if (jQuery(e.target).closest('.navbar').length < 1) {
         // click happened outside of .navbar, so hide
         var opened = jQuery('.navbar-collapse').hasClass('collapse show');
@@ -12,9 +11,9 @@ jQuery('body').bind('click', function(e) {
 // Variable to hold request
 var request;
 
-$(function() {
+$(function () {
 
-    $('#login_submit').on('click', function(e) {
+    $('#login_submit').on('click', function (e) {
 
         // Prevent default posting of form - put here to work in case of errors
         var username = $("#username_login").val();
@@ -45,7 +44,7 @@ $(function() {
                 url: "/login",
                 type: "POST",
                 data: serializedData,
-                success: function(response) {
+                success: function (response) {
                     if (!response.error) {
                         // alert("Logged in successfully");
                         $('#modalLoginForm').modal('hide');
@@ -57,7 +56,7 @@ $(function() {
                         $inputs.prop("disabled", false);
                     }
                 },
-                error: function(e) {
+                error: function (e) {
                     alert("An error has occurred");
                     $inputs.prop("disabled", false);
                     $('#modalLoginForm').modal('hide');
@@ -69,8 +68,8 @@ $(function() {
 });
 
 
-$(function() {
-    $('#signup_submit').on('click', function(e) {
+$(function () {
+    $('#signup_submit').on('click', function (e) {
         var username = $("#username_signup").val();
         var password = $('#password_signup').val();
         $("#span-signup").text("");
@@ -99,7 +98,7 @@ $(function() {
                 url: "/register",
                 type: "POST",
                 data: serializedData,
-                success: function(response) {
+                success: function (response) {
                     if (!response.error) {
                         $('#modalSignUpForm').modal('hide');
                         alert("Signed up successfully");
@@ -111,7 +110,7 @@ $(function() {
                         $inputs.prop("disabled", false);
                     }
                 },
-                error: function(e) {
+                error: function (e) {
                     alert("An error has occurred");
                     $inputs.prop("disabled", false);
                     $('#modalSignUpForm').modal('hide');
@@ -132,13 +131,17 @@ function Addcomment(i) {
             url: "/polls/addComment",
             type: "POST",
             data: { comment: comment, reportid: reportid },
-            success: function(response) {
+            success: function (response) {
                 if (response.message == "success") {
-                    ul.append("<li>" + comment + "</li>");
+                    
+                    let username = document.getElementById("profilebutton").name;
+                    ul.append('<li><div><a href="/user/' + username + '">' + username + ' </a> </div><div class="commentdiv">' + comment + '</div></li>');
+
+
                 }
                 $("#report_Comments" + i).val("");
             },
-            error: function(e) {
+            error: function (e) {
                 alert("Comment could not be not added");
             }
         });
@@ -146,7 +149,7 @@ function Addcomment(i) {
 }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#banlisttable').DataTable();
 });
 

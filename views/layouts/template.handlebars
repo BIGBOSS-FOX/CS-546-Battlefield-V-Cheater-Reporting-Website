@@ -229,15 +229,15 @@
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right" for="username_login">Username</label>
-                            <input type="text" id="username_login" name="username_login" class="form-control validate"
+                            <label data-error="wrong" data-success="right" for="username_login" >Username</label>
+                            <input type="text" id="username_login" name="username_login" class="form-control validate" autocomplete="username"
                                 required="required">
                         </div>
 
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="password_login">Password</label>
-                            <input type="password" id="password_login" name="password_login"
+                            <input type="password" id="password_login" name="password_login" autocomplete="current-password"
                                 class="form-control validate" required="required">
                         </div>
                         <span id="span_login"></span>
@@ -267,7 +267,7 @@
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="username_signup">Username</label>
-                            <input type="text" id="username_signup" name="username_signup" required="required"
+                            <input type="text" id="username_signup" name="username_signup" required="required" autocomplete="username"
                                 class="form-control validate">
                         </div>
 
@@ -275,7 +275,7 @@
                             <i class="fas fa-lock prefix grey-text"></i>
                             <label data-error="wrong" data-success="right"
                                 for="password_signup">Password</label>
-                            <input type="password" id="password_signup" name="password_signup"
+                            <input type="password" id="password_signup" name="password_signup" autocomplete="new-password"
                                 class="form-control validate" required="required">
                         </div>
                         <span id="span-signup"></span>

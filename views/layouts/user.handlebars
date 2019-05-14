@@ -16,21 +16,21 @@
     </div>
     <div class="col-md-10">
         <div class="bs-callout bs-callout-default shadow">
-            
 
-                <span class="userpage-username">{{userprofile.user_name}}</span>
-           
-                <span class="badge badge-pill badge-info floatRight shadow"> 
-                    {{userprofile.submitted_reports_count}} report(s) recieved
-                    
-                    <br>
-                    
 
-                    {{userprofile.created_reports_count}}
-                    report(s)
-                    submitted
-                </span>
-                
+            <span class="userpage-username">{{userprofile.user_name}}</span>
+
+            <span class="badge badge-pill badge-info floatRight shadow">
+                {{userprofile.submitted_reports_count}} report(s) recieved
+
+                <br>
+
+
+                {{userprofile.created_reports_count}}
+                report(s)
+                submitted
+            </span>
+
 
 
 
@@ -103,18 +103,23 @@
                                 {{#if proof_link}}
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 {{/if}}
+                                <div class="comments">
+                                    C<h3>Comments:</h3>
+                                    <ul class="commentul" id="commentsList{{_id}}">
+                                        {{#each comments_content}}
+                                        <li>
+                                            <div><a href="/user/{{this.commenter}}">{{this.commenter}} </a> </div>
+                                            <div class="commentdiv">{{this.comment}}</div>
 
-                                Comments:
-                                <ul id="commentsList{{_id}}">
-                                    {{#each comments_content}}
-                                    <li>{{this.comment}}</li>
-                                    {{/each}}
-                                </ul>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                             {{#if ../userprofile.cancomment}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
-                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter Comment"
                                     required="required">
                                 <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
                                 <br>
@@ -183,17 +188,23 @@
                                 Proof Link: <a href="{{proof_link}}" target="_blank">{{proof_link}}</a>
                                 {{/if}}
 
-                                Comments:
-                                <ul id="commentsList{{_id}}">
-                                    {{#each comments_content}}
-                                    <li>{{this.comment}}</li>
-                                    {{/each}}
-                                </ul>
+                                <div class="comments">
+                                    <h3>Comments:</h3>
+                                    <ul class="commentul" id="commentsList{{_id}}">
+                                        {{#each comments_content}}
+                                        <li>
+                                            <div><a href="/user/{{this.commenter}}">{{this.commenter}} </a> </div>
+                                            <div class="commentdiv">{{this.comment}}</div>
+
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                             {{#if ../userprofile.cancomment}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
-                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter Comment"
                                     required="required">
                                 <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
                                 <br>
@@ -244,13 +255,15 @@
                             </div>
                             <div class="col-sm-auto">
                                 <div class="badge badge-pill user-date">
-                                    {{dateFormat userprofile.appealedinfo.creation_time "MMMM Do YYYY - h:mm:ss a"}}</div>
+                                    {{dateFormat userprofile.appealedinfo.creation_time "MMMM Do YYYY - h:mm:ss a"}}
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div id="collapseSubmit{{userprofile.appealedinfo._id}}" class="collapse"
-                        aria-labelledby="headingSubmit{{userprofile.appealedinfo._id}}" data-parent="#accordionSubmitted3">
+                        aria-labelledby="headingSubmit{{userprofile.appealedinfo._id}}"
+                        data-parent="#accordionSubmitted3">
                         <div class="card-body">
                             Appealed Player: {{userprofile.appealedinfo.appealed_by}}
                             <br>
@@ -258,24 +271,32 @@
                                 Evidence explained: {{userprofile.appealedinfo.body}}
                                 <br>
                                 {{#if userprofile.appealedinfo.image.path}}
-                                <img class="report-img" src="/{{userprofile.appealedinfo.image.path}}" alt="Report Image"/>
+                                <img class="report-img" src="/{{userprofile.appealedinfo.image.path}}"
+                                    alt="Report Image" />
                                 <br>
                                 {{/if}}
                                 {{#if userprofile.appealedinfo.proof_link}}
-                                Proof Link: <a href="{{userprofile.appealedinfo.proof_link}}" target="_blank">{{userprofile.appealedinfo.proof_link}}</a>
+                                Proof Link: <a href="{{userprofile.appealedinfo.proof_link}}"
+                                    target="_blank">{{userprofile.appealedinfo.proof_link}}</a>
                                 {{/if}}
 
-                                Comments:
-                                <ul id="commentsList{{userprofile.appealedinfo._id}}">
-                                    {{#each userprofile.appealedinfo.comments_content}}
-                                    <li>{{this.comment}}</li>
-                                    {{/each}}
-                                </ul>
+                                <div class="comments">
+                                    <h3>Comments:</h3>
+                                    <ul class="commentul" id="commentsList{{_id}}">
+                                        {{#each comments_content}}
+                                        <li>
+                                            <div><a href="/user/{{this.commenter}}">{{this.commenter}} </a> </div>
+                                            <div class="commentdiv">{{this.comment}}</div>
+
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                             {{#if loggedin}}
                             <div class="col-sm-12">
                                 <input type="text" class="form-control form-control-lg btn-block"
-                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter description"
+                                    id="report_Comments{{_id}}" name="comments" placeholder="Enter Comment"
                                     required="required">
                                 <input type="hidden" name="reportid" id="reportid{{_id}}" value="{{_id}}">
                                 <br>
@@ -286,7 +307,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 {{else}}
                 <div class="card user-no-report">
                     <div class="card-headern">No reports found</div>
