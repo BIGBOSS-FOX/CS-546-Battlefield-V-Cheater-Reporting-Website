@@ -7,6 +7,9 @@
 - Divya Goalla
 - Tahsin Yavuz
 
+### GitHub Link:
+https://github.com/cliang6/CS_546_Game_Cheater_Report
+
 ### Setup Guide:
 1.  "npm install": Install all the modules
 2.  "npm run-script seed": Seed the database with initial data
